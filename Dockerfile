@@ -53,6 +53,8 @@ COPY pool.conf /etc/php-fpm.d/pool.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 copy supervisord.conf /etc/supervisord.conf	
 
+VOLUME /app/humhub/uploads
+
 EXPOSE 80
 
 CMD supervisord
