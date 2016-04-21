@@ -47,13 +47,20 @@ RUN composer global require "fxp/composer-asset-plugin:~1.1.0" && \
 
 RUN chmod +x protected/yii && \
     chmod +x protected/yii.bat && \
-    chown -R nginx:nginx /app/humhub
+    chown -R nginx:nginx /app/humhub && \
+	chown -R nginx:nginx /var/lib/nginx/ && \
+	touch /var/run/supervisor.sock && \
+	chmod 777 /var/run/supervisor.sock
 
 COPY pool.conf /etc/php-fpm.d/pool.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 copy supervisord.conf /etc/supervisord.conf	
 
 VOLUME /app/humhub/uploads
+VOLUME /app/humhub/assets
+VOLUME /app/humhub/protected/runtime
+VOLUME /app/humhub/protected/config
+VOLUME /app/humhub/protected/modules
 
 EXPOSE 80
 
