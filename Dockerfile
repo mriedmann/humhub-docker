@@ -34,7 +34,7 @@ RUN php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php
 
 RUN mkdir /app && \
     cd /app && \
-    git clone https://github.com/humhub/humhub.git humhub && \
+    git clone https://github.com/cesardraw2/humhub.git humhub && \
     cd humhub && \
     git checkout $HUMHUB_VERSION
 
