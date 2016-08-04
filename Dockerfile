@@ -2,7 +2,6 @@ FROM alpine
 
 ENV HUMHUB_VERSION=v1.2.dev
 
-
 RUN apk add --update \
     php \
     php-fpm \
