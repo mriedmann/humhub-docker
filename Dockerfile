@@ -24,6 +24,7 @@ RUN apk add --no-cache \
     supervisor \
     nginx \
     git wget unzip \
+    sqlite \
     && rm -rf /var/cache/apk/*
 
 RUN php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php && \
