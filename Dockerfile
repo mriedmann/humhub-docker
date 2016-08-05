@@ -1,8 +1,8 @@
-FROM alpine
+FROM alpine:3.3
 
 ENV HUMHUB_VERSION=v1.0.0
 
-RUN apk add --update \
+RUN apk add --no-cache \
     php \
     php-fpm \
     php-curl \
