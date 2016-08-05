@@ -23,6 +23,7 @@ RUN apk add --no-cache \
 	php-iconv \
 	supervisor \
 	nginx \
+	sqlite \
 	git wget unzip \
     && rm -rf /var/cache/apk/*
 
