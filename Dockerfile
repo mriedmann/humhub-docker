@@ -1,6 +1,6 @@
 FROM alpine:3.3
 
-ENV HUMHUB_VERSION=v1.0.0
+ENV HUMHUB_VERSION=v1.0.1
 
 RUN apk add --no-cache \
     php \
