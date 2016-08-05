@@ -1,39 +1,40 @@
-FROM alpine
+FROM alpine:3.3
 
-ENV HUMHUB_VERSION=v1.0.0
+ENV HUMHUB_VERSION=stable
 
-RUN apk add --update \
+RUN apk add --no-cache \
     php \
     php-fpm \
     php-curl \
-	php-pdo_mysql \
-	php-zip \
-	php-exif \
-	php-intl \
-	imagemagick \
-	php-ldap \
-	php-apcu \
-	php-memcache \
-	php-gd \
-	php-cli \
-	php-openssl \
-	php-phar \
-	php-json \
-	php-ctype \
-	php-iconv \
-	supervisor \
-	nginx \
-	git wget unzip \
+    php-pdo_mysql \
+    php-zip \
+    php-exif \
+    php-intl \
+    imagemagick \
+    php-ldap \
+    php-apcu \
+    php-memcache \
+    php-gd \
+    php-cli \
+    php-openssl \
+    php-phar \
+    php-json \
+    php-ctype \
+    php-iconv \
+    supervisor \
+    nginx \
+    git wget unzip \
+    sqlite \
     && rm -rf /var/cache/apk/*
 
 RUN php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php && \
-    php -r "if (hash('SHA384', file_get_contents('composer-setup.php')) === '7228c001f88bee97506740ef0888240bd8a760b046ee16db8f4095c0d8d525f2367663f22a46b48d072c816e7fe19959') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
+    php -r "if (hash('SHA384', file_get_contents('composer-setup.php')) === 'e115a8dc7871f15d853148a7fbac7da27d6c0030b848d9b3dc09e2a0388afed865e6a3d6b3c0fad45c48e2b5fc1196ae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
     php -r "unlink('composer-setup.php');"
 
 RUN mkdir /app && \
     cd /app && \
-    git clone https://github.com/humhub/humhub.git humhub && \
+    git clone https://github.com/cesardraw2/humhub.git humhub && \
     cd humhub && \
     git checkout $HUMHUB_VERSION
 
@@ -65,7 +66,3 @@ VOLUME /app/humhub/protected/modules
 EXPOSE 80
 
 CMD supervisord
-
-
-
-
