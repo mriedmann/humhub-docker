@@ -21,6 +21,7 @@ RUN apk add --no-cache \
 	php-json \
 	php-ctype \
 	php-iconv \
+	php-sqlite3 \
 	supervisor \
 	nginx \
 	sqlite \
