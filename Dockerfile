@@ -1,6 +1,6 @@
 FROM alpine:3.3
 
-ENV HUMHUB_VERSION=v1.0.1
+ENV HUMHUB_VERSION=v1.2.0
 
 RUN apk add --no-cache \
     php \
@@ -21,13 +21,14 @@ RUN apk add --no-cache \
 	php-json \
 	php-ctype \
 	php-iconv \
+	php-sqlite3 \
 	supervisor \
 	nginx \
 	sqlite \
 	git wget unzip \
     && rm -rf /var/cache/apk/*
 
-ENV COMPOSER_HASH=e115a8dc7871f15d853148a7fbac7da27d6c0030b848d9b3dc09e2a0388afed865e6a3d6b3c0fad45c48e2b5fc1196ae
+ENV COMPOSER_HASH=669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410
 	
 RUN php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php && \
     php -r "if (hash('SHA384', file_get_contents('composer-setup.php')) === '$COMPOSER_HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
