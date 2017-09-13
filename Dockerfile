@@ -39,7 +39,9 @@ RUN mkdir /app && \
     cd /app && \
     git clone https://github.com/humhub/humhub.git humhub && \
     cd humhub && \
-    git checkout $HUMHUB_VERSION
+    git checkout $HUMHUB_VERSION && \
+    sed -i '/YII_DEBUG/s/^/\/\//' index.php && \
+    sed -i '/YII_ENV/s/^/\/\//' index.php
 
 WORKDIR /app/humhub
 
