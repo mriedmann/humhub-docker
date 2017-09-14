@@ -38,7 +38,9 @@ RUN mkdir /app && \
     cd /app && \
     git clone https://github.com/humhub/humhub.git humhub && \
     cd humhub && \
-    git checkout $HUMHUB_VERSION
+    git checkout $HUMHUB_VERSION && \
+    sed -i '/YII_DEBUG/s/^/\/\//' index.php && \
+    sed -i '/YII_ENV/s/^/\/\//' index.php
 
 WORKDIR /app/humhub
 
@@ -55,9 +57,12 @@ RUN chmod +x protected/yii && \
 	touch /var/run/supervisor.sock && \
 	chmod 777 /var/run/supervisor.sock
 
+COPY crontab /etc/crontabs/nginx
+RUN chmod 600 /etc/crontabs/nginx
+
 COPY pool.conf /etc/php-fpm.d/pool.conf
 COPY nginx.conf /etc/nginx/nginx.conf
-copy supervisord.conf /etc/supervisord.conf	
+COPY supervisord.conf /etc/supervisord.conf	
 
 VOLUME /app/humhub/uploads
 VOLUME /app/humhub/assets
