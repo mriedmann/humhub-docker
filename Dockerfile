@@ -28,10 +28,9 @@ RUN apk add --no-cache \
 	git wget unzip \
     && rm -rf /var/cache/apk/*
 
-ENV COMPOSER_HASH=544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061
-	
-RUN php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php && \
-    php -r "if (hash('SHA384', file_get_contents('composer-setup.php')) === '$COMPOSER_HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
+RUN EXPECTED_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&\
+    php -r "if (hash_file('SHA384', 'composer-setup.php') === '$EXPECTED_SIGNATURE') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
     php -r "unlink('composer-setup.php');"
 
