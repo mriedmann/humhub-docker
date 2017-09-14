@@ -1,0 +1,2 @@
+30 * * * * /app/humhub/protected/yii cron/hourly >/dev/null 2>&1
+00 18 * * * /app/humhub/protected/yii cron/daily >/dev/null 2>&1
