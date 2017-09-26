@@ -66,8 +66,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY supervisord.conf /etc/supervisord.conf	
 
 VOLUME /app/humhub/uploads
-VOLUME /app/humhub/assets
-VOLUME /app/humhub/protected/runtime
 VOLUME /app/humhub/protected/config
 VOLUME /app/humhub/protected/modules
 
