@@ -3,6 +3,7 @@ FROM alpine:3.3
 ENV HUMHUB_VERSION=v1.2.0
 
 RUN apk add --no-cache \
+    tzdata \
     php \
     php-fpm \
     php-curl \
