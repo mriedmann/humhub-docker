@@ -1,0 +1,16 @@
+version: '3.1'
+services:
+  humhub:
+    build: .
+    links:
+      - "db:db"
+    ports:
+      - "80:80"
+    volumes:
+      - "C:/temp/hh_config:/var/www/localhost/htdocs/protected/config"
+  db:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: humhub
+

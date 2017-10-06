@@ -3,78 +3,76 @@ FROM alpine:3.3
 ENV HUMHUB_VERSION=v1.2.0
 
 RUN apk add --no-cache \
+    ca-certificates \
     tzdata \
     php \
     php-fpm \
     php-curl \
-	php-pdo_mysql \
-	php-zip \
-	php-exif \
-	php-intl \
-	imagemagick \
-	php-ldap \
-	php-apcu \
-	php-memcache \
-	php-gd \
-	php-cli \
-	php-openssl \
-	php-phar \
-	php-json \
-	php-ctype \
-	php-iconv \
-	php-sqlite3 \
-	supervisor \
-	nginx \
-	sqlite \
-	git wget unzip \
+    php-pdo_mysql \
+    php-zip \
+    php-exif \
+    php-intl \
+    imagemagick \
+    php-ldap \
+    php-apcu \
+    php-memcache \
+    php-gd \
+    php-cli \
+    php-openssl \
+    php-phar \
+    php-json \
+    php-ctype \
+    php-iconv \
+    php-sqlite3 \
+    supervisor \
+    nginx \
+    sqlite \
+    git wget unzip \
+    php-zlib \
     && rm -rf /var/cache/apk/*
 
 RUN EXPECTED_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
-    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&\
+    wget -O composer-setup.php https://getcomposer.org/installer && \
     php -r "if (hash_file('SHA384', 'composer-setup.php') === '$EXPECTED_SIGNATURE') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
     php -r "unlink('composer-setup.php');"
 
-RUN mkdir /app && \
-    cd /app && \
-    git clone https://github.com/humhub/humhub.git humhub && \
+COPY composer/* /root/.composer/
+
+RUN chown -R nginx:nginx /var/lib/nginx/ && \
+    touch /var/run/supervisor.sock && \
+    chmod 777 /var/run/supervisor.sock
+
+RUN mkdir /usr/src && cd /usr/src/ && \
+    git clone --branch $HUMHUB_VERSION https://github.com/humhub/humhub.git humhub && \
     cd humhub && \
-    git checkout $HUMHUB_VERSION && \
     sed -i '/YII_DEBUG/s/^/\/\//' index.php && \
     sed -i '/YII_ENV/s/^/\/\//' index.php
 
-WORKDIR /app/humhub
+COPY composer.lock /usr/src/humhub/
 
-COPY config.json /root/.composer/config.json
-COPY auth.json /root/.composer/auth.json
+RUN cd /usr/src/humhub && \
+    composer global require hirak/prestissimo && \
+    composer global require "fxp/composer-asset-plugin:~1.1.0" && \
+    composer install --no-dev && \
+    chmod +x protected/yii && \
+    chmod +x protected/yii.bat
 
-RUN composer global require "fxp/composer-asset-plugin:~1.1.0" && \
-    composer update --no-dev
+RUN cp -R /usr/src/humhub/* /var/www/localhost/htdocs/ && \
+    chown -R nginx:nginx /var/www/localhost/htdocs/
 
-RUN chmod +x protected/yii && \
-    chmod +x protected/yii.bat && \
-    chown -R nginx:nginx /app/humhub && \
-	chown -R nginx:nginx /var/lib/nginx/ && \
-	touch /var/run/supervisor.sock && \
-	chmod 777 /var/run/supervisor.sock
+COPY etc/ /etc/	
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
-COPY crontab /etc/crontabs/nginx
 RUN chmod 600 /etc/crontabs/nginx
 
-COPY pool.conf /etc/php-fpm.d/pool.conf
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY supervisord.conf /etc/supervisord.conf	
-
-VOLUME /app/humhub/uploads
-VOLUME /app/humhub/assets
-VOLUME /app/humhub/protected/runtime
-VOLUME /app/humhub/protected/config
-VOLUME /app/humhub/protected/modules
+VOLUME /var/www/localhost/htdocs/uploads
+VOLUME /var/www/localhost/htdocs/assets
+VOLUME /var/www/localhost/htdocs/protected/runtime
+VOLUME /var/www/localhost/htdocs/protected/config
+VOLUME /var/www/localhost/htdocs/protected/modules
 
 EXPOSE 80
 
-CMD supervisord
-
-
-
-
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["supervisord"]
