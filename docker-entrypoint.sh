@@ -1,11 +1,22 @@
 #!/bin/sh
 
-if [ -z "$(ls -A /var/www/localhost/htdocs/uploads)" ]; then
-   cp -rv /usr/src/humhub/uploads/* /var/www/localhost/htdocs/uploads/
+echo "=="
+if [ -f "/var/www/localhost/htdocs/protected/config/.version" ]; then
+  echo "installation found"
+  INSTALL_VERSION=`cat /var/www/localhost/htdocs/protected/config/.version`
+  SOURCE_VERSION=`cat /usr/src/humhub/.version`
+  if [[ $INSTALL_VERSION != $SOURCE_VERSION ]]; then
+    echo "updating from version $INSTALL_VERSION to $SOURCE_VERSION"
+    cd /var/www/localhost/htdocs/protected/
+    php yii migrate/up --includeModuleMigrations=1
+    cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
+  fi
+else
+  echo "installing source files"
+  cp -rv /usr/src/humhub/uploads/* /var/www/localhost/htdocs/uploads/
+  cp -rv /usr/src/humhub/protected/config/* /var/www/localhost/htdocs/protected/config/
+  cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
 fi
-
-if [ -z "$(ls -A /var/www/localhost/htdocs/protected/config)" ]; then
-   cp -rv /usr/src/humhub/protected/config/* /var/www/localhost/htdocs/protected/config/
-fi
+echo "=="
 
 exec "$@"

@@ -64,7 +64,8 @@ RUN cp -R /usr/src/humhub/* /var/www/localhost/htdocs/ && \
 COPY etc/ /etc/
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
-RUN chmod 600 /etc/crontabs/nginx
+RUN chmod 600 /etc/crontabs/nginx && \
+    echo "$HUMHUB_VERSION" > /usr/src/humhub/.version
 
 VOLUME /var/www/localhost/htdocs/uploads
 VOLUME /var/www/localhost/htdocs/protected/config
