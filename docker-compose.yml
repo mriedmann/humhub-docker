@@ -7,10 +7,9 @@ services:
     ports:
       - "80:80"
     volumes:
-      - "C:/temp/hh_config:/var/www/localhost/htdocs/protected/config"
+      - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
   db:
     image: mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ${HUMHUB_DB_PASSWORD}
       MYSQL_DATABASE: humhub
-
