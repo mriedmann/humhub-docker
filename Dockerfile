@@ -1,6 +1,6 @@
 FROM alpine:3.3
 
-ENV HUMHUB_VERSION=v1.2.0
+ENV HUMHUB_VERSION=v1.2.2
 
 RUN apk add --no-cache \
     tzdata \
@@ -23,6 +23,7 @@ RUN apk add --no-cache \
 	php-ctype \
 	php-iconv \
 	php-sqlite3 \
+	php-xml \
 	supervisor \
 	nginx \
 	sqlite \
@@ -48,7 +49,7 @@ WORKDIR /app/humhub
 COPY config.json /root/.composer/config.json
 COPY auth.json /root/.composer/auth.json
 
-RUN composer global require "fxp/composer-asset-plugin:~1.1.0" && \
+RUN composer global require "fxp/composer-asset-plugin:~1.3" && \
     composer update --no-dev
 
 RUN chmod +x protected/yii && \
@@ -66,8 +67,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY supervisord.conf /etc/supervisord.conf	
 
 VOLUME /app/humhub/uploads
-VOLUME /app/humhub/assets
-VOLUME /app/humhub/protected/runtime
 VOLUME /app/humhub/protected/config
 VOLUME /app/humhub/protected/modules
 
