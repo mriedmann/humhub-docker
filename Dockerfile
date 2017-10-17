@@ -61,14 +61,12 @@ RUN cd /usr/src/humhub && \
 RUN cp -R /usr/src/humhub/* /var/www/localhost/htdocs/ && \
     chown -R nginx:nginx /var/www/localhost/htdocs/
 
-COPY etc/ /etc/	
+COPY etc/ /etc/
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 RUN chmod 600 /etc/crontabs/nginx
 
 VOLUME /var/www/localhost/htdocs/uploads
-VOLUME /var/www/localhost/htdocs/assets
-VOLUME /var/www/localhost/htdocs/protected/runtime
 VOLUME /var/www/localhost/htdocs/protected/config
 VOLUME /var/www/localhost/htdocs/protected/modules
 
