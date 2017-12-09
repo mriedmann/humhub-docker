@@ -8,7 +8,7 @@ if [ -f "/var/www/localhost/htdocs/protected/config/.version" ]; then
   if [[ $INSTALL_VERSION != $SOURCE_VERSION ]]; then
     echo "updating from version $INSTALL_VERSION to $SOURCE_VERSION"
     cd /var/www/localhost/htdocs/protected/
-    php yii migrate/up --includeModuleMigrations=1
+    php yii migrate/up --includeModuleMigrations=1 --interactive=0
     cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
   fi
 else
