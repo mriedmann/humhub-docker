@@ -1,6 +1,6 @@
 FROM alpine:3.3
 
-ENV HUMHUB_VERSION=v1.2.0
+ENV HUMHUB_VERSION=v1.2.3
 
 RUN apk add --no-cache \
     ca-certificates \
@@ -24,6 +24,7 @@ RUN apk add --no-cache \
     php-ctype \
     php-iconv \
     php-sqlite3 \
+    php-xml \
     supervisor \
     nginx \
     sqlite \
@@ -53,8 +54,8 @@ COPY composer.lock /usr/src/humhub/
 
 RUN cd /usr/src/humhub && \
     composer global require hirak/prestissimo && \
-    composer global require "fxp/composer-asset-plugin:~1.1.0" && \
-    composer install --no-dev && \
+    composer global require "fxp/composer-asset-plugin:~1.4.2" && \
+    composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader && \
     chmod +x protected/yii && \
     chmod +x protected/yii.bat
 
