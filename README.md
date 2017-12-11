@@ -3,7 +3,7 @@
 # Alpine-based PHP-FPM and NGINX HumHub docker-container
 
 [HumHub](https://github.com/humhub/humhub) is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
-This container provides a quick, flexible and lightwight way to set-up a proof-of-cencept for detailed evaluation. Using this in production is possible, but not recommended. 
+This container provides a quick, flexible and lightwight way to set-up a proof-of-concept for detailed evaluation. Using this in production is possible, but not recommended. 
 
 ## Versions
 
