@@ -66,6 +66,7 @@ COPY etc/ /etc/
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 RUN chmod 600 /etc/crontabs/nginx && \
+    chmod +x /usr/local/bin/docker-entrypoint.sh && \
     echo "$HUMHUB_VERSION" > /usr/src/humhub/.version
 
 VOLUME /var/www/localhost/htdocs/uploads
@@ -74,5 +75,5 @@ VOLUME /var/www/localhost/htdocs/protected/modules
 
 EXPOSE 80
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["supervisord"]
