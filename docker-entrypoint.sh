@@ -1,6 +1,14 @@
 #!/bin/sh
 
+INTEGRITY_CHECK=${HUMHUB_INTEGRITY_CHECK:-1}
+WAIT_FOR_DB=${HUMHUB_WAIT_FOR_DB:-1}
+SET_PJAX=${HUMHUB_SET_PJAX:-1}
+
 wait_for_db () {
+  if [ ! $WAIT_FOR_DB ]; then
+    return 0
+  fi
+
   until nc -z -v -w30 db 3306
   do
     echo "Waiting for database connection..."
@@ -24,10 +32,12 @@ if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
     cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
   fi
   
-  php ./yii integrity/run
-  if [ $? -ne 0 ]; then
-    echo "validation failed!"
-	exit 1
+  if [ $INTEGRITY_CHECK ]; then
+    php ./yii integrity/run
+    if [ $? -ne 0 ]; then
+      echo "validation failed!"
+	  exit 1
+    fi
   fi
 else
   echo "No existing installation found!"
@@ -52,6 +62,22 @@ else
   cd /var/www/localhost/htdocs/protected/
   php yii migrate/up --includeModuleMigrations=1 --interactive=0
 fi
+
+if [ ! -f "/var/www/localhost/htdocs/protected/config/.installed" ]; then
+  echo "Config preprocessing ..."
+  
+  grep "'installed' => true" /var/www/localhost/htdocs/protected/config/dynamic.php
+  if [ $? -eq 0 ]; then
+    echo "installation active"
+	
+	if [ $SET_PJAX ]
+      sed -i -e "s/'enablePjax' => false/'enablePjax' => true/g" /var/www/localhost/htdocs/protected/config/common.php
+	fi
+	
+	touch /var/www/localhost/htdocs/protected/config/.installed
+  fi
+fi
+
 echo "=="
 
 exec "$@"
