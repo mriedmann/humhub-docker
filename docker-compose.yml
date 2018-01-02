@@ -6,8 +6,11 @@ services:
       - "db:db"
     ports:
       - "80:80"
-    volumes:
-      - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
+    environment:
+      HUMHUB_DB_USER: root
+      HUMHUB_DB_PASSWORD: ${HUMHUB_DB_PASSWORD}
+#    volumes:
+#      - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
   db:
     image: mariadb
     environment:
