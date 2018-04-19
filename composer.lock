@@ -666,16 +666,16 @@
         },
         {
             "name": "bower-asset/jquery-nicescroll",
-            "version": "3.6.8",
+            "version": "v3.6.8-patch1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inuyaksa/jquery.nicescroll.git",
-                "reference": "050267822f045f59d0b0d0ac5d84c36ff8c98e1e"
+                "reference": "25737c1a8ecfaccf219a13142d300b64e52e6b58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inuyaksa/jquery.nicescroll/zipball/050267822f045f59d0b0d0ac5d84c36ff8c98e1e",
-                "reference": "050267822f045f59d0b0d0ac5d84c36ff8c98e1e",
+                "url": "https://api.github.com/repos/inuyaksa/jquery.nicescroll/zipball/25737c1a8ecfaccf219a13142d300b64e52e6b58",
+                "reference": "25737c1a8ecfaccf219a13142d300b64e52e6b58",
                 "shasum": ""
             },
             "require": {
@@ -692,7 +692,8 @@
                     "demo",
                     "package.json"
                 ]
-            }
+            },
+            "time": "2016-03-01T20:38:24+00:00"
         },
         {
             "name": "bower-asset/jquery-placeholder",
@@ -3713,7 +3714,7 @@
             ],
             "authors": [
                 {
-                    "name": "Alexandre SalomÃ©",
+                    "name": "Alexandre Salomé",
                     "email": "alexandre.salome@gmail.com",
                     "homepage": "http://alexandre-salome.fr"
                 }
@@ -4091,7 +4092,8 @@
             "type": "bower-asset-library",
             "extra": {
                 "bower-asset-main": "dist/typeahead.bundle.js"
-            }
+            },
+            "time": "2015-04-27T04:02:14+00:00"
         },
         {
             "name": "cebe/js-search",
@@ -4379,7 +4381,7 @@
             ],
             "authors": [
                 {
-                    "name": "FranÃ§ois Zaninotto"
+                    "name": "François Zaninotto"
                 }
             ],
             "description": "Faker is a PHP library that generates fake data for you.",
@@ -5204,16 +5206,16 @@
         },
         {
             "name": "symfony/debug",
-            "version": "v3.4.1",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "fb2001e5d85f95d8b6ab94ae3be5d2672df128fd"
+                "reference": "543deab3ffff94402440b326fc94153bae2dfa7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/fb2001e5d85f95d8b6ab94ae3be5d2672df128fd",
-                "reference": "fb2001e5d85f95d8b6ab94ae3be5d2672df128fd",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/543deab3ffff94402440b326fc94153bae2dfa7a",
+                "reference": "543deab3ffff94402440b326fc94153bae2dfa7a",
                 "shasum": ""
             },
             "require": {
@@ -5256,7 +5258,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-11-21T09:01:46+00:00"
+            "time": "2017-12-12T08:27:14+00:00"
         },
         {
             "name": "symfony/dom-crawler",
@@ -5316,16 +5318,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v3.4.1",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "ca20b8f9ef149f40ff656d52965f240d85f7a8e4"
+                "reference": "b869cbf8a15ca6261689de2c28a7d7f2d0706835"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/ca20b8f9ef149f40ff656d52965f240d85f7a8e4",
-                "reference": "ca20b8f9ef149f40ff656d52965f240d85f7a8e4",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/b869cbf8a15ca6261689de2c28a7d7f2d0706835",
+                "reference": "b869cbf8a15ca6261689de2c28a7d7f2d0706835",
                 "shasum": ""
             },
             "require": {
@@ -5375,7 +5377,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2017-11-09T14:14:31+00:00"
+            "time": "2017-12-14T19:40:10+00:00"
         },
         {
             "name": "symfony/finder",

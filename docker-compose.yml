@@ -5,11 +5,25 @@ services:
     links:
       - "db:db"
     ports:
-      - "80:80"
-    volumes:
-      - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
+      - "127.0.0.1:80:80"
+    environment:
+      HUMHUB_DB_USER: root
+      HUMHUB_DB_PASSWORD: root
+      HUMHUB_AUTO_INSTALL: 1
+#   volumes:
+#     - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
   db:
     image: mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: ${HUMHUB_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: humhub
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

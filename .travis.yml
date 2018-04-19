@@ -1,0 +1,15 @@
+sudo: required
+
+language: php
+
+services:
+  - docker
+
+before_install:
+  - docker-compose build
+  - docker-compose up -d
+  - sleep 60
+  - docker ps -a
+
+script:
+  - curl http://localhost/ -L --fail -s | grep '<p>This wizard will install and configure your own HumHub instance.<br><br>To continue, click Next.</p>' -q

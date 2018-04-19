@@ -59,6 +59,8 @@ RUN cd /usr/src/humhub && \
     chmod +x protected/yii && \
     chmod +x protected/yii.bat
 
+COPY config/ /usr/src/humhub/protected/config/
+	
 RUN cp -R /usr/src/humhub/* /var/www/localhost/htdocs/ && \
     chown -R nginx:nginx /var/www/localhost/htdocs/
 
@@ -76,4 +78,4 @@ VOLUME /var/www/localhost/htdocs/protected/modules
 EXPOSE 80
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["supervisord"]
+CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
