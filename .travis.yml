@@ -8,8 +8,8 @@ services:
 before_install:
   - docker-compose build
   - docker-compose up -d
+  - sleep 60
   - docker ps -a
 
 script:
-  - sleep 60
-  - curl http://localhost/ -L --fail -s | grep '<form id="account-login-form" action="/user/auth/login" method="post">' -q
+  - curl http://localhost/ -L --fail -s | grep '<p>This wizard will install and configure your own HumHub instance.<br><br>To continue, click Next.</p>' -q
