@@ -78,4 +78,4 @@ VOLUME /var/www/localhost/htdocs/protected/modules
 EXPOSE 80
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["supervisord"]
+CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
