@@ -5,31 +5,36 @@ ENV HUMHUB_VERSION=v1.2.5
 RUN apk add --no-cache \
     ca-certificates \
     tzdata \
-    php \
-    php-fpm \
-    php-curl \
-    php-pdo_mysql \
-    php-zip \
-    php-exif \
-    php-intl \
+    php7 \
+    php7-fpm \
+    php7-curl \
+    php7-pdo_mysql \
+    php7-zip \
+    php7-exif \
+    php7-intl \
     imagemagick \
-    php-ldap \
-    php-apcu \
-    php-memcache \
-    php-gd \
-    php-cli \
-    php-openssl \
-    php-phar \
-    php-json \
-    php-ctype \
-    php-iconv \
-    php-sqlite3 \
-    php-xml \
+    php7-ldap \
+    php7-apcu \
+    php7-memcached \
+    php7-gd \
+    php7-cli \
+    php7-openssl \
+    php7-phar \
+    php7-json \
+    php7-ctype \
+    php7-iconv \
+    php7-sqlite3 \
+    php7-xml \
     supervisor \
     nginx \
     sqlite \
     git wget unzip \
-    php-zlib \
+    php7-zlib \
+    php7-dom \
+    php7-simplexml \
+    php7-xmlreader \
+    php7-xmlwriter \
+    php7-tokenizer \
     && rm -rf /var/cache/apk/*
 
 RUN EXPECTED_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
