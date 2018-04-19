@@ -59,6 +59,8 @@ RUN cd /usr/src/humhub && \
     chmod +x protected/yii && \
     chmod +x protected/yii.bat
 
+COPY config/ /usr/src/humhub/protected/config/
+	
 RUN cp -R /usr/src/humhub/* /var/www/localhost/htdocs/ && \
     chown -R nginx:nginx /var/www/localhost/htdocs/
 
