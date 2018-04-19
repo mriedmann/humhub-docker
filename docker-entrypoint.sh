@@ -3,10 +3,10 @@
 INTEGRITY_CHECK=${HUMHUB_INTEGRITY_CHECK:-1}
 WAIT_FOR_DB=${HUMHUB_WAIT_FOR_DB:-1}
 SET_PJAX=${HUMHUB_SET_PJAX:-1}
-AUTOINSTALL=${HUMHUB_AUTO_INSTALL:-1}
+AUTOINSTALL=${HUMHUB_AUTO_INSTALL:-"false"}
 
 wait_for_db () {
-  if [ ! $WAIT_FOR_DB ]; then
+  if [ "$WAIT_FOR_DB" == "false" ]; then
     return 0
   fi
 
@@ -32,14 +32,6 @@ if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
     php yii migrate/up --includeModuleMigrations=1 --interactive=0
     cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
   fi
-  
-  if [ $INTEGRITY_CHECK ]; then
-    php ./yii integrity/run
-    if [ $? -ne 0 ]; then
-      echo "validation failed!"
-	  exit 1
-    fi
-  fi
 else
   echo "No existing installation found!"
   echo "Installing source files..."
@@ -63,7 +55,7 @@ else
   cd /var/www/localhost/htdocs/protected/
   php yii migrate/up --includeModuleMigrations=1 --interactive=0
 
-  if [ $AUTOINSTALL ]; then
+  if [ "$AUTOINSTALL" != "false" ]; then
     echo "Installing..."
     php yii installer/auto
   fi
@@ -76,11 +68,19 @@ if [ ! -f "/var/www/localhost/htdocs/protected/config/.installed" ]; then
   if [ $? -eq 0 ]; then
     echo "installation active"
 	
-	  if [ $SET_PJAX ]; then
+	  if [ $SET_PJAX != "false" ]; then
       sed -i -e "s/'enablePjax' => false/'enablePjax' => true/g" /var/www/localhost/htdocs/protected/config/common.php
 	  fi
 	
 	  touch /var/www/localhost/htdocs/protected/config/.installed
+  fi
+fi
+
+if [ "$INTEGRITY_CHECK" != "false" ]; then
+  php ./yii integrity/run
+  if [ $? -ne 0 ]; then
+    echo "validation failed!"
+  exit 1
   fi
 fi
 
