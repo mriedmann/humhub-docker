@@ -3,6 +3,7 @@
 INTEGRITY_CHECK=${HUMHUB_INTEGRITY_CHECK:-1}
 WAIT_FOR_DB=${HUMHUB_WAIT_FOR_DB:-1}
 SET_PJAX=${HUMHUB_SET_PJAX:-1}
+AUTOINSTALL=${HUMHUB_AUTO_INSTALL:-1}
 
 wait_for_db () {
   if [ ! $WAIT_FOR_DB ]; then
@@ -61,6 +62,11 @@ else
   echo "Creating database..."
   cd /var/www/localhost/htdocs/protected/
   php yii migrate/up --includeModuleMigrations=1 --interactive=0
+
+  if [ $AUTOINSTALL ]; then
+    echo "Installing..."
+    php yii installer/auto
+  fi
 fi
 
 if [ ! -f "/var/www/localhost/htdocs/protected/config/.installed" ]; then
@@ -70,11 +76,11 @@ if [ ! -f "/var/www/localhost/htdocs/protected/config/.installed" ]; then
   if [ $? -eq 0 ]; then
     echo "installation active"
 	
-	if [ $SET_PJAX ]
+	  if [ $SET_PJAX ]; then
       sed -i -e "s/'enablePjax' => false/'enablePjax' => true/g" /var/www/localhost/htdocs/protected/config/common.php
-	fi
+	  fi
 	
-	touch /var/www/localhost/htdocs/protected/config/.installed
+	  touch /var/www/localhost/htdocs/protected/config/.installed
   fi
 fi
 

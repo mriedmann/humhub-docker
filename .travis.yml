@@ -6,14 +6,10 @@ services:
   - docker
 
 before_install:
-  - docker build -t mriedmann/humhub .
-  - docker run -d --name humhub_db -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=humhub mariadb:10.2
-  - docker run -d --name humhub -p 127.0.0.1:80:80 -v /src/:/src/ --link humhub_db:db mriedmann/humhub
-  - sleep 10
+  - docker-compose build
+  - docker-compose up -d
   - docker ps -a
-  - docker exec humhub /bin/sh -c "cp -r /usr/src/humhub /src/"
 
 script:
-  - cd /src/humhub/protected/vendor/bin
-  - ls -l
-  - phantomjs
+  - sleep 60
+  - curl http://localhost/ -L --fail -s | grep '<form id="account-login-form" action="/user/auth/login" method="post">' -q
