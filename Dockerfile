@@ -35,6 +35,7 @@ RUN apk add --no-cache \
     php7-xmlreader \
     php7-xmlwriter \
     php7-tokenizer \
+    php7-fileinfo \
     && rm -rf /var/cache/apk/*
 
 RUN EXPECTED_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \

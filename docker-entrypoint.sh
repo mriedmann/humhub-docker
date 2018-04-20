@@ -59,6 +59,7 @@ else
   if [ "$AUTOINSTALL" != "false" ]; then
     echo "Installing..."
     php yii installer/auto
+    chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
   fi
 fi
 
