@@ -39,11 +39,6 @@ else
   cp -rv /usr/src/humhub/uploads/* /var/www/localhost/htdocs/uploads/
   cp -rv /usr/src/humhub/protected/config/* /var/www/localhost/htdocs/protected/config/
   cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
-
-  echo "Writing config file..."
-  sed -e "s/%%HUMHUB_DB_USER%%/$HUMHUB_DB_USER/g" \
-      -e "s/%%HUMHUB_DB_PASSWORD%%/$HUMHUB_DB_PASSWORD/g" \
-    /usr/src/humhub/protected/config/dynamic.php.tpl > /var/www/localhost/htdocs/protected/config/dynamic.php
   
   echo "Setting permissions..."
   chown -R nginx:nginx /var/www/localhost/htdocs/uploads
@@ -54,7 +49,16 @@ else
   
   echo "Creating database..."
   cd /var/www/localhost/htdocs/protected/
-  php yii migrate/up --includeModuleMigrations=1 --interactive=0
+  if [ -z "$HUMHUB_DB_USER" ]; then
+    AUTOINSTALL="false"
+  else
+    echo "Writing config file..."
+    sed -e "s/%%HUMHUB_DB_USER%%/$HUMHUB_DB_USER/g" \
+      -e "s/%%HUMHUB_DB_PASSWORD%%/$HUMHUB_DB_PASSWORD/g" \
+      /usr/src/humhub/protected/config/dynamic.php.tpl > /var/www/localhost/htdocs/protected/config/dynamic.php
+	chown nginx:nginx /var/www/localhost/htdocs/protected/config/dynamic.php
+    php yii migrate/up --includeModuleMigrations=1 --interactive=0
+  fi
 
   if [ "$AUTOINSTALL" != "false" ]; then
     echo "Installing..."
@@ -66,8 +70,8 @@ fi
 if [ ! -f "/var/www/localhost/htdocs/protected/config/.installed" ]; then
   echo "Config preprocessing ..."
   
-  grep "'installed' => true" /var/www/localhost/htdocs/protected/config/dynamic.php
-  if [ $? -eq 0 ]; then
+  if test -e /var/www/localhost/htdocs/protected/config/dynamic.php && \
+  grep "'installed' => true" /var/www/localhost/htdocs/protected/config/dynamic.php -q; then
     echo "installation active"
 	
 	  if [ $SET_PJAX != "false" ]; then
@@ -75,15 +79,21 @@ if [ ! -f "/var/www/localhost/htdocs/protected/config/.installed" ]; then
 	  fi
 	
 	  touch /var/www/localhost/htdocs/protected/config/.installed
+  else
+    echo "no installation config found or not installed"
+	INTEGRITY_CHECK="false"
   fi
 fi
 
 if [ "$INTEGRITY_CHECK" != "false" ]; then
+  echo "validating ..."
   php ./yii integrity/run
   if [ $? -ne 0 ]; then
     echo "validation failed!"
   exit 1
   fi
+else
+  echo "validation skipped"
 fi
 
 echo "=="
