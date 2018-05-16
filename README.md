@@ -7,7 +7,7 @@ This container provides a quick, flexible and lightwight way to set-up a proof-o
 ## Versions
 
 * `latest`:  unstable master build (use with caution! might be unstable)
-* `1.2.5`: latest stable release (recommended)
+* `1.2.6`: latest stable release (recommended)
 * `1.0.1`: latest 1.0.x release (not recommended)
 * `experimental`: test build (testing only) 
 
