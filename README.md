@@ -78,7 +78,7 @@ This can be set to `"false"` to disabled the startup integrity check. Use with c
 ### `WAIT_FOR_DB`
 **default: `1`**
 
-Can be used to let the startup fail if the db host is unavailable. To disable this, set it to `"false"`. Can be usefull if a external db-host is used, avoid when using a linked container.
+Can be used to let the startup fail if the db host is unavailable. To disable this, set it to `"false"`. Can be useful if an external db-host is used, avoid when using a linked container.
 
 ### `SET_PJAX`
 **default: `1`**
