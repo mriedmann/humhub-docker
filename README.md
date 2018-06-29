@@ -50,10 +50,10 @@ services:
 ## Advanced Config
 This container supports some further options which can be configured via environment variables. Look at the [docker-compose.yml](https://github.com/mriedmann/humhub-docker/blob/master/docker-compose.yml) for some inspiration.
 
-### `HUMHUM_DB_USER` & `HUMHUB_DB_PASSWORD`
+### `HUMHUB_DB_USER` & `HUMHUB_DB_PASSWORD`
 **default: `""`**
   
-This username and password will be used to connect to the database. Please do not set the HUMHUM_DB_PASSWORD without HUMHUB_DB_USER to avoid problems. If this is not set, the visual installer will show up at the first startup. 
+This username and password will be used to connect to the database. Please do not set the HUMHUB_DB_PASSWORD without HUMHUB_DB_USER to avoid problems. If this is not set, the visual installer will show up at the first startup. 
   
 ### `HUMHUB_DB_NAME`
 **default: `humhub`**
