@@ -1,6 +1,6 @@
 # Alpine-based PHP-FPM and NGINX HumHub docker-container
 [![Build Status](https://travis-ci.org/mriedmann/humhub-docker.svg?branch=master)](https://travis-ci.org/mriedmann/humhub-docker)
-[![](https://images.microbadger.com/badges/version/mriedmann/humhub:1.2.7.svg)](https://microbadger.com/images/mriedmann/humhub:1.2.7 "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/mriedmann/humhub:1.2.8.svg)](https://microbadger.com/images/mriedmann/humhub:1.2.8 "Get your own version badge on microbadger.com")
 
 [HumHub](https://github.com/humhub/humhub) is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
 This container provides a quick, flexible and lightwight way to set-up a proof-of-concept for detailed evaluation. Using this in production is possible, but not recommended. 
@@ -8,7 +8,7 @@ This container provides a quick, flexible and lightwight way to set-up a proof-o
 ## Versions
 
 * `latest`:  unstable master build (use with caution! might be unstable)
-* `1.2.7`: latest stable release (recommended)
+* `1.2.8`: latest stable release (recommended)
 * `1.0.1`: latest 1.0.x release (not recommended)
 * `experimental`: test build (testing only) 
 

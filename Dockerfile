@@ -1,6 +1,6 @@
 FROM alpine:3.7
 
-ENV HUMHUB_VERSION=v1.2.7
+ENV HUMHUB_VERSION=v1.2.8
 
 RUN apk add --no-cache \
     ca-certificates \
