@@ -4,7 +4,7 @@
     'db' =>
     array (
       'class' => 'yii\\db\\Connection',
-      'dsn' => 'mysql:host=db;dbname=humhub',
+      'dsn' => 'mysql:host=%%HUMHUB_DB_HOST%%;dbname=%%HUMHUB_DB_NAME%%',
       'username' => '%%HUMHUB_DB_USER%%',
       'password' => '%%HUMHUB_DB_PASSWORD%%',
       'charset' => 'utf8',
@@ -49,8 +49,8 @@
     array (
       'db' =>
       array (
-        'installer_hostname' => 'db',
-        'installer_database' => 'humhub',
+        'installer_hostname' => '%%HUMHUB_DB_HOST%%',
+        'installer_database' => '%%HUMHUB_DB_NAME%%',
       ),
     ),
     'config_created_at' => 1514918914,
@@ -58,6 +58,6 @@
     'databaseInstalled' => true,
     'installed' => false,
   ),
-  'name' => 'HumHub',
-  'language' => 'de',
+  'name' => '%%HUMHUB_NAME%%',
+  'language' => '%%HUMHUB_LANG%%',
 );

@@ -5,6 +5,11 @@ WAIT_FOR_DB=${HUMHUB_WAIT_FOR_DB:-1}
 SET_PJAX=${HUMHUB_SET_PJAX:-1}
 AUTOINSTALL=${HUMHUB_AUTO_INSTALL:-"false"}
 
+HUMHUB_DB_NAME=${HUMHUB_DB_NAME:-"humhub"}
+HUMHUB_DB_HOST=${HUMHUB_DB_HOST:-"db"}
+HUMHUB_NAME=${HUMHUB_NAME:-"HumHub"}
+HUMHUB_LANG=${HUMHUB_NAME:-"en"}
+
 wait_for_db () {
   if [ "$WAIT_FOR_DB" == "false" ]; then
     return 0
@@ -55,6 +60,10 @@ else
     echo "Writing config file..."
     sed -e "s/%%HUMHUB_DB_USER%%/$HUMHUB_DB_USER/g" \
       -e "s/%%HUMHUB_DB_PASSWORD%%/$HUMHUB_DB_PASSWORD/g" \
+      -e "s/%%HUMHUB_DB_HOST%%/$HUMHUB_DB_HOST/g" \
+      -e "s/%%HUMHUB_DB_NAME%%/$HUMHUB_DB_NAME/g" \
+      -e "s/%%HUMHUB_NAME%%/$HUMHUB_NAME/g" \
+      -e "s/%%HUMHUB_LANG%%/$HUMHUB_LANG/g" \
       /usr/src/humhub/protected/config/dynamic.php.tpl > /var/www/localhost/htdocs/protected/config/dynamic.php
 	chown nginx:nginx /var/www/localhost/htdocs/protected/config/dynamic.php
     php yii migrate/up --includeModuleMigrations=1 --interactive=0
