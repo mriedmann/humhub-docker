@@ -1,6 +1,6 @@
 FROM alpine:3.7
 
-ENV HUMHUB_VERSION=v1.2.8
+ENV HUMHUB_VERSION=1.3.2
 
 RUN apk add --no-cache \
     ca-certificates \
@@ -28,7 +28,7 @@ RUN apk add --no-cache \
     supervisor \
     nginx \
     sqlite \
-    git wget unzip \
+    wget unzip \
     php7-zlib \
     php7-dom \
     php7-simplexml \
@@ -38,35 +38,22 @@ RUN apk add --no-cache \
     php7-fileinfo \
     && rm -rf /var/cache/apk/*
 
-RUN EXPECTED_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
-    wget -O composer-setup.php https://getcomposer.org/installer && \
-    php -r "if (hash_file('SHA384', 'composer-setup.php') === '$EXPECTED_SIGNATURE') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
-    php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
-    php -r "unlink('composer-setup.php');"
-
-COPY composer/* /root/.composer/
-
 RUN chown -R nginx:nginx /var/lib/nginx/ && \
     touch /var/run/supervisor.sock && \
     chmod 777 /var/run/supervisor.sock
 
 RUN mkdir /usr/src && cd /usr/src/ && \
-    git clone --branch $HUMHUB_VERSION https://github.com/humhub/humhub.git humhub && \
+    wget -nv -O humhub.tgz "https://www.humhub.org/de/download/start?version=${HUMHUB_VERSION}&type=tar.gz" && \
+    tar xzf humhub.tgz && \
+    mv humhub-${HUMHUB_VERSION} humhub && \
     cd humhub && \
     sed -i '/YII_DEBUG/s/^/\/\//' index.php && \
-    sed -i '/YII_ENV/s/^/\/\//' index.php
-
-COPY composer.lock /usr/src/humhub/
-
-RUN cd /usr/src/humhub && \
-    composer global require hirak/prestissimo && \
-    composer global require "fxp/composer-asset-plugin:~1.4.2" && \
-    composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader && \
+    sed -i '/YII_ENV/s/^/\/\//' index.php && \
     chmod +x protected/yii && \
     chmod +x protected/yii.bat
 
 COPY config/ /usr/src/humhub/protected/config/
-	
+
 RUN cp -R /usr/src/humhub/* /var/www/localhost/htdocs/ && \
     chown -R nginx:nginx /var/www/localhost/htdocs/
 
