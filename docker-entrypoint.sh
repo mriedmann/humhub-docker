@@ -38,6 +38,13 @@ if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
     php yii search/rebuild
     cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
   fi
+
+  echo "Setting permissions..."
+  chown -R nginx:nginx /var/www/localhost/htdocs/uploads
+  chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules
+  chown -R nginx:nginx /var/www/localhost/htdocs/protected/config
+  chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
+
 else
   echo "No existing installation found!"
   echo "Installing source files..."
