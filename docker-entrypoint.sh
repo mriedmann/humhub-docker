@@ -88,12 +88,12 @@ fi
 
 
 if [ "$HUMHUB_DEBUG" == "false" ]; then
-  sed -i '/^YII_DEBUG/s/^/\/\//' /var/www/localhost/htdocs/index.php
-  sed -i '/^YII_ENV/s/^/\/\//' /var/www/localhost/htdocs/index.php
+  sed -i '/YII_DEBUG/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
+  sed -i '/YII_ENV/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
   echo "debug disabled"
 else
-  sed -i '/YII_DEBUG/s/^\/\///' /var/www/localhost/htdocs/index.php
-  sed -i '/YII_ENV/s/^\/\///' /var/www/localhost/htdocs/index.php
+  sed -i '/YII_DEBUG/s/^\/*//' /var/www/localhost/htdocs/index.php
+  sed -i '/YII_ENV/s/^\/*//' /var/www/localhost/htdocs/index.php
   echo "debug enabled"
 fi
 
