@@ -52,6 +52,7 @@ else
   chown -R nginx:nginx /var/www/localhost/htdocs/uploads
   chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules
   chown -R nginx:nginx /var/www/localhost/htdocs/protected/config
+  chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
   
   wait_for_db
   
