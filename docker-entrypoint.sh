@@ -52,6 +52,7 @@ else
   chown -R nginx:nginx /var/www/localhost/htdocs/uploads
   chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules
   chown -R nginx:nginx /var/www/localhost/htdocs/protected/config
+  chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
   
   wait_for_db
   
@@ -88,12 +89,12 @@ fi
 
 
 if [ "$HUMHUB_DEBUG" == "false" ]; then
-  sed -i '/^YII_DEBUG/s/^/\/\//' /var/www/localhost/htdocs/index.php
-  sed -i '/^YII_ENV/s/^/\/\//' /var/www/localhost/htdocs/index.php
+  sed -i '/YII_DEBUG/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
+  sed -i '/YII_ENV/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
   echo "debug disabled"
 else
-  sed -i '/YII_DEBUG/s/^\/\///' /var/www/localhost/htdocs/index.php
-  sed -i '/YII_ENV/s/^\/\///' /var/www/localhost/htdocs/index.php
+  sed -i '/YII_DEBUG/s/^\/*//' /var/www/localhost/htdocs/index.php
+  sed -i '/YII_ENV/s/^\/*//' /var/www/localhost/htdocs/index.php
   echo "debug enabled"
 fi
 
