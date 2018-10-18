@@ -1,6 +1,6 @@
 FROM alpine:3.8 as builder
 
-ENV HUMHUB_VERSION=v1.3.2
+ENV HUMHUB_VERSION=v1.3.6
 
 RUN apk update
 RUN apk add \
