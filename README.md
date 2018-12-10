@@ -7,7 +7,7 @@ This container provides a quick, flexible and lightwight way to set-up a proof-o
 ## Versions
 
 * [![](https://images.microbadger.com/badges/version/mriedmann/humhub:latest.svg)](https://microbadger.com/images/mriedmann/humhub:latest "Get your own version badge on microbadger.com") `latest`:  unstable master build (use with caution! might be unstable) 
-* [![](https://images.microbadger.com/badges/version/mriedmann/humhub:1.2.8.svg)](https://microbadger.com/images/mriedmann/humhub:1.2.8 "Get your own version badge on microbadger.com") `1.2.8`: latest stable release (recommended) 
+* [![](https://images.microbadger.com/badges/version/mriedmann/humhub:1.3.7.svg)](https://microbadger.com/images/mriedmann/humhub:1.2.8 "Get your own version badge on microbadger.com") `1.3.7`: latest stable release (recommended) 
 * [![](https://images.microbadger.com/badges/version/mriedmann/humhub:1.0.1.svg)](https://microbadger.com/images/mriedmann/humhub:1.0.1 "Get your own version badge on microbadger.com") `1.0.1`: latest 1.0.x release (not recommended) 
 * [![](https://images.microbadger.com/badges/version/mriedmann/humhub:experimental.svg)](https://microbadger.com/images/mriedmann/humhub:experimental "Get your own version badge on microbadger.com") `experimental`: test build (testing only) 
 
