@@ -34,8 +34,8 @@ RUN apk add \
     php7-xml \
     php7-xmlreader \
     php7-xmlwriter \
-    php7-zip \
-    ;
+    php7-zip
+
 RUN composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader && \
     chmod +x protected/yii && \
     chmod +x protected/yii.bat
@@ -84,6 +84,12 @@ RUN apk add --no-cache \
     nginx \
     sqlite \
     && rm -rf /var/cache/apk/*
+
+
+# Default PHP settings to be read by php.ini
+ENV PHP_POST_MAX_SIZE=10M
+ENV PHP_UPLOAD_MAX_FILESIZE=10M
+ENV PHP_MAX_EXECUTION_TIME=60
 
 RUN chown -R nginx:nginx /var/lib/nginx/ && \
     touch /var/run/supervisor.sock && \
