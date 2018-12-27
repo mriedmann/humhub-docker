@@ -8,10 +8,11 @@
 return [
     'controllerMap' => [
         'installer' => 'humhub\modules\installer\commands\ExtendedInstallController'
-],
-'components' => [
-    'urlManager' => [
-        'baseUrl' => 'http://localhost:80',
-        'hostInfo' => 'http://localhost:80',
+    ],
+    'components' => [
+        'urlManager' => [
+            'baseUrl' => 'http://localhost:80',
+            'hostInfo' => 'http://localhost:80',
+        ]
     ]
-]];
+];
