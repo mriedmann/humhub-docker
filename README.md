@@ -1,5 +1,6 @@
 # Alpine-based PHP-FPM and NGINX HumHub docker-container
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e2c25ed0c4ce479aa9a97be05d1d5b20)](https://app.codacy.com/app/mriedmann/humhub-docker?utm_source=github.com&utm_medium=referral&utm_content=mriedmann/humhub-docker&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/mriedmann/humhub-docker.svg?branch=master)](https://travis-ci.org/mriedmann/humhub-docker)
 
 [HumHub](https://github.com/humhub/humhub) is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
