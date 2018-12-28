@@ -12,102 +12,99 @@ HUMHUB_EMAIL=${HUMHUB_EMAIL:-"humhub@example.com"}
 HUMHUB_LANG=${HUMHUB_LANG:-"en-US"}
 HUMHUB_DEBUG=${HUMHUB_DEBUG:-"false"}
 
-wait_for_db () {
-  if [ "$WAIT_FOR_DB" == "false" ]; then
-    return 0
-  fi
+wait_for_db() {
+	if [ "$WAIT_FOR_DB" == "false" ]; then
+		return 0
+	fi
 
-  until nc -z -v -w60 db 3306
-  do
-    echo "Waiting for database connection..."
-    # wait for 5 seconds before check again
-    sleep 5
-  done
+	until nc -z -v -w60 db 3306; do
+		echo "Waiting for database connection..."
+		# wait for 5 seconds before check again
+		sleep 5
+	done
 }
 
 echo "=="
 if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
-  echo "Existing installation found!"
-  
-  wait_for_db
-  
-  INSTALL_VERSION=`cat /var/www/localhost/htdocs/protected/config/.version`
-  SOURCE_VERSION=`cat /usr/src/humhub/.version`
-  cd /var/www/localhost/htdocs/protected/
-  if [[ $INSTALL_VERSION != $SOURCE_VERSION ]]; then
-    echo "Updating from version $INSTALL_VERSION to $SOURCE_VERSION"
-    php yii migrate/up --includeModuleMigrations=1 --interactive=0
-    php yii search/rebuild
-    cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
-  fi
+	echo "Existing installation found!"
+
+	wait_for_db
+
+	INSTALL_VERSION=$(cat /var/www/localhost/htdocs/protected/config/.version)
+	SOURCE_VERSION=$(cat /usr/src/humhub/.version)
+	cd /var/www/localhost/htdocs/protected/
+	if [[ $INSTALL_VERSION != $SOURCE_VERSION ]]; then
+		echo "Updating from version $INSTALL_VERSION to $SOURCE_VERSION"
+		php yii migrate/up --includeModuleMigrations=1 --interactive=0
+		php yii search/rebuild
+		cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
+	fi
 else
-  echo "No existing installation found!"
-  echo "Installing source files..."
-  cp -rv /usr/src/humhub/protected/config/* /var/www/localhost/htdocs/protected/config/
-  cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
-  
-  mkdir -p /var/www/localhost/htdocs/protected/runtime/logs/ 
-  touch /var/www/localhost/htdocs/protected/runtime/logs/app.log
+	echo "No existing installation found!"
+	echo "Installing source files..."
+	cp -rv /usr/src/humhub/protected/config/* /var/www/localhost/htdocs/protected/config/
+	cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
 
-  echo "Setting permissions..."
-  chown -R nginx:nginx /var/www/localhost/htdocs/uploads
-  chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules
-  chown -R nginx:nginx /var/www/localhost/htdocs/protected/config
-  chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
-  
-  wait_for_db
-  
-  echo "Creating database..."
-  cd /var/www/localhost/htdocs/protected/
-  if [ -z "$HUMHUB_DB_USER" ]; then
-    AUTOINSTALL="false"
-  fi
+	mkdir -p /var/www/localhost/htdocs/protected/runtime/logs/
+	touch /var/www/localhost/htdocs/protected/runtime/logs/app.log
 
-  if [ "$AUTOINSTALL" != "false" ]; then
-    echo "Installing..."
-    php yii installer/write-db-config "$HUMHUB_DB_HOST" "$HUMHUB_DB_NAME" "$HUMHUB_DB_USER" "$HUMHUB_DB_PASSWORD"
-    php yii installer/install-db
-    php yii installer/write-site-config "$HUMHUB_NAME" "$HUMHUB_EMAIL"
-    php yii installer/create-admin-account
-    chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
-  fi
+	echo "Setting permissions..."
+	chown -R nginx:nginx /var/www/localhost/htdocs/uploads
+	chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules
+	chown -R nginx:nginx /var/www/localhost/htdocs/protected/config
+	chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
+
+	wait_for_db
+
+	echo "Creating database..."
+	cd /var/www/localhost/htdocs/protected/
+	if [ -z "$HUMHUB_DB_USER" ]; then
+		AUTOINSTALL="false"
+	fi
+
+	if [ "$AUTOINSTALL" != "false" ]; then
+		echo "Installing..."
+		php yii installer/write-db-config "$HUMHUB_DB_HOST" "$HUMHUB_DB_NAME" "$HUMHUB_DB_USER" "$HUMHUB_DB_PASSWORD"
+		php yii installer/install-db
+		php yii installer/write-site-config "$HUMHUB_NAME" "$HUMHUB_EMAIL"
+		php yii installer/create-admin-account
+		chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
+	fi
 fi
 
+echo "Config preprocessing ..."
 
-  echo "Config preprocessing ..."
-  
-  if test -e /var/www/localhost/htdocs/protected/config/dynamic.php && \
-  grep "'installed' => true" /var/www/localhost/htdocs/protected/config/dynamic.php -q; then
-    echo "installation active"
-	
-	  if [ $SET_PJAX != "false" ]; then
-      sed -i -e "s/'enablePjax' => false/'enablePjax' => true/g" /var/www/localhost/htdocs/protected/config/common.php
-	  fi
-  else
-    echo "no installation config found or not installed"
+if test -e /var/www/localhost/htdocs/protected/config/dynamic.php &&
+	grep "'installed' => true" /var/www/localhost/htdocs/protected/config/dynamic.php -q; then
+	echo "installation active"
+
+	if [ $SET_PJAX != "false" ]; then
+		sed -i -e "s/'enablePjax' => false/'enablePjax' => true/g" /var/www/localhost/htdocs/protected/config/common.php
+	fi
+else
+	echo "no installation config found or not installed"
 	INTEGRITY_CHECK="false"
-  fi
-
+fi
 
 if [ "$HUMHUB_DEBUG" == "false" ]; then
-  sed -i '/YII_DEBUG/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
-  sed -i '/YII_ENV/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
-  echo "debug disabled"
+	sed -i '/YII_DEBUG/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
+	sed -i '/YII_ENV/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
+	echo "debug disabled"
 else
-  sed -i '/YII_DEBUG/s/^\/*//' /var/www/localhost/htdocs/index.php
-  sed -i '/YII_ENV/s/^\/*//' /var/www/localhost/htdocs/index.php
-  echo "debug enabled"
+	sed -i '/YII_DEBUG/s/^\/*//' /var/www/localhost/htdocs/index.php
+	sed -i '/YII_ENV/s/^\/*//' /var/www/localhost/htdocs/index.php
+	echo "debug enabled"
 fi
 
 if [ "$INTEGRITY_CHECK" != "false" ]; then
-  echo "validating ..."
-  php ./yii integrity/run
-  if [ $? -ne 0 ]; then
-    echo "validation failed!"
-  exit 1
-  fi
+	echo "validating ..."
+	php ./yii integrity/run
+	if [ $? -ne 0 ]; then
+		echo "validation failed!"
+		exit 1
+	fi
 else
-  echo "validation skipped"
+	echo "validation skipped"
 fi
 
 echo "=="
