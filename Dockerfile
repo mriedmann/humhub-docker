@@ -92,6 +92,11 @@ RUN apk add --no-cache \
     sqlite \
     && rm -rf /var/cache/apk/*
 
+ENV PHP_POST_MAX_SIZE=10M
+ENV PHP_UPLOAD_MAX_FILESIZE=10M
+ENV PHP_MAX_EXECUTION_TIME=60
+ENV PHP_MEMORY_LIMIT=512M
+
 RUN chown -R nginx:nginx /var/lib/nginx/ && \
     touch /var/run/supervisor.sock && \
     chmod 777 /var/run/supervisor.sock
