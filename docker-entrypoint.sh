@@ -48,6 +48,9 @@ else
   cp -rv /usr/src/humhub/protected/config/* /var/www/localhost/htdocs/protected/config/
   cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
   
+  mkdir -p /var/www/localhost/htdocs/protected/runtime/logs/ 
+  touch /var/www/localhost/htdocs/protected/runtime/logs/app.log
+
   echo "Setting permissions..."
   chown -R nginx:nginx /var/www/localhost/htdocs/uploads
   chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules
