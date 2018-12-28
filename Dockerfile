@@ -11,8 +11,8 @@ RUN apk add --no-cache \
     wget
 
 WORKDIR /usr/src/
-RUN wget https://github.com/humhub/humhub/archive/v${HUMHUB_VERSION}.tar.gz -O humhub.tar.gz && \
-    tar xvzf humhub.tar.gz && \
+RUN wget https://github.com/humhub/humhub/archive/v${HUMHUB_VERSION}.tar.gz -q -O humhub.tar.gz && \
+    tar xzf humhub.tar.gz && \
     mv humhub-${HUMHUB_VERSION} humhub && \
     rm humhub.tar.gz
     
