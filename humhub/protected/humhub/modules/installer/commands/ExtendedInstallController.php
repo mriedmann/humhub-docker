@@ -118,6 +118,25 @@ class ExtendedInstallController extends Controller
         return ExitCode::OK;
     }
 
+    public function actionSetBaseUrl($base_url){
+        $this->stdout("Setting base url", Console::FG_YELLOW);
+        Yii::$app->settings->set('baseUrl', $base_url);
+
+        return ExitCode::OK;
+    }
+
+    public function actionGetConfig($name){
+        $this->stdout(Yii::$app->settings->get($name) . PHP_EOL);
+
+        return ExitCode::OK;
+    }
+
+    public function actionGetAlias($name){
+        $this->stdout(Yii::getAlias($name) . PHP_EOL);
+
+        return ExitCode::OK;
+    }
+
      /**
      * Sets application in installed state (disables installer)
      */

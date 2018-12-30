@@ -11,8 +11,14 @@ return [
     ],
     'components' => [
         'urlManager' => [
+            'class' => 'yii\web\UrlManager',
             'showScriptName' => false,
             'enablePrettyUrl' => true,
+            'baseUrl' => 'http://localhost/humhub',
+            'hostInfo' => 'http://localhost',
+        ],
+        'assetManager' => [
+            'baseUrl' => 'http://localhost/humhub/assets',
         ],
     ]
 ];

@@ -2,25 +2,24 @@ version: '3.1'
 services:
   humhub:
     build: .
-    ports:
-      - "8080:80"
     environment:
       HUMHUB_DB_USER: ${HUMHUB_DB_USER}
       HUMHUB_DB_PASSWORD: ${HUMHUB_DB_PASSWORD}
       HUMHUB_AUTO_INSTALL: 'true'
       HUMHUB_DEBUG: 'true'
-      HUMHUB_WEB_ROOT: '/humhub'
+      HUMHUB_HOST: 'http://localhost'
+      HUMHUB_BASE_URL: 'http://localhost/humhub'
       PHP_MAX_EXECUTION_TIME: 321
       PHP_UPLOAD_MAX_FILESIZE: 6M
       PHP_POST_MAX_SIZE: 7M
 
-    #   volumes:
+#   volumes:
 #     - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/humhub"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost/humhub"]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 3
   db:
     image: mariadb
     environment:
@@ -28,8 +27,14 @@ services:
       MYSQL_DATABASE: 'humhub'
       MYSQL_USER: ${HUMHUB_DB_USER}
       MYSQL_PASSWORD: ${HUMHUB_DB_PASSWORD}
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "--silent"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+#    healthcheck:
+#      test: ["CMD", "mysqladmin", "ping", "--silent"]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 3
+  proxy:
+    image: nginx:stable
+    volumes:
+      - ./proxy/app.conf:/etc/nginx/conf.d/app.conf
+    ports:
+      - "80:80"

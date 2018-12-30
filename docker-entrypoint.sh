@@ -30,9 +30,9 @@ wait_for_db () {
 echo "=="
 if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
   echo "Existing installation found!"
-  
+
   wait_for_db
-  
+
   INSTALL_VERSION=`cat /var/www/localhost/htdocs/protected/config/.version`
   SOURCE_VERSION=`cat /usr/src/humhub/.version`
   cd /var/www/localhost/htdocs/protected/
@@ -47,15 +47,15 @@ else
   echo "Installing source files..."
   cp -rv /usr/src/humhub/protected/config/* /var/www/localhost/htdocs/protected/config/
   cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
-  
+
   echo "Setting permissions..."
   chown -R nginx:nginx /var/www/localhost/htdocs/uploads
   chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules
   chown -R nginx:nginx /var/www/localhost/htdocs/protected/config
   chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
-  
+
   wait_for_db
-  
+
   echo "Creating database..."
   cd /var/www/localhost/htdocs/protected/
   if [ -z "$HUMHUB_DB_USER" ]; then
@@ -67,14 +67,21 @@ else
     php yii installer/write-db-config "$HUMHUB_DB_HOST" "$HUMHUB_DB_NAME" "$HUMHUB_DB_USER" "$HUMHUB_DB_PASSWORD"
     php yii installer/install-db
     php yii installer/write-site-config "$HUMHUB_NAME" "$HUMHUB_EMAIL"
+    if [ -n "$HUMHUB_HOST" ] && [ -n "$HUMHUB_BASE_URL" ]; then
+        php yii installer/set-base-url "${HUMHUB_BASE_URL}"
+#        sed -i "s|__HUMHUB_HOST__|${HUMHUB_HOST}|" /var/www/localhost/htdocs/protected/config/common.php
+#        sed -i "s|__HUMHUB_BASE_URL__|${HUMHUB_BASE_URL}|" /var/www/localhost/htdocs/protected/config/common.php
+#    else
+#        sed -i '/__HUMHUB_HOST__/d' /var/www/localhost/htdocs/protected/config/common.php
+#        sed -i '/__HUMHUB_BASE_URL__/d' /var/www/localhost/htdocs/protected/config/common.php
+    fi
     php yii installer/create-admin-account
     chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
   fi
 fi
 
-
   echo "Config preprocessing ..."
-  
+
   if test -e /var/www/localhost/htdocs/protected/config/dynamic.php && \
   grep "'installed' => true" /var/www/localhost/htdocs/protected/config/dynamic.php -q; then
     echo "installation active"
@@ -86,7 +93,6 @@ fi
     echo "no installation config found or not installed"
 	INTEGRITY_CHECK="false"
   fi
-
 
 if [ "$HUMHUB_DEBUG" == "false" ]; then
   sed -i '/YII_DEBUG/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
