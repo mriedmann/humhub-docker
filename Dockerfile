@@ -1,10 +1,8 @@
-ARG HUMHUB_VERSION=1.3.8
-
 FROM composer:1.7 as builder-composer
 
 FROM alpine:3.8 as builder
 
-ARG HUMHUB_VERSION
+ARG HUMHUB_VERSION=1.3.8
 
 RUN apk update
 RUN apk add --no-cache \
@@ -61,7 +59,7 @@ RUN rm -rf ./node_modules
 
 FROM alpine:3.8
 
-ARG HUMHUB_VERSION
+ARG HUMHUB_VERSION=1.3.8
 
 RUN apk add --no-cache \
     curl \
