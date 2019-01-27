@@ -12,6 +12,8 @@ HUMHUB_EMAIL=${HUMHUB_EMAIL:-"humhub@example.com"}
 HUMHUB_LANG=${HUMHUB_LANG:-"en-US"}
 HUMHUB_DEBUG=${HUMHUB_DEBUG:-"false"}
 
+export NGINX_CLIENT_MAX_BODY_SIZE=${NGINX_CLIENT_MAX_BODY_SIZE:-10m}
+
 wait_for_db() {
 	if [ "$WAIT_FOR_DB" == "false" ]; then
 		return 0
@@ -106,6 +108,11 @@ if [ "$INTEGRITY_CHECK" != "false" ]; then
 else
 	echo "validation skipped"
 fi
+
+echo "Writing Nginx Config"
+envsubst "\$NGINX_CLIENT_MAX_BODY_SIZE" < /etc/nginx/nginx.conf > /tmp/nginx.conf
+cat /tmp/nginx.conf > /etc/nginx/nginx.conf
+rm /tmp/nginx.conf
 
 echo "=="
 

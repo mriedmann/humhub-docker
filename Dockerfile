@@ -96,6 +96,14 @@ RUN apk add --no-cache \
     sqlite \
     && rm -rf /var/cache/apk/*
 
+RUN BUILD_DEPS="gettext"  \
+    RUNTIME_DEPS="libintl" && \
+    set -x && \
+    apk add --no-cache --update $RUNTIME_DEPS && \
+    apk add --no-cache --virtual build_deps $BUILD_DEPS && \
+    cp /usr/bin/envsubst /usr/local/bin/envsubst && \
+    apk del build_deps
+
 ENV PHP_POST_MAX_SIZE=10M
 ENV PHP_UPLOAD_MAX_FILESIZE=10M
 ENV PHP_MAX_EXECUTION_TIME=60
