@@ -107,6 +107,14 @@ PHP_MAX_EXECUTION_TIME  [60]
 PHP_MEMORY_LIMIT        [512M]
 ```
 
+## NGINX Config
+
+Following variables can be used to configure the embadded Nginx. The configfile gets rewritten on every container startup and is not persisted. Avoid changing it by hand.
+
+```txt
+NGINX_CLIENT_MAX_BODY_SIZE [10m]
+```
+
 ## Contribution
 
 Please use the issues-page for bugs or suggestions. Pull-requests are highly welcomed.
