@@ -19,7 +19,7 @@ wait_for_db() {
 		return 0
 	fi
 
-	until nc -z -v -w60 db 3306; do
+	until nc -z -v -w60 $HUMHUB_DB_HOST 3306; do
 		echo "Waiting for database connection..."
 		# wait for 5 seconds before check again
 		sleep 5
