@@ -1,22 +1,28 @@
 version: '3.1'
 services:
   humhub:
+    image: jusdino/humhub
     build: .
     environment:
       HUMHUB_DB_USER: ${HUMHUB_DB_USER}
       HUMHUB_DB_PASSWORD: ${HUMHUB_DB_PASSWORD}
+      HUMHUB_ADMIN_USER: ${HUMHUB_ADMIN_USER}
+      HUMHUB_ADMIN_EMAIL: ${HUMHUB_ADMIN_EMAIL}
+      HUMHUB_ADMIN_PASSWORD: ${HUMHUB_ADMIN_PASSWORD}
       HUMHUB_AUTO_INSTALL: 'true'
       HUMHUB_DEBUG: 'true'
-      HUMHUB_HOST: 'http://localhost'
-      HUMHUB_BASE_URL: 'http://localhost/humhub'
+      HUMHUB_PROTO: 'https'
+      HUMHUB_HOST: 'localhost'
+      HUMHUB_SUB_DIR: '/humhub'
       PHP_MAX_EXECUTION_TIME: 321
       PHP_UPLOAD_MAX_FILESIZE: 6M
       PHP_POST_MAX_SIZE: 7M
-
+    ports:
+    - "80:80"
 #   volumes:
 #     - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
 #    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost/humhub"]
+#      test: ["CMD", "curl", "-f", "http://localhost/"]
 #      interval: 30s
 #      timeout: 10s
 #      retries: 3
@@ -32,9 +38,3 @@ services:
 #      interval: 30s
 #      timeout: 10s
 #      retries: 3
-  proxy:
-    image: nginx:stable
-    volumes:
-      - ./proxy/app.conf:/etc/nginx/conf.d/app.conf
-    ports:
-      - "80:80"

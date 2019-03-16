@@ -1,6 +1,6 @@
 FROM alpine:3.8 as builder
 
-ENV HUMHUB_VERSION=v1.3.7
+ENV HUMHUB_VERSION=v1.3.11
 
 RUN apk update
 RUN apk add \
@@ -95,11 +95,11 @@ RUN chown -R nginx:nginx /var/lib/nginx/ && \
     touch /var/run/supervisor.sock && \
     chmod 777 /var/run/supervisor.sock
 
-COPY --from=builder --chown=nginx:nginx /usr/src/humhub /var/www/localhost/htdocs/
-COPY --chown=nginx:nginx humhub/ /var/www/localhost/htdocs/
+COPY --from=builder --chown=nginx:nginx /usr/src/humhub /tmp/humhub
+COPY --chown=nginx:nginx humhub /tmp/humhub
 
 RUN mkdir -p /usr/src/humhub/protected/config/ && \
-    cp -R /var/www/localhost/htdocs/protected/config/* /usr/src/humhub/protected/config/ && \
+    cp -R /tmp/humhub/protected/config/* /usr/src/humhub/protected/config/ && \
     echo "$HUMHUB_VERSION" >  /usr/src/humhub/.version
 
 COPY etc/ /etc/
@@ -108,11 +108,7 @@ COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod 600 /etc/crontabs/nginx && \
     chmod +x /usr/local/bin/docker-entrypoint.sh
 
-VOLUME /var/www/localhost/htdocs/uploads
-VOLUME /var/www/localhost/htdocs/protected/config
-VOLUME /var/www/localhost/htdocs/protected/modules
-
-WORKDIR /var/www/localhost/htdocs
+#WORKDIR /var/www/localhost/htdocs
 
 EXPOSE 80
 
