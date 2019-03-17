@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 Michael Riedmann
+ * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -21,13 +21,35 @@ use humhub\libs\UUID;
 use humhub\libs\DynamicConfig;
 
 /**
- * Extended Console Install
- * based on InstallController by Luke
- *
+ * Console Install
+ * 
+ * Example usage:
+ *   php yii installer/write-db-config "$HUMHUB_DB_HOST" "$HUMHUB_DB_NAME" "$HUMHUB_DB_USER" "$HUMHUB_DB_PASSWORD"
+ *   php yii installer/install-db
+ *   php yii installer/write-site-config "$HUMHUB_NAME" "$HUMHUB_EMAIL"
+ *   php yii installer/create-admin-account
+ * 
+ * @author Luke
  * @author Michael Riedmann
  */
-class ExtendedInstallController extends Controller
+class InstallController extends Controller
 {
+    /**
+     * Finished install without input. Useful for testing.
+     */
+    public function actionAuto()
+    {
+        actionWriteSiteConfig();
+        actionCreateAdminAccount();
+
+        return ExitCode::OK;
+    }
+    
+    /**
+     * Tries to open a connection to given db. 
+     * On success: Writes given settings to config-file and reloads it.
+     * On failure: Throws exception
+     */
     public function actionWriteDbConfig($db_host, $db_name, $db_user, $db_pass) {
         $connectionString = "mysql:host=" . $db_host . ";dbname=" . $db_name;
         $dbConfig = [
@@ -52,6 +74,9 @@ class ExtendedInstallController extends Controller
         return ExitCode::OK;
     }
 
+    /**
+     * Checks configured db, flushes caches, runs migrations and sets installed state in config
+     */
     public function actionInstallDb()
     {
         $this->stdout("Install DB:\n\n", Console::FG_YELLOW);
@@ -78,6 +103,9 @@ class ExtendedInstallController extends Controller
         return ExitCode::OK;
     }
 
+    /**
+     * Creates a new user account and adds it to the admin-group
+     */
     public function actionCreateAdminAccount($admin_user='admin', $admin_email='humhub@example.com', $admin_pass='test')
     {
         $user = new User();
@@ -104,6 +132,9 @@ class ExtendedInstallController extends Controller
         return ExitCode::OK;
     }
 
+    /**
+     * Writes essential site settings to config file and sets installed state
+     */
     public function actionWriteSiteConfig($site_name='HumHub', $site_email='humhub@example.com'){
         $this->stdout("Install Site:\n\n", Console::FG_YELLOW);
         InitialData::bootstrap();
@@ -157,6 +188,9 @@ class ExtendedInstallController extends Controller
         DynamicConfig::save($config);
     }
 
+    /**
+     * Tries to open global db connection and checks result.
+     */
     private function checkDBConnection()
     {
         try {

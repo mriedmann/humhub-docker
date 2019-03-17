@@ -10,6 +10,8 @@ HUMHUB_PROTO="${HUMHUB_PROTO:-http}"
 export HUMHUB_WEB_ROOT="${HUMHUB_WEB_ROOT:-/var/www/localhost/htdocs}"
 export HUMHUB_SUB_DIR="${HUMHUB_SUB_DIR:-}"
 
+export NGINX_CLIENT_MAX_BODY_SIZE=${NGINX_CLIENT_MAX_BODY_SIZE:-10m}
+<<<<<<< HEAD
 HUMHUB_DB_NAME="${HUMHUB_DB_NAME:-humhub}"
 HUMHUB_DB_HOST="${HUMHUB_DB_HOST:-db}"
 
@@ -84,9 +86,9 @@ else
       HUMHUB_BASE_URL="${HUMHUB_PROTO}://${HUMHUB_HOST}${HUMHUB_SUB_DIR}/"
       echo "Setting base url to: $HUMHUB_BASE_URL"
       php yii installer/set-base-url "${HUMHUB_BASE_URL}"
-      php yii installer/create-admin-account "$HUMHUB_ADMIN_USER" "$HUMHUB_ADMIN_EMAIL" "$HUMHUB_ADMIN_PASSWORD"
-      chown -R nginx:nginx "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/protected/runtime"
     fi
+    php yii installer/create-admin-account "$HUMHUB_ADMIN_USER" "$HUMHUB_ADMIN_EMAIL" "$HUMHUB_ADMIN_PASSWORD"
+    chown -R nginx:nginx "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/protected/runtime"
   fi
 fi
 sed -i "s|__HUMHUB_WEB_ROOT__|${HUMHUB_WEB_ROOT}|" /etc/crontabs/nginx
@@ -125,8 +127,13 @@ if [ "$INTEGRITY_CHECK" != "false" ]; then
     exit 1
   fi
 else
-  echo "validation skipped"
+	echo "validation skipped"
 fi
+
+echo "Writing Nginx Config"
+envsubst "\$NGINX_CLIENT_MAX_BODY_SIZE" < /etc/nginx/nginx.conf > /tmp/nginx.conf
+cat /tmp/nginx.conf > /etc/nginx/nginx.conf
+rm /tmp/nginx.conf
 
 echo "=="
 
