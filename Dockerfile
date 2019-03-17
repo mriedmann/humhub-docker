@@ -1,25 +1,30 @@
+ARG HUMHUB_VERSION=1.3.9
+
+FROM composer:1.7 as builder-composer
+
 FROM alpine:3.8 as builder
 
-ENV HUMHUB_VERSION=v1.3.11
+ARG HUMHUB_VERSION
 
 RUN apk update
-RUN apk add \
+RUN apk add --no-cache \
     ca-certificates \
     tzdata \
-    git
+    wget
 
-RUN mkdir /usr/src && cd /usr/src/ && \
-    git clone --progress --verbose --branch $HUMHUB_VERSION https://github.com/humhub/humhub.git humhub && \
-    echo "$HUMHUB_VERSION" > humhub/.version
+WORKDIR /usr/src/
+RUN wget https://github.com/humhub/humhub/archive/v${HUMHUB_VERSION}.tar.gz -q -O humhub.tar.gz && \
+    tar xzf humhub.tar.gz && \
+    mv humhub-${HUMHUB_VERSION} humhub && \
+    echo "$HUMHUB_VERSION" > humhub/.version && \
+    rm humhub.tar.gz
     
 WORKDIR /usr/src/humhub
 
-RUN rm -rf ./.git
-
-COPY --from=composer:1.7 /usr/bin/composer /usr/bin/composer
+COPY --from=builder-composer /usr/bin/composer /usr/bin/composer
 RUN chmod +x /usr/bin/composer
 
-RUN apk add \
+RUN apk add --no-cache \
     php7 \
     php7-gd \
     php7-ldap \
@@ -41,17 +46,23 @@ RUN composer install --no-ansi --no-dev --no-interaction --no-progress --no-scri
     chmod +x protected/yii && \
     chmod +x protected/yii.bat
 
-RUN apk add nodejs npm
+RUN apk add --no-cache \
+    nodejs \
+    npm
+
 RUN npm install grunt
 RUN npm install -g grunt-cli
 
-RUN apk add php7-pdo_mysql
+RUN apk add --no-cache \
+    php7-pdo_mysql
 RUN grunt build-assets
 
 RUN rm -rf ./node_modules
 
 
 FROM alpine:3.8
+
+ARG HUMHUB_VERSION
 
 RUN apk add --no-cache \
     curl \
@@ -86,11 +97,18 @@ RUN apk add --no-cache \
     sqlite \
     && rm -rf /var/cache/apk/*
 
+RUN BUILD_DEPS="gettext"  \
+    RUNTIME_DEPS="libintl" && \
+    set -x && \
+    apk add --no-cache --update $RUNTIME_DEPS && \
+    apk add --no-cache --virtual build_deps $BUILD_DEPS && \
+    cp /usr/bin/envsubst /usr/local/bin/envsubst && \
+    apk del build_deps
 
-# Default PHP settings to be read by php.ini
 ENV PHP_POST_MAX_SIZE=10M
 ENV PHP_UPLOAD_MAX_FILESIZE=10M
 ENV PHP_MAX_EXECUTION_TIME=60
+ENV PHP_MEMORY_LIMIT=512M
 
 RUN chown -R nginx:nginx /var/lib/nginx/ && \
     touch /var/run/supervisor.sock && \
@@ -107,8 +125,6 @@ COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 RUN chmod 600 /etc/crontabs/nginx && \
     chmod +x /usr/local/bin/docker-entrypoint.sh
-
-#WORKDIR /var/www/localhost/htdocs
 
 EXPOSE 80
 
