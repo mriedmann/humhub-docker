@@ -124,7 +124,6 @@ Following variables can be used to configure the embadded Nginx. The configfile 
 ```txt
 NGINX_CLIENT_MAX_BODY_SIZE [10m]
 ```
->>>>>>> 1bcc1666ddce7f83bbd098fcfe41c6510b8f3c3c
 
 ## Contribution
 

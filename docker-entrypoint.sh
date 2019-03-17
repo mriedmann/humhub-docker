@@ -19,7 +19,6 @@ HUMHUB_EMAIL="${HUMHUB_EMAIL:-humhub@example.com}"
 HUMHUB_LANG="${HUMHUB_LANG:-en-US}"
 
 HUMHUB_DEBUG="${HUMHUB_DEBUG:-false}"
-HUMHUB_CONFIG_TIMESTAMP="$(echo '<?php echo(time());' | php)"
 
 wait_for_db () {
   if [ "$WAIT_FOR_DB" == "false" ]; then
