@@ -35,26 +35,35 @@ wait_for_db () {
 }
 
 echo "=="
-if [ -f "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/protected/config/dynamic.php" ]; then
+# Look for root index.php rather than dynamic.php, which could be persisted with config files only
+if [ -f "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/index.php" ]; then
   echo "Existing installation found!"
 
   wait_for_db
 
-  INSTALL_VERSION="$(cat ${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/protected/config/.version)"
-  SOURCE_VERSION="$(cat /usr/src/humhub/.version)"
-  cd "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}"
+  INSTALL_VERSION="$(cat ${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/.version)"
+  SOURCE_VERSION="$(cat /tmp/humhub/.version)"
+  cd "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/protected"
   if [[ $INSTALL_VERSION != $SOURCE_VERSION ]]; then
     echo "Updating from version $INSTALL_VERSION to $SOURCE_VERSION"
     php yii migrate/up --includeModuleMigrations=1 --interactive=0
     php yii search/rebuild
-    cp -v /usr/src/humhub/.version "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/protected/config/.version"
+    cp -va /tmp/humhub/.version "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/.version"
   fi
 else
   echo "No existing installation found!"
   echo "Installing source files..."
-  mv /tmp/humhub "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}"
-  cp -rv /usr/src/humhub/protected/config/* "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/protected/config/"
-  cp -v /usr/src/humhub/.version "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/protected/config/.version"
+  if [ ! -d "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}" ]; then
+    echo "Moving humhub files to ${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}"
+    mv /tmp/humhub "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}"
+  else
+    mkdir -p "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}"
+    echo "Copying files into ${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}"
+    cp -a /tmp/humhub/* "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/"
+    find /tmp/humhub/ -regex '.*/\..*' -maxdepth 1 | xargs -I{} cp -a {} /var/www/localhost/htdocs/
+  fi
+  [ -d "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/protected/config/" ] || mkdir "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/protected/config/"
+  cp -av /usr/src/humhub/protected/config/* "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/protected/config/"
 
   wait_for_db
 
@@ -75,10 +84,14 @@ else
       HUMHUB_BASE_URL="${HUMHUB_PROTO}://${HUMHUB_HOST}${HUMHUB_SUB_DIR}/"
       echo "Setting base url to: $HUMHUB_BASE_URL"
       php yii installer/set-base-url "${HUMHUB_BASE_URL}"
-    php yii installer/create-admin-account "$HUMHUB_ADMIN_USER" "$HUMHUB_ADMIN_EMAIL" "$HUMHUB_ADMIN_PASSWORD"
-    chown -R nginx:nginx "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/protected/runtime"
+      php yii installer/create-admin-account "$HUMHUB_ADMIN_USER" "$HUMHUB_ADMIN_EMAIL" "$HUMHUB_ADMIN_PASSWORD"
+      chown -R nginx:nginx "${HUMHUB_WEB_ROOT}${HUMHUB_SUB_DIR}/protected/runtime"
+    fi
   fi
 fi
+sed -i "s|__HUMHUB_WEB_ROOT__|${HUMHUB_WEB_ROOT}|" /etc/crontabs/nginx
+sed -i "s|__HUMHUB_SUB_DIR__|${HUMHUB_SUB_DIR}|" /etc/crontabs/nginx
+sed -i "s|__HUMHUB_SUB_DIR__|${HUMHUB_SUB_DIR}|g" /etc/nginx/nginx.conf
 
 echo "Config preprocessing ..."
 

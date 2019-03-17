@@ -1,7 +1,6 @@
 version: '3.1'
 services:
   humhub:
-    image: jusdino/humhub
     build: .
     environment:
       HUMHUB_DB_USER: ${HUMHUB_DB_USER}
@@ -9,6 +8,8 @@ services:
       HUMHUB_ADMIN_USER: ${HUMHUB_ADMIN_USER}
       HUMHUB_ADMIN_EMAIL: ${HUMHUB_ADMIN_EMAIL}
       HUMHUB_ADMIN_PASSWORD: ${HUMHUB_ADMIN_PASSWORD}
+      HUMHUB_DB_HOST: 'db'
+      HUMHUB_DB_NAME: 'humhub'
       HUMHUB_AUTO_INSTALL: 'true'
       HUMHUB_DEBUG: 'true'
       HUMHUB_PROTO: 'https'

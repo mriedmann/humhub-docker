@@ -9,7 +9,8 @@ RUN apk add \
     git
 
 RUN mkdir /usr/src && cd /usr/src/ && \
-    git clone --progress --verbose --branch $HUMHUB_VERSION https://github.com/humhub/humhub.git humhub
+    git clone --progress --verbose --branch $HUMHUB_VERSION https://github.com/humhub/humhub.git humhub && \
+    echo "$HUMHUB_VERSION" > humhub/.version
     
 WORKDIR /usr/src/humhub
 
@@ -99,8 +100,7 @@ COPY --from=builder --chown=nginx:nginx /usr/src/humhub /tmp/humhub
 COPY --chown=nginx:nginx humhub /tmp/humhub
 
 RUN mkdir -p /usr/src/humhub/protected/config/ && \
-    cp -R /tmp/humhub/protected/config/* /usr/src/humhub/protected/config/ && \
-    echo "$HUMHUB_VERSION" >  /usr/src/humhub/.version
+    cp -a /tmp/humhub/protected/config/* /usr/src/humhub/protected/config/
 
 COPY etc/ /etc/
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
