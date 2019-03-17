@@ -13,7 +13,7 @@ This container provides a quick, flexible and lightwight way to set-up a proof-o
 
 ## Quickstart
 
-No database integrated. For persistency look at the Compose-File example.
+No database integrated. For persistency look at the Compose-File example below or `docker-compose.yml` included in this repo.
 
 1. `docker run -d --name humhub_db -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=humhub mariadb:10.2`
 1. `docker run -d --name humhub -p 80:80 --link humhub_db:db mriedmann/humhub:1.2.0`
@@ -69,6 +69,16 @@ Defines the mysql/mariadb-database-host. If you use the `--link` argument please
 
 If this and `HUMHUB_DB_USER` are set an autoinstallation will run during the first startup. The default login is `admin` with password `test`. This feature utilises a hidden installer-feature used for integration testing ( [see code file](https://github.com/humhub/humhub/blob/master/protected/humhub/modules/installer/commands/InstallController.php) ).
 
+### `HUMHUB_ADMIN_USER` & `HUMHUB_ADMIN_EMAIL` & `HUMHUB_ADMIN_PASSWORD`
+**default: `admin`, `humhub@example.com`, `test`**
+
+If these are defined then an administrative user will be created with these details during autoinstallation rather than with the defaults.
+
+### `HUMHUB_PROTO` & `HUMHUB_HOST` & `HUMHUB_SUB_DIR`
+**default: `http`, `localhost`, `''`**
+
+If these are defined during autoinstallation, humhub will be installed and configured to use urls with those details. (i.e. If they are set as `HUMHUB_PROTO=https`, `HUMHUB_HOST=example.com`, `HUMHUB_SUB_DIR=/humhub`, humhub will be installed and configured so that the base url is `https://example.com/humhub`. Leaving these as default will result in humhub being installed and configured to be at `http://localhost/`.
+
 ### `INTEGRITY_CHECK`
 **default: `1`**
 
@@ -83,6 +93,21 @@ Can be used to let the startup fail if the db host is unavailable. To disable th
 **default: `1`**
 
 PJAX is a jQuery plugin that uses ajax and pushState to deliver a fast browsing experience with real permalinks, page titles, and a working back button. ([ref](https://github.com/yiisoft/jquery-pjax)) This library is known to cause problems with some browsers during  installation. This container starts with PJAX disabled to improve the installation reliability. If this is set (default), PJAX is **enabled** during the **second** startup. Set this to `"false"` to permanently disable PJAX. Please note that changing this after container-creation has no effect on this behavior.
+
+### `PHP_MAX_EXECUTION_TIME`
+**default: `60` seconds**
+
+Optionally set the maximum execution time allowed to a PHP process before the fcgi will fail. This allows for lengthy data migrations to happen through the web interface without the response timing out.
+
+### `PHP_UPLOAD_MAX_FILESIZE`
+**default: `10M`
+
+Set the maximum upload file size allowed by PHP, which can limit uploads to something smaller than what is allowed by the humhub configuration settings. Set this number to at least as large as the setting in humhub configuration.
+
+### `PHP_P0ST_MAX_SIZE`
+**default: `10M`
+
+Like `PHP_UPLOAD_MAX_FILESIZE` above, this can limit upload size to something smaller than allowed by the humhub configuration settings if not set properly. This setting adjusts the PHP limit to the maximum POST body size, including any files uploaded as well as any other data included in the HTTP request. Set this number to at least as large as the setting in humhub configuration.
 
 ## Contribution
 
