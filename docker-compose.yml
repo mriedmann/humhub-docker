@@ -1,7 +1,10 @@
 version: '3.1'
 services:
   humhub:
-    build: .
+    build:
+      context: .
+      args:
+        HUMHUB_VERSION: '1.3.11'
     environment:
       HUMHUB_DB_USER: ${HUMHUB_DB_USER}
       HUMHUB_DB_PASSWORD: ${HUMHUB_DB_PASSWORD}
@@ -22,11 +25,11 @@ services:
     - "80:80"
 #   volumes:
 #     - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost/"]
-#      interval: 30s
-#      timeout: 10s
-#      retries: 3
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/humhub/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
   db:
     image: mariadb
     environment:

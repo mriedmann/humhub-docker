@@ -12,4 +12,4 @@ before_install:
   - docker ps -a
 
 script:
-  - curl http://localhost/ -L --fail -s | grep 'Sign in</button>' -q
+  - curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q

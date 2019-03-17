@@ -7,7 +7,7 @@
  */
 return [
     'controllerMap' => [
-        'installer' => 'humhub\modules\installer\commands\ExtendedInstallController'
+        'installer' => 'humhub\modules\installer\commands\InstallController'
     ],
     'components' => [
         'urlManager' => [
