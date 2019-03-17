@@ -4,7 +4,7 @@ services:
     build:
       context: .
       args:
-        HUMHUB_VERSION: 'v1.3.11'
+        HUMHUB_VERSION: '1.3.11'
     environment:
       HUMHUB_DB_USER: ${HUMHUB_DB_USER}
       HUMHUB_DB_PASSWORD: ${HUMHUB_DB_PASSWORD}
@@ -26,7 +26,7 @@ services:
 #   volumes:
 #     - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost${HUMHUB_SUB_DIR}/ping"]
+      test: ["CMD", "curl", "-f", "http://localhost/humhub/"]
       interval: 30s
       timeout: 10s
       retries: 3
