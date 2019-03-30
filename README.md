@@ -76,6 +76,11 @@ Defines the mysql/mariadb-database-host. If you use the `--link` argument please
 
 If this and `HUMHUB_DB_USER` are set an automated installation will run during the first startup. The default login is `admin` with password `test`. This feature utilities a hidden installer-feature used for integration testing ( [see code file](https://github.com/humhub/humhub/blob/master/protected/humhub/modules/installer/commands/InstallController.php) ).
 
+### `HUMHUB_PROTO` & `HUMHUB_HOST`
+**default: `http`, `localhost`**
+
+If these are defined during auto-installation, humhub will be installed and configured to use urls with those details. (i.e. If they are set as `HUMHUB_PROTO=https`, `HUMHUB_HOST=example.com`, humhub will be installed and configured so that the base url is `https://example.com/`. Leaving these as default will result in humhub being installed and configured to be at `http://localhost/`.
+
 ### `INTEGRITY_CHECK`
 
 **default: `1`**

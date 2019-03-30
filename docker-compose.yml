@@ -11,6 +11,8 @@ services:
       HUMHUB_DB_PASSWORD: root
       HUMHUB_AUTO_INSTALL: 1
       HUMHUB_DEBUG: 1
+      HUMHUB_PROTO: 'https'
+      HUMHUB_HOST: 'localhost'
 #   volumes:
 #     - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
     healthcheck:

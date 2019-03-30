@@ -149,6 +149,13 @@ class InstallController extends Controller
         return ExitCode::OK;
     }
 
+    public function actionSetBaseUrl($base_url){
+        $this->stdout("Setting base url", Console::FG_YELLOW);
+        Yii::$app->settings->set('baseUrl', $base_url);
+
+        return ExitCode::OK;
+    }
+
      /**
      * Sets application in installed state (disables installer)
      */
