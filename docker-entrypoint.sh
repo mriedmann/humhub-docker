@@ -69,12 +69,12 @@ else
 		php yii installer/write-db-config "$HUMHUB_DB_HOST" "$HUMHUB_DB_NAME" "$HUMHUB_DB_USER" "$HUMHUB_DB_PASSWORD"
 		php yii installer/install-db
 		php yii installer/write-site-config "$HUMHUB_NAME" "$HUMHUB_EMAIL"
-        # Set baseUrl if provided
-        if [ -n "$HUMHUB_PROTO" ] && [ -n "$HUMHUB_HOST" ]; then
-          HUMHUB_BASE_URL="${HUMHUB_PROTO}://${HUMHUB_HOST}${HUMHUB_SUB_DIR}/"
-          echo "Setting base url to: $HUMHUB_BASE_URL"
-          php yii installer/set-base-url "${HUMHUB_BASE_URL}"
-        fi
+		# Set baseUrl if provided
+		if [ -n "$HUMHUB_PROTO" ] && [ -n "$HUMHUB_HOST" ]; then
+			HUMHUB_BASE_URL="${HUMHUB_PROTO}://${HUMHUB_HOST}${HUMHUB_SUB_DIR}/"
+			echo "Setting base url to: $HUMHUB_BASE_URL"
+			php yii installer/set-base-url "${HUMHUB_BASE_URL}"
+		fi
 		php yii installer/create-admin-account
 		chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
 	fi
