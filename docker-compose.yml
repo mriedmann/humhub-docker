@@ -7,8 +7,10 @@ services:
     ports:
       - "8080:80"
     environment:
-      HUMHUB_DB_USER: root
-      HUMHUB_DB_PASSWORD: root
+      HUMHUB_DB_USER: ${HUMHUB_DB_USER}
+      HUMHUB_DB_PASSWORD: ${HUMHUB_DB_PASSWORD}
+      HUMHUB_DB_HOST: 'db'
+      HUMHUB_DB_NAME: 'humhub'
       HUMHUB_AUTO_INSTALL: 1
       HUMHUB_DEBUG: 1
       HUMHUB_PROTO: 'https'
@@ -23,8 +25,10 @@ services:
   db:
     image: mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: humhub
+      MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MYSQL_DATABASE: 'humhub'
+      MYSQL_USER: ${HUMHUB_DB_USER}
+      MYSQL_PASSWORD: ${HUMHUB_DB_PASSWORD}
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "--silent"]
       interval: 30s
