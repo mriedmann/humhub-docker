@@ -95,6 +95,7 @@ RUN apk add --no-cache \
     supervisor \
     nginx \
     sqlite \
+    imagick \
     && rm -rf /var/cache/apk/*
 
 RUN BUILD_DEPS="gettext"  \
@@ -122,6 +123,7 @@ RUN mkdir -p /usr/src/humhub/protected/config/ && \
 
 COPY etc/ /etc/
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY resize.sh /resize.sh
 
 RUN chmod 600 /etc/crontabs/nginx && \
     chmod +x /usr/local/bin/docker-entrypoint.sh

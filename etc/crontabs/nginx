@@ -1,2 +1,3 @@
+*/5 * * * * /resize.sh >> /resize.log
 * * * * * /usr/bin/php __HUMHUB_WEB_ROOT____HUMHUB_SUB_DIR__/protected/yii queue/run >/dev/null 2>&1
 * * * * * /usr/bin/php __HUMHUB_WEB_ROOT____HUMHUB_SUB_DIR__/protected/yii cron/run >/dev/null 2>&1
