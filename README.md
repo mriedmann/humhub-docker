@@ -105,10 +105,10 @@ It is also possible to change some php-config-settings. This comes in handy if y
 Following environment variables can be used (default values in angle brackets):
 
 ```txt
-PHP_POST_MAX_SIZE       [10M]
+PHP_POST_MAX_SIZE       [16M]
 PHP_UPLOAD_MAX_FILESIZE [10M]
 PHP_MAX_EXECUTION_TIME  [60]
-PHP_MEMORY_LIMIT        [512M]
+PHP_MEMORY_LIMIT        [1G]
 ```
 
 ## NGINX Config
