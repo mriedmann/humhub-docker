@@ -1,3 +1,7 @@
+# NOTE: This files purpose is to spin-up the project for testing it in CI. 
+#       Please do not understand it as recommendation for an production 
+#       docker-compose setup. For that see the README. If you have additions 
+#       to make, please add them there.
 version: '3.1'
 services:
   humhub:

@@ -1,8 +1,8 @@
 ARG HUMHUB_VERSION=1.3.15
 
-FROM composer:1.7 as builder-composer
+FROM composer:1.8.6 as builder-composer
 
-FROM alpine:3.8 as builder
+FROM alpine:3.10 as builder
 
 ARG HUMHUB_VERSION
 
@@ -59,7 +59,6 @@ RUN grunt build-assets
 
 RUN rm -rf ./node_modules
 
-
 FROM alpine:3.8
 
 ARG HUMHUB_VERSION
@@ -105,10 +104,10 @@ RUN BUILD_DEPS="gettext"  \
     cp /usr/bin/envsubst /usr/local/bin/envsubst && \
     apk del build_deps
 
-ENV PHP_POST_MAX_SIZE=10M
+ENV PHP_POST_MAX_SIZE=16M
 ENV PHP_UPLOAD_MAX_FILESIZE=10M
 ENV PHP_MAX_EXECUTION_TIME=60
-ENV PHP_MEMORY_LIMIT=512M
+ENV PHP_MEMORY_LIMIT=1G
 
 RUN chown -R nginx:nginx /var/lib/nginx/ && \
     touch /var/run/supervisor.sock && \
