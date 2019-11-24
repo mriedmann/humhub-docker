@@ -77,6 +77,7 @@ else
 		fi
 		php yii installer/create-admin-account
 		chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
+		chown nginx:nginx /var/www/localhost/htdocs/protected/config/dynamic.php
 	fi
 fi
 
