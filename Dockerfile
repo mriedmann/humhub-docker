@@ -1,6 +1,6 @@
 ARG HUMHUB_VERSION=1.4.1
 
-FROM composer:1.9.3 as builder-composer
+FROM composer:1.10.1 as builder-composer
 
 FROM alpine:3.11.3 as builder
 
