@@ -8,6 +8,7 @@ ARG HUMHUB_VERSION
 
 RUN apk update
 RUN apk add --no-cache \
+    git \
     ca-certificates \
     tzdata \
     wget
