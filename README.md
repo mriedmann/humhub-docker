@@ -9,7 +9,7 @@ This container provides a quick, flexible and lightweight way to set-up a proof-
 ## Versions
 
 * [![dockerimage badge (latest)](https://images.microbadger.com/badges/version/mriedmann/humhub:latest.svg)](https://microbadger.com/images/mriedmann/humhub:latest "Get your own version badge on microbadger.com") `latest`:  unstable master build (use with caution! might be unstable)
-* [![dockerimage badge (1.3.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.4.1.svg)](https://microbadger.com/images/mriedmann/humhub:1.4.1 "Get your own version badge on microbadger.com") `1.4.1`: latest stable release (recommended)
+* [![dockerimage badge (1.4.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.4.4.svg)](https://microbadger.com/images/mriedmann/humhub:1.4.4 "Get your own version badge on microbadger.com") `1.4.4`: latest stable release (recommended)
 * [![dockerimage badge (experimental)](https://images.microbadger.com/badges/version/mriedmann/humhub:experimental.svg)](https://microbadger.com/images/mriedmann/humhub:experimental "Get your own version badge on microbadger.com") `experimental`: test build (testing only)
 
 ## Quickstart
