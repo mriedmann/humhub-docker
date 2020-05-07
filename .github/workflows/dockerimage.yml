@@ -1,0 +1,24 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build docker image
+      run: docker-compose build
+    - name: Spin up services
+      run: docker-compose up -d
+    - name: Wait 
+      run: sleep 60
+    - name: Check status
+      run: docker ps -a
+    - name: Test
+      run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
+      
