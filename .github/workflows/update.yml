@@ -12,13 +12,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Set git config
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
     - name: Execute Update
       id: update
       run: ./update.sh
     - name: Commit files
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
         git commit -a -m "update from $CUR_VERSION to $NEW_VERSION"
     - name: Push changes
       uses: ad-m/github-push-action@master
