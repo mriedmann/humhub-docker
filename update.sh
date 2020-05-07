@@ -14,26 +14,14 @@ fi
 
 GIT_BRANCH="update-$NEW_VERSION"
 
-git branch $GIT_BRANCH || true
-git checkout $GIT_BRANCH
-
+git branch "$GIT_BRANCH" || true
+git checkout "$GIT_BRANCH"
 
 sed -i -e "s/ARG HUMHUB_VERSION=[0-9\.]*/ARG HUMHUB_VERSION=$NEW_VERSION/" Dockerfile
 
-for LINE in 'humhub:$V' '\`$V\`'
-do
-
-S="s/"
-for V in $CUR_VERSION $NEW_VERSION; do
-S+="$(eval echo $LINE)/"
-done
-S+="g"
-
-echo $S
-sed -i -e "$S" README.md
-
-done
+sed -i -e "s/humhub:$CUR_VERSION/humhub:$NEW_VERSION/g" README.md
+sed -i -e "s/\`$CUR_VERSION\`/\`$NEW_VERSION\`/g" README.md
 
 git add Dockerfile
 git add README.md
-
+git commit -a -m "update from $CUR_VERSION to $NEW_VERSION"
