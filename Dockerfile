@@ -1,4 +1,4 @@
-ARG HUMHUB_VERSION=1.5.0
+ARG HUMHUB_VERSION=1.5.1
 
 FROM composer:1.10.6 as builder-composer
 
