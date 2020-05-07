@@ -5,9 +5,12 @@ set -eo pipefail
 CUR_VERSION=$(grep 'ARG HUMHUB_VERSION=' Dockerfile | tr "=" "\n" | tail -n 1)
 NEW_VERSION=${NEW_VERSION:-$(curl -s https://api.github.com/repos/humhub/humhub/releases | jq -r '.[0] | .name')}
 
+export CUR_VERSION
+export NEW_VERSION
+
 if [ "$CUR_VERSION" == "$NEW_VERSION" ]; then
     echo "no update needed"
-    exit 0
+    exit 1
 else
     echo "updating from $CUR_VERSION to $NEW_VERSION"
 fi
