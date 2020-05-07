@@ -1,0 +1,34 @@
+name: Auto-Update
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  repository_dispatch:
+    types: check-update
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Execute Update
+      id: update
+      run: ./update.sh
+    - name: Commit files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -a -m "update from $CUR_VERSION to $NEW_VERSION"
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create Pull Request
+      id: cpr
+      uses: peter-evans/create-pull-request@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        title: "Update to ${{ env.NEW_VERSION }}"
+
+
