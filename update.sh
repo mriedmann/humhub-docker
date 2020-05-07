@@ -24,7 +24,3 @@ sed -i -e "s/ARG HUMHUB_VERSION=[0-9\.]*/ARG HUMHUB_VERSION=$NEW_VERSION/" Docke
 
 sed -i -e "s/humhub:$CUR_VERSION/humhub:$NEW_VERSION/g" README.md
 sed -i -e "s/\`$CUR_VERSION\`/\`$NEW_VERSION\`/g" README.md
-
-git add Dockerfile
-git add README.md
-git commit -a -m "update from $CUR_VERSION to $NEW_VERSION"
