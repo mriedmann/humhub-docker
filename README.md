@@ -1,7 +1,7 @@
 # Alpine-based PHP-FPM and NGINX HumHub docker-container
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e2c25ed0c4ce479aa9a97be05d1d5b20)](https://app.codacy.com/app/mriedmann/humhub-docker?utm_source=github.com&utm_medium=referral&utm_content=mriedmann/humhub-docker&utm_campaign=Badge_Grade_Dashboard)
-[![Build Status](https://travis-ci.org/mriedmann/humhub-docker.svg?branch=master)](https://travis-ci.org/mriedmann/humhub-docker)
+![Docker Image CI](https://github.com/mriedmann/humhub-docker/workflows/Docker%20Image%20CI/badge.svg)
 
 [HumHub](https://github.com/humhub/humhub) is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
 This container provides a quick, flexible and lightweight way to set-up a proof-of-concept for detailed evaluation. Using this in production is possible, but not recommended.
@@ -9,7 +9,7 @@ This container provides a quick, flexible and lightweight way to set-up a proof-
 ## Versions
 
 * [![dockerimage badge (latest)](https://images.microbadger.com/badges/version/mriedmann/humhub:latest.svg)](https://microbadger.com/images/mriedmann/humhub:latest "Get your own version badge on microbadger.com") `latest`:  unstable master build (use with caution! might be unstable)
-* [![dockerimage badge (1.5.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.5.0.svg)](https://microbadger.com/images/mriedmann/humhub:1.5.0 "Get your own version badge on microbadger.com") `1.5.0`: latest stable release (recommended)
+* [![dockerimage badge (1.5.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.5.1.svg)](https://microbadger.com/images/mriedmann/humhub:1.5.1 "Get your own version badge on microbadger.com") `1.5.1`: latest stable release (recommended)
 * [![dockerimage badge (experimental)](https://images.microbadger.com/badges/version/mriedmann/humhub:experimental.svg)](https://microbadger.com/images/mriedmann/humhub:experimental "Get your own version badge on microbadger.com") `experimental`: test build (testing only)
 
 ## Quickstart

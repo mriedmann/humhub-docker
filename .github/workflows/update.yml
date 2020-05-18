@@ -1,0 +1,43 @@
+name: Auto Update
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  repository_dispatch:
+    types: check-update
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set git config
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+    - name: Execute Update
+      id: update
+      run: |
+        ./update.sh
+        echo ::set-env name=CUR_VERSION::$CUR_VERSION
+        echo ::set-env name=NEW_VERSION::$NEW_VERSION
+        echo ::set-env name=GIT_BRANCH::$GIT_BRANCH
+    - name: Commit files
+      run: |
+        git commit -a -m "update from $CUR_VERSION to $NEW_VERSION"
+    - name: Check git status and log
+      run: |
+        git status
+        git log
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: pull-request
+      uses: repo-sync/pull-request@v2
+      with:
+        source_branch: "${{ env.GIT_BRANCH }}"                                 
+        destination_branch: "master"                      
+        pr_title: "Update to ${{ env.NEW_VERSION }}"
+        github_token: ${{ secrets.GITHUB_TOKEN }}
