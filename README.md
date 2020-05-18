@@ -39,7 +39,6 @@ services:
       - "80:80"
     volumes:
       - "_data/config:/var/www/localhost/htdocs/protected/config"
-      - "_data/protected_uploads:/var/www/localhost/htdocs/protected/uploads"
       - "_data/uploads:/var/www/localhost/htdocs/uploads"
   db:
     image: mariadb:10.2
