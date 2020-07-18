@@ -19,13 +19,10 @@ jobs:
     - name: Execute Update
       id: update
       run: |
-        ./update.sh
+        . ./update.sh
         echo ::set-env name=CUR_VERSION::$CUR_VERSION
         echo ::set-env name=NEW_VERSION::$NEW_VERSION
         echo ::set-env name=GIT_BRANCH::$GIT_BRANCH
-    - name: Commit files
-      run: |
-        git commit -a -m "update from $CUR_VERSION to $NEW_VERSION"
     - name: Check git status and log
       run: |
         git status
@@ -34,6 +31,7 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: "${{ env.GIT_BRANCH }}"
     - name: pull-request
       uses: repo-sync/pull-request@v2
       with:
