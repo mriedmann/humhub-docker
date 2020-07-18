@@ -40,6 +40,8 @@ RUN apk add --no-cache \
     php7-xmlreader \
     php7-xmlwriter \
     php7-zip \
+    php7-tokenizer \
+    php7-exif \
     php7-fileinfo
 
 RUN composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader && \
