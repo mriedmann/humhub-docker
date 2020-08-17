@@ -105,7 +105,7 @@ else
 
 		if [ "$HUMHUB_LDAP_ENABLED" != "0" ]; then
 			echo "Setting LDAP configuration..."
-			php yii 'settings/set' 'ldap' 'enabled' "$HUMHUB_LDAP_ENABLED"
+			php yii 'settings/set' 'ldap' 'enabled' "${HUMHUB_LDAP_ENABLED}"
 			php yii 'settings/set' 'ldap' 'hostname' "${HUMHUB_LDAP_HOSTNAME}"
 			php yii 'settings/set' 'ldap' 'port' "${HUMHUB_LDAP_PORT}"
 			php yii 'settings/set' 'ldap' 'encryption' "${HUMHUB_LDAP_ENCRYPTION}"
@@ -124,7 +124,7 @@ else
 		php yii 'settings/set' 'base' 'mailer.systemEmailName' "${HUMHUB_MAILER_SYSTEM_EMAIL_NAME}"
 		if [ "$HUMHUB_MAILER_TRANSPORT_TYPE" != "php" ]; then
 			echo "Setting Mailer configuration..."
-			php yii 'settings/set' 'base' 'mailer.transportType' "${HUMHUB_MAILER_SYSTEM_EMAIL_NAME}"
+			php yii 'settings/set' 'base' 'mailer.transportType' "${HUMHUB_MAILER_TRANSPORT_TYPE}"
 			php yii 'settings/set' 'base' 'mailer.hostname' "${HUMHUB_MAILER_HOSTNAME}"
 			php yii 'settings/set' 'base' 'mailer.port' "${HUMHUB_MAILER_PORT}"
 			php yii 'settings/set' 'base' 'mailer.username' "${HUMHUB_MAILER_USERNAME}"
