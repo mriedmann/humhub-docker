@@ -12,6 +12,32 @@ HUMHUB_EMAIL=${HUMHUB_EMAIL:-"humhub@example.com"}
 HUMHUB_LANG=${HUMHUB_LANG:-"en-US"}
 HUMHUB_DEBUG=${HUMHUB_DEBUG:-"false"}
 
+# LDAP Config
+HUMHUB_LDAP_ENABLED=${HUMHUB_LDAP_ENABLED:-0}
+HUMHUB_LDAP_HOSTNAME=${HUMHUB_LDAP_HOSTNAME}
+HUMHUB_LDAP_PORT=${HUMHUB_LDAP_PORT}
+HUMHUB_LDAP_ENCRYPTION=${HUMHUB_LDAP_ENCRYPTION}
+HUMHUB_LDAP_USERNAME=${HUMHUB_LDAP_USERNAME}
+HUMHUB_LDAP_PASSWORD=${HUMHUB_LDAP_PASSWORD}
+HUMHUB_LDAP_BASE_DN=${HUMHUB_LDAP_BASE_DN}
+HUMHUB_LDAP_LOGIN_FILTER=${HUMHUB_LDAP_LOGIN_FILTER}
+HUMHUB_LDAP_USER_FILTER=${HUMHUB_LDAP_USER_FILTER}
+HUMHUB_LDAP_USERNAME_ATTRIBUTE=${HUMHUB_LDAP_USERNAME_ATTRIBUTE}
+HUMHUB_LDAP_EMAIL_ATTRIBUTE=${HUMHUB_LDAP_EMAIL_ATTRIBUTE}
+HUMHUB_LDAP_ID_ATTRIBUTE=${HUMHUB_LDAP_ID_ATTRIBUTE}
+HUMHUB_LDAP_REFRESH_USERS=${HUMHUB_LDAP_REFRESH_USERS:-1}
+
+# Mailer Config
+HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS=${HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS:-"noreply@example.com"}
+HUMHUB_MAILER_SYSTEM_EMAIL_NAME=${HUMHUB_MAILER_SYSTEM_EMAIL_NAME:-"HumHub"}
+HUMHUB_MAILER_TRANSPORT_TYPE=${HUMHUB_MAILER_TRANSPORT_TYPE:-"php"}
+HUMHUB_MAILER_HOSTNAME=${HUMHUB_MAILER_HOSTNAME}
+HUMHUB_MAILER_PORT=${HUMHUB_MAILER_PORT}
+HUMHUB_MAILER_USERNAME=${HUMHUB_MAILER_USERNAME}
+HUMHUB_MAILER_PASSWORD=${HUMHUB_MAILER_PASSWORD}
+HUMHUB_MAILER_ENCRYPTION=${HUMHUB_MAILER_ENCRYPTION}
+HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS=${HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS:-0}
+
 export NGINX_CLIENT_MAX_BODY_SIZE=${NGINX_CLIENT_MAX_BODY_SIZE:-10m}
 
 wait_for_db() {
@@ -76,6 +102,37 @@ else
 			php yii installer/set-base-url "${HUMHUB_BASE_URL}"
 		fi
 		php yii installer/create-admin-account
+
+		if [ "$HUMHUB_LDAP_ENABLED" != "0" ]; then
+			echo "Setting LDAP configuration..."
+			php yii 'settings/set' 'ldap' 'enabled' "$HUMHUB_LDAP_ENABLED"
+			php yii 'settings/set' 'ldap' 'hostname' "${HUMHUB_LDAP_HOSTNAME}"
+			php yii 'settings/set' 'ldap' 'port' "${HUMHUB_LDAP_PORT}"
+			php yii 'settings/set' 'ldap' 'encryption' "${HUMHUB_LDAP_ENCRYPTION}"
+			php yii 'settings/set' 'ldap' 'username' "${HUMHUB_LDAP_USERNAME}"
+			php yii 'settings/set' 'ldap' 'password' "${HUMHUB_LDAP_PASSWORD}"
+			php yii 'settings/set' 'ldap' 'baseDn' "${HUMHUB_LDAP_BASE_DN}"
+			php yii 'settings/set' 'ldap' 'loginFilter' "${HUMHUB_LDAP_LOGIN_FILTER}"
+			php yii 'settings/set' 'ldap' 'userFilter' "${HUMHUB_LDAP_USER_FILTER}"
+			php yii 'settings/set' 'ldap' 'usernameAttribute' "${HUMHUB_LDAP_USERNAME_ATTRIBUTE}"
+			php yii 'settings/set' 'ldap' 'emailAttribute' "${HUMHUB_LDAP_EMAIL_ATTRIBUTE}"
+			php yii 'settings/set' 'ldap' 'idAttribute' "${HUMHUB_LDAP_ID_ATTRIBUTE}"
+			php yii 'settings/set' 'ldap' 'refreshUsers' "${HUMHUB_LDAP_REFRESH_USERS}"
+		fi
+
+        php yii 'settings/set' 'base' 'mailer.systemEmailAddress' "${HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS}"
+        php yii 'settings/set' 'base' 'mailer.systemEmailName' "${HUMHUB_MAILER_SYSTEM_EMAIL_NAME}"
+		if [ "$HUMHUB_MAILER_TRANSPORT_TYPE" != "php" ]; then
+			echo "Setting Mailer configuration..."
+			php yii 'settings/set' 'base' 'mailer.transportType' "${HUMHUB_MAILER_SYSTEM_EMAIL_NAME}"
+			php yii 'settings/set' 'base' 'mailer.hostname' "${HUMHUB_MAILER_HOSTNAME}"
+			php yii 'settings/set' 'base' 'mailer.port' "${HUMHUB_MAILER_PORT}"
+			php yii 'settings/set' 'base' 'mailer.username' "${HUMHUB_MAILER_USERNAME}"
+			php yii 'settings/set' 'base' 'mailer.password' "${HUMHUB_MAILER_PASSWORD}"
+			php yii 'settings/set' 'base' 'mailer.encryption' "${HUMHUB_MAILER_ENCRYPTION}"
+			php yii 'settings/set' 'base' 'mailer.allowSelfSignedCerts' "${HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS}"
+		fi
+
 		chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
 		chown nginx:nginx /var/www/localhost/htdocs/protected/config/dynamic.php
 	fi
