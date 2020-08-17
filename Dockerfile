@@ -110,6 +110,7 @@ ENV PHP_POST_MAX_SIZE=16M
 ENV PHP_UPLOAD_MAX_FILESIZE=10M
 ENV PHP_MAX_EXECUTION_TIME=60
 ENV PHP_MEMORY_LIMIT=1G
+ENV PHP_TIMEZONE=UTC
 
 RUN chown -R nginx:nginx /var/lib/nginx/ && \
     touch /var/run/supervisor.sock && \
