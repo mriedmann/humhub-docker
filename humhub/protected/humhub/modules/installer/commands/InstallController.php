@@ -105,29 +105,10 @@ class InstallController extends Controller
      * Creates a new user account and adds it to the admin-group
      */
     public function actionCreateAdminAccount($admin_user='admin', $admin_email='humhub@example.com', $admin_pass='test',
-        $admin_title = 'System Administration', $admin_firstname = 'Sys', $admin_lastname = 'Admin')
+        $admin_title='System Administration', $admin_firstname='Sys', $admin_lastname='Admin')
     {
-        $user = new User();
-        $user->username = $admin_user;
-        $user->email = $admin_email;
-        $user->status = User::STATUS_ENABLED;
-        $user->language = '';
-        if (!$user->save()) {
-            throw new Exception("Could not save user");
-        }
-
-        $user->profile->title = $admin_title;
-        $user->profile->firstname = $admin_firstname;
-        $user->profile->lastname = $admin_lastname;
-        $user->profile->save();
-
-        $password = new Password();
-        $password->user_id = $user->id;
-        $password->setPassword($admin_pass);
-        $password->save();
-
-        Group::getAdminGroup()->addUser($user);
-        $this->stdout("Admin user created : $admin_user\n\n", Console::FG_YELLOW);
+        $user = $this->createUser($admin_user, $admin_email, $admin_pass, $admin_title, $admin_firstname, $admin_lastname);
+        $this->addUserToAdminGroup($user);
 
         return ExitCode::OK;
     }
@@ -190,5 +171,51 @@ class InstallController extends Controller
             $this->stderr($e->getMessage());
         }
         return false;
+    }
+
+    /**
+     * Creates a new user account.
+     */
+    private function createUser($username, $email, $pass, $title, $firstname, $lastname): User
+    {
+        $user = new User();
+        $user->username = $username;
+        $user->email = $email;
+        $user->status = User::STATUS_ENABLED;
+        $user->language = '';
+        if (!$user->save()) {
+            throw new Exception("Could not save user");
+        }
+
+        $user->profile->title = $title;
+        $user->profile->firstname = $firstname;
+        $user->profile->lastname = $lastname;
+        $user->profile->save();
+        $this->stdout("User created\n", Console::FG_YELLOW);
+
+        $this->setUserPassword($user, $pass);
+
+        return $user;
+    }
+
+    /**
+     * Adds a user account to the admin-group
+     */
+    private function setUserPassword(User $user)
+    {
+        $password = new Password();
+        $password->user_id = $user->id;
+        $password->setPassword($pass);
+        $password->save();
+        $this->stdout("User password reset\n", Console::FG_YELLOW);
+    }
+
+    /**
+     * Adds a user account to the admin-group
+     */
+    private function addUserToAdminGroup(User $user)
+    {
+        Group::getAdminGroup()->addUser($user);
+        $this->stdout("User added to admin group\n", Console::FG_YELLOW);
     }
 }
