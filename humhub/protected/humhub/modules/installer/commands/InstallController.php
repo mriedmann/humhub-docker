@@ -176,7 +176,7 @@ class InstallController extends Controller
     /**
      * Creates a new user account.
      */
-    private function createUser($username, $email, $pass, $title, $firstname, $lastname): User
+    private function createUser(string $username, string $email, string $pass, string $title, string $firstname, string $lastname): User
     {
         $user = new User();
         $user->username = $username;
@@ -201,7 +201,7 @@ class InstallController extends Controller
     /**
      * Sets the password for a user account
      */
-    private function setUserPassword(User $user)
+    private function setUserPassword(User $user, string $pass)
     {
         $password = new Password();
         $password->user_id = $user->id;
