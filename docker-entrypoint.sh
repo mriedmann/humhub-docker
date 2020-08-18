@@ -12,6 +12,9 @@ HUMHUB_EMAIL=${HUMHUB_EMAIL:-"humhub@example.com"}
 HUMHUB_LANG=${HUMHUB_LANG:-"en-US"}
 HUMHUB_DEBUG=${HUMHUB_DEBUG:-"false"}
 
+HUMHUB_ANONYMOUS_REGISTRATION=${HUMHUB_ANONYMOUS_REGISTRATION:-1}
+HUMHUB_ALLOW_GUEST_ACCESS=${HUMHUB_ALLOW_GUEST_ACCESS:-0}
+
 # LDAP Config
 HUMHUB_LDAP_ENABLED=${HUMHUB_LDAP_ENABLED:-0}
 HUMHUB_LDAP_HOSTNAME=${HUMHUB_LDAP_HOSTNAME}
@@ -102,6 +105,9 @@ else
 			php yii installer/set-base-url "${HUMHUB_BASE_URL}"
 		fi
 		php yii installer/create-admin-account
+
+		php yii 'settings/set' 'user' 'auth.anonymousRegistration' "${HUMHUB_ANONYMOUS_REGISTRATION}"
+		php yii 'settings/set' 'user' 'auth.allowGuestAccess' "${HUMHUB_ALLOW_GUEST_ACCESS}"
 
 		if [ "$HUMHUB_LDAP_ENABLED" != "0" ]; then
 			echo "Setting LDAP configuration..."
