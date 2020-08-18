@@ -199,7 +199,7 @@ class InstallController extends Controller
     }
 
     /**
-     * Adds a user account to the admin-group
+     * Sets the password for a user account
      */
     private function setUserPassword(User $user)
     {
