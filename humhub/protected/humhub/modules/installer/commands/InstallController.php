@@ -34,6 +34,12 @@ use humhub\libs\DynamicConfig;
  */
 class InstallController extends Controller
 {
+
+    /**
+     * @inheritdoc
+     */
+    public $defaultAction = 'status';
+
     /**
      * Finished install without input. Useful for testing.
      */
@@ -44,7 +50,7 @@ class InstallController extends Controller
 
         return ExitCode::OK;
     }
-    
+
     /**
      * Tries to open a connection to given db. 
      * On success: Writes given settings to config-file and reloads it.
@@ -133,6 +139,23 @@ class InstallController extends Controller
     public function actionSetBaseUrl($base_url){
         $this->stdout("Setting base url", Console::FG_YELLOW);
         Yii::$app->settings->set('baseUrl', $base_url);
+
+        return ExitCode::OK;
+    }
+
+    /**
+     * Checks install status
+     */
+    public function actionStatus(){
+        $config = DynamicConfig::load();
+
+        if (!isset($config['params']['databaseInstalled']) || empty($config['params']['databaseInstalled'])) {
+            $this->stdout("HumHub database is not installed", Console::FG_YELLOW);
+        } elseif (!isset($config['params']['installed']) || empty($config['params']['installed'])) {
+            $this->stdout("HumHub is not installed", Console::FG_YELLOW);
+        } else {
+            $this->stdout("HumHub is installed");
+        }
 
         return ExitCode::OK;
     }
