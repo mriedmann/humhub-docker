@@ -13,6 +13,7 @@ HUMHUB_LANG=${HUMHUB_LANG:-"en-US"}
 HUMHUB_DEBUG=${HUMHUB_DEBUG:-"false"}
 
 export NGINX_CLIENT_MAX_BODY_SIZE=${NGINX_CLIENT_MAX_BODY_SIZE:-10m}
+export NGINX_KEEPALIVE_TIMEOUT=${NGINX_KEEPALIVE_TIMEOUT:-65}
 
 wait_for_db() {
 	if [ "$WAIT_FOR_DB" == "false" ]; then
@@ -118,6 +119,7 @@ fi
 
 echo "Writing Nginx Config"
 envsubst "\$NGINX_CLIENT_MAX_BODY_SIZE" < /etc/nginx/nginx.conf > /tmp/nginx.conf
+envsubst "\$NGINX_KEEPALIVE_TIMEOUT" < /etc/nginx/nginx.conf > /tmp/nginx.conf
 cat /tmp/nginx.conf > /etc/nginx/nginx.conf
 rm /tmp/nginx.conf
 
