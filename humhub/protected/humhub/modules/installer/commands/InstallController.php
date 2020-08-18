@@ -104,7 +104,8 @@ class InstallController extends Controller
     /**
      * Creates a new user account and adds it to the admin-group
      */
-    public function actionCreateAdminAccount($admin_user='admin', $admin_email='humhub@example.com', $admin_pass='test')
+    public function actionCreateAdminAccount($admin_user='admin', $admin_email='humhub@example.com', $admin_pass='test',
+        $admin_title = 'System Administration', $admin_firstname = 'Sys', $admin_lastname = 'Admin')
     {
         $user = new User();
         $user->username = $admin_user;
@@ -115,17 +116,18 @@ class InstallController extends Controller
             throw new Exception("Could not save user");
         }
 
-        $user->profile->title = 'System Administration';
-        $user->profile->firstname = 'Sys';
-        $user->profile->lastname = 'Admin';
+        $user->profile->title = $admin_title;
+        $user->profile->firstname = $admin_firstname;
+        $user->profile->lastname = $admin_lastname;
         $user->profile->save();
-        
+
         $password = new Password();
         $password->user_id = $user->id;
         $password->setPassword($admin_pass);
         $password->save();
 
         Group::getAdminGroup()->addUser($user);
+        $this->stdout("Admin user created : $admin_user\n\n", Console::FG_YELLOW);
 
         return ExitCode::OK;
     }
