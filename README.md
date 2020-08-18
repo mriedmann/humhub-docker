@@ -119,6 +119,7 @@ Following variables can be used to configure the embadded Nginx. The configfile 
 
 ```txt
 NGINX_CLIENT_MAX_BODY_SIZE [10m]
+NGINX_KEEPALIVE_TIMEOUT    [65]
 ```
 
 ## Contribution
