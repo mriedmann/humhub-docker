@@ -150,11 +150,11 @@ class InstallController extends Controller
         $config = DynamicConfig::load();
 
         if (!isset($config['params']['databaseInstalled']) || empty($config['params']['databaseInstalled'])) {
-            $this->stdout("HumHub database is not installed", Console::FG_YELLOW);
+            $this->stdout("HumHub database is not installed\n", Console::FG_YELLOW);
         } elseif (!isset($config['params']['installed']) || empty($config['params']['installed'])) {
-            $this->stdout("HumHub is not installed", Console::FG_YELLOW);
+            $this->stdout("HumHub is not installed\n", Console::FG_YELLOW);
         } else {
-            $this->stdout("HumHub is installed");
+            $this->stdout("HumHub is installed\n");
         }
 
         return ExitCode::OK;
