@@ -14,6 +14,7 @@ HUMHUB_DEBUG=${HUMHUB_DEBUG:-"false"}
 
 HUMHUB_ANONYMOUS_REGISTRATION=${HUMHUB_ANONYMOUS_REGISTRATION:-1}
 HUMHUB_ALLOW_GUEST_ACCESS=${HUMHUB_ALLOW_GUEST_ACCESS:-0}
+HUMHUB_NEED_APPROVAL=${HUMHUB_NEED_APPROVAL:-0}
 
 # LDAP Config
 HUMHUB_LDAP_ENABLED=${HUMHUB_LDAP_ENABLED:-0}
@@ -108,6 +109,7 @@ else
 
 		php yii 'settings/set' 'user' 'auth.anonymousRegistration' "${HUMHUB_ANONYMOUS_REGISTRATION}"
 		php yii 'settings/set' 'user' 'auth.allowGuestAccess' "${HUMHUB_ALLOW_GUEST_ACCESS}"
+		php yii 'settings/set' 'user' 'auth.needApproval' "${HUMHUB_NEED_APPROVAL}"
 
 		if [ "$HUMHUB_LDAP_ENABLED" != "0" ]; then
 			echo "Setting LDAP configuration..."
