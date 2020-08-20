@@ -68,6 +68,7 @@ ARG HUMHUB_VERSION
 RUN apk add --no-cache \
     curl \
     ca-certificates \
+    imagemagick \
     tzdata \
     php7 \
     php7-fpm \
@@ -77,6 +78,7 @@ RUN apk add --no-cache \
     php7-json \
     php7-phar \
     php7-iconv \
+    php7-imagick \
     php7-openssl \
     php7-curl \
     php7-ctype \
