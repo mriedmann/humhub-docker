@@ -6,4 +6,9 @@
  * @see http://docs.humhub.org/dev-environment.html
  */
 return [
+    'components' => [
+        'request' => [
+            'trustedHosts' => ['172.0.0.0/8']
+        ],
+    ]
 ];
