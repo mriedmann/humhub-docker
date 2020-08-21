@@ -12,6 +12,9 @@ HUMHUB_EMAIL=${HUMHUB_EMAIL:-"humhub@example.com"}
 HUMHUB_LANG=${HUMHUB_LANG:-"en-US"}
 HUMHUB_DEBUG=${HUMHUB_DEBUG:-"false"}
 
+HUMHUB_CACHE_CLASS=${HUMHUB_CACHE_CLASS:-"yii\caching\FileCache"}
+HUMHUB_CACHE_EXPIRE_TIME=${HUMHUB_CACHE_EXPIRE_TIME:-3600}
+
 HUMHUB_ANONYMOUS_REGISTRATION=${HUMHUB_ANONYMOUS_REGISTRATION:-1}
 HUMHUB_ALLOW_GUEST_ACCESS=${HUMHUB_ALLOW_GUEST_ACCESS:-0}
 HUMHUB_NEED_APPROVAL=${HUMHUB_NEED_APPROVAL:-0}
@@ -106,6 +109,9 @@ else
 			php yii installer/set-base-url "${HUMHUB_BASE_URL}"
 		fi
 		php yii installer/create-admin-account
+
+		php yii 'settings/set' 'base' 'cache.class' "${HUMHUB_CACHE_CLASS}"
+		php yii 'settings/set' 'base' 'cache.expireTime' "${HUMHUB_CACHE_EXPIRE_TIME}"
 
 		php yii 'settings/set' 'user' 'auth.anonymousRegistration' "${HUMHUB_ANONYMOUS_REGISTRATION}"
 		php yii 'settings/set' 'user' 'auth.allowGuestAccess' "${HUMHUB_ALLOW_GUEST_ACCESS}"
