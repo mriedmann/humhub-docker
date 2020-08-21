@@ -5,7 +5,8 @@
  * @see http://docs.humhub.org/admin-installation-configuration.html
  * @see http://docs.humhub.org/dev-environment.html
  */
-return [
+
+$common = [
 	'params' => [
         'enablePjax' => false
     ],
@@ -14,23 +15,41 @@ return [
             'showScriptName' => false,
             'enablePrettyUrl' => true,
         ],
-        'redis' => [
-            'class' => 'yii\redis\Connection',
-            'hostname' => 'redis',
-            'port' => 6379,
-            'database' => 0,
-            //'password' => 'redis_password',
-        ],
-        'cache' => [
-            'class' => 'yii\redis\Cache',
-        ],
-        'queue' => [
-            'class' => 'humhub\modules\queue\driver\Redis',
-        ],
-        //'push' => [
-        //    'class' => 'humhub\modules\live\driver\Push',
-        //    'url' => '/socket.io',
-        //    'jwtKey' => 'somethingrandomlygenerated',
-        //],
+        
     ]
 ];
+
+/**
+ * Redis configuration.
+ * 
+ * @see https://docs.humhub.org/docs/admin/redis
+ */
+if (getenv('HUMHUB_CACHE_CLASS') == 'yii\redis\Cache') {
+    $common['components']['redis'] = [
+        'class' => 'yii\redis\Connection',
+        'hostname' => getenv('HUMHUB_REDIS_HOSTNAME', true) ? getenv('HUMHUB_REDIS_HOSTNAME') : 'redis',
+        'port' => getenv('HUMHUB_REDIS_PORT', true) ? getenv('HUMHUB_REDIS_PORT') : 6379,
+        'database' => 0,
+    ];
+    if (getenv('HUMHUB_REDIS_PASSWORD', true)) {
+        $common['components']['redis']['password'] = getenv('HUMHUB_REDIS_PASSWORD');
+    }
+
+    $common['components']['cache'] = [
+        'class' => 'yii\redis\Cache',
+    ];
+
+    $common['components']['queue'] = [
+        'class' => 'humhub\modules\queue\driver\Redis',
+    ];
+
+    if (getenv('HUMHUB_PUSH_URL', true) && getenv('HUMHUB_PUSH_JWT_TOKEN', true)) {
+        $common['components']['push'] = [
+            'class' => 'humhub\modules\live\driver\Push',
+            'url' => getenv('HUMHUB_PUSH_URL'),
+            'jwtKey' => getenv('HUMHUB_PUSH_JWT_TOKEN'),
+        ];
+    }
+}
+
+return $common;
