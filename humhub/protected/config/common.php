@@ -28,14 +28,14 @@ if (!empty(getenv('HUMHUB_REDIS_HOSTNAME'))) {
     $common['components']['redis'] = [
         'class' => 'yii\redis\Connection',
         'hostname' => getenv('HUMHUB_REDIS_HOSTNAME'),
-        'port' => getenv('HUMHUB_REDIS_PORT', true) ? getenv('HUMHUB_REDIS_PORT') : 6379,
+        'port' => getenv('HUMHUB_REDIS_PORT') ? getenv('HUMHUB_REDIS_PORT') : 6379,
         'database' => 0,
     ];
-    if (getenv('HUMHUB_REDIS_PASSWORD', true)) {
+    if (!empty(getenv('HUMHUB_REDIS_PASSWORD'))) {
         $common['components']['redis']['password'] = getenv('HUMHUB_REDIS_PASSWORD');
     }
 
-    if (getenv('HUMHUB_CACHE_CLASS')) {
+    if (!empty(getenv('HUMHUB_CACHE_CLASS'))) {
         $common['components']['cache'] = [
             'class' => getenv('HUMHUB_CACHE_CLASS'),
         ];
@@ -47,7 +47,7 @@ if (!empty(getenv('HUMHUB_REDIS_HOSTNAME'))) {
         ];
     }
 
-    if (getenv('HUMHUB_PUSH_URL', true) && getenv('HUMHUB_PUSH_JWT_TOKEN', true)) {
+    if (!empty(getenv('HUMHUB_PUSH_URL')) && !empty(getenv('HUMHUB_PUSH_JWT_TOKEN'))) {
         $common['components']['push'] = [
             'class' => 'humhub\modules\live\driver\Push',
             'url' => getenv('HUMHUB_PUSH_URL'),
