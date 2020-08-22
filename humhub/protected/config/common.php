@@ -24,10 +24,10 @@ $common = [
  * 
  * @see https://docs.humhub.org/docs/admin/redis
  */
-if (getenv('HUMHUB_CACHE_CLASS') == 'yii\redis\Cache') {
+if (!empty(getenv('HUMHUB_REDIS_HOSTNAME'))) {
     $common['components']['redis'] = [
         'class' => 'yii\redis\Connection',
-        'hostname' => getenv('HUMHUB_REDIS_HOSTNAME', true) ? getenv('HUMHUB_REDIS_HOSTNAME') : 'redis',
+        'hostname' => getenv('HUMHUB_REDIS_HOSTNAME'),
         'port' => getenv('HUMHUB_REDIS_PORT', true) ? getenv('HUMHUB_REDIS_PORT') : 6379,
         'database' => 0,
     ];
@@ -35,13 +35,17 @@ if (getenv('HUMHUB_CACHE_CLASS') == 'yii\redis\Cache') {
         $common['components']['redis']['password'] = getenv('HUMHUB_REDIS_PASSWORD');
     }
 
-    $common['components']['cache'] = [
-        'class' => 'yii\redis\Cache',
-    ];
+    if (getenv('HUMHUB_CACHE_CLASS')) {
+        $common['components']['cache'] = [
+            'class' => getenv('HUMHUB_CACHE_CLASS'),
+        ];
+    }
 
-    $common['components']['queue'] = [
-        'class' => 'humhub\modules\queue\driver\Redis',
-    ];
+    if (!empty(getenv('HUMHUB_QUEUE_CLASS'))) {
+        $common['components']['queue'] = [
+            'class' => getenv('HUMHUB_QUEUE_CLASS'),
+        ];
+    }
 
     if (getenv('HUMHUB_PUSH_URL', true) && getenv('HUMHUB_PUSH_JWT_TOKEN', true)) {
         $common['components']['push'] = [
