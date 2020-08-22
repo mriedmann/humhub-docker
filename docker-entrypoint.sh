@@ -160,7 +160,16 @@ if test -e /var/www/localhost/htdocs/protected/config/dynamic.php &&
 	echo "installation active"
 
 	if [ $SET_PJAX != "false" ]; then
-		sed -i -e "s/'enablePjax' => false/'enablePjax' => true/g" /var/www/localhost/htdocs/protected/config/common.php
+		sed -i \
+			-e "s/'enablePjax' => false/'enablePjax' => true/g" \
+			-e "s/getenv('HUMHUB_REDIS_HOSTNAME')/'${HUMHUB_REDIS_HOSTNAME}'/g" \
+			-e "s/getenv('HUMHUB_REDIS_PORT')/${HUMHUB_REDIS_PORT}/g" \
+			-e "s/getenv('HUMHUB_REDIS_PASSWORD')/'${HUMHUB_REDIS_PASSWORD}'/g" \
+			-e "s/getenv('HUMHUB_CACHE_CLASS')/'${HUMHUB_CACHE_CLASS}'/g" \
+			-e "s/getenv('HUMHUB_QUEUE_CLASS')/'${HUMHUB_QUEUE_CLASS}'/g" \
+			-e "s/getenv('HUMHUB_PUSH_URL')/'${HUMHUB_PUSH_URL}'/g" \
+			-e "s/getenv('HUMHUB_PUSH_JWT_TOKEN')/'${HUMHUB_PUSH_JWT_TOKEN}'/g" \
+			/var/www/localhost/htdocs/protected/config/common.php
 	fi
 
 	if [ -n "$HUMHUB_TRUSTED_HOSTS" ]; then
