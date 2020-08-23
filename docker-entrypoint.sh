@@ -93,7 +93,7 @@ if test -e /var/www/localhost/htdocs/protected/config/dynamic.php &&
 
 	if [ "$HUMHUB_TRUSTED_HOSTS" != "false" ]; then
 		sed -i \
-			-e "s/'trustedHosts' => \['127.0.0.1/32'\]/'trustedHosts' => ['$HUMHUB_TRUSTED_HOSTS']/g" \
+			-e "s|'trustedHosts' => \['.*'\]|'trustedHosts' => ['$HUMHUB_TRUSTED_HOSTS']|g" \
 			/var/www/localhost/htdocs/protected/config/web.php
 	fi
 else
