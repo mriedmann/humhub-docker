@@ -28,7 +28,7 @@ if (!empty(getenv('HUMHUB_REDIS_HOSTNAME'))) {
     $common['components']['redis'] = [
         'class' => 'yii\redis\Connection',
         'hostname' => getenv('HUMHUB_REDIS_HOSTNAME'),
-        'port' => getenv('HUMHUB_REDIS_PORT') ? getenv('HUMHUB_REDIS_PORT') : 6379,
+        'port' => !empty(getenv('HUMHUB_REDIS_PORT')) ? getenv('HUMHUB_REDIS_PORT') : 6379,
         'database' => 0,
     ];
     if (!empty(getenv('HUMHUB_REDIS_PASSWORD'))) {
