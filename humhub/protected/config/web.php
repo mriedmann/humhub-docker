@@ -8,7 +8,7 @@
 return [
     'components' => [
         'request' => [
-            'trustedHosts' => ['172.0.0.0/8']
+            'trustedHosts' => ['127.0.0.1/32']
         ],
     ]
 ];
