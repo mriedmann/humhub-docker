@@ -1,10 +1,9 @@
 name: Auto Update
 
 on:
-  schedule:
-    - cron: '0 3 * * *'
   repository_dispatch:
     types: check-update
+  workflow_dispatch:
 
 jobs:
   execute:
