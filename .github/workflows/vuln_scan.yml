@@ -1,0 +1,19 @@
+name: Vulnerability Scan
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  scan:
+    name: Daily Vulnerability Scan
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Pull docker image
+        run: docker pull mriedmann/humhub:latest
+
+      - uses: homoluctus/gitrivy@v1.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          image: mriedmann/humhub:latest
