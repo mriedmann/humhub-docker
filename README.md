@@ -99,6 +99,43 @@ Can be used to let the startup fail if the db host is unavailable. To disable th
 
 PJAX is a jQuery plugin that uses ajax and pushState to deliver a fast browsing experience with real permalinks, page titles, and a working back button. ([ref](https://github.com/yiisoft/jquery-pjax)) This library is known to cause problems with some browsers during  installation. This container starts with PJAX disabled to improve the installation reliability. If this is set (default), PJAX is **enabled** during the **second** startup. Set this to `"false"` to permanently disable PJAX. Please note that changing this after container-creation has no effect on this behavior.
 
+### Mailer Config
+
+It is possible to configure HumHub email settings using the following environment variables:
+
+```
+HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS    [noreply@example.com]
+HUMHUB_MAILER_SYSTEM_EMAIL_NAME       [HumHub]
+HUMHUB_MAILER_TRANSPORT_TYPE          [php]
+HUMHUB_MAILER_HOSTNAME                
+HUMHUB_MAILER_PORT                    
+HUMHUB_MAILER_USERNAME                
+HUMHUB_MAILER_PASSWORD                
+HUMHUB_MAILER_ENCRYPTION              
+HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS 
+```
+
+
+### LDAP Config
+
+It is possible to configure HumHub LDAP authentication settings using the following environment variables:
+
+```
+HUMHUB_LDAP_ENABLED             [0]
+HUMHUB_LDAP_HOSTNAME            
+HUMHUB_LDAP_PORT                
+HUMHUB_LDAP_ENCRYPTION          
+HUMHUB_LDAP_USERNAME            
+HUMHUB_LDAP_PASSWORD            
+HUMHUB_LDAP_BASE_DN             
+HUMHUB_LDAP_LOGIN_FILTER        
+HUMHUB_LDAP_USER_FILTER         
+HUMHUB_LDAP_USERNAME_ATTRIBUTE  
+HUMHUB_LDAP_EMAIL_ATTRIBUTE     
+HUMHUB_LDAP_ID_ATTRIBUTE        
+HUMHUB_LDAP_REFRESH_USERS       
+```
+
 ## PHP Config
 
 It is also possible to change some php-config-settings. This comes in handy if you have to scale this container vertically.

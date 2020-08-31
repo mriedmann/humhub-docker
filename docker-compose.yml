@@ -17,6 +17,16 @@ services:
       HUMHUB_DEBUG: 1
       HUMHUB_PROTO: 'https'
       HUMHUB_HOST: 'localhost'
+      # Mailer install setup
+      HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS: noreply@example.com
+      HUMHUB_MAILER_SYSTEM_EMAIL_NAME: HumHub
+      HUMHUB_MAILER_TRANSPORT_TYPE: smtp
+      HUMHUB_MAILER_HOSTNAME: mailer
+      HUMHUB_MAILER_PORT: 1025
+      #HUMHUB_MAILER_USERNAME:
+      #HUMHUB_MAILER_PASSWORD:
+      #HUMHUB_MAILER_ENCRYPTION:
+      HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS: 0
 #   volumes:
 #     - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
     healthcheck:
@@ -36,3 +46,10 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+  mailer:
+    image: sj26/mailcatcher:latest
+    restart: always
+    expose:
+      - 1025
+    ports:
+      - "1080:1080"

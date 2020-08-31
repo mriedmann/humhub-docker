@@ -13,3 +13,4 @@ before_install:
 
 script:
   - curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
+  - php yii test/email 'test@example.com'
