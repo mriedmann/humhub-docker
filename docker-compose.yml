@@ -18,10 +18,10 @@ services:
       HUMHUB_PROTO: 'https'
       HUMHUB_HOST: 'localhost'
       # Mailer install setup
-      HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS: noreply@example.com
-      HUMHUB_MAILER_SYSTEM_EMAIL_NAME: HumHub
-      HUMHUB_MAILER_TRANSPORT_TYPE: smtp
-      HUMHUB_MAILER_HOSTNAME: mailer
+      HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS: 'noreply@example.com'
+      HUMHUB_MAILER_SYSTEM_EMAIL_NAME: 'HumHub'
+      HUMHUB_MAILER_TRANSPORT_TYPE: 'smtp'
+      HUMHUB_MAILER_HOSTNAME: 'mailer'
       HUMHUB_MAILER_PORT: 1025
       #HUMHUB_MAILER_USERNAME:
       #HUMHUB_MAILER_PASSWORD:
