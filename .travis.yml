@@ -13,4 +13,4 @@ before_install:
 
 script:
   - curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
-  - docker-compose exec -w '/var/www/localhost/htdocs/protected' -T humhub php yii test/email 'test@example.com'
+  - docker-compose exec -w '/var/www/localhost/htdocs/protected' -T humhub php yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
