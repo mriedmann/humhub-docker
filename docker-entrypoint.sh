@@ -66,7 +66,7 @@ escape_for_replace() {
 
 echo "=="
 
-if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
+if [ ! -f "/var/www/localhost/htdocs/protected/config/common.php" ]; then
 	echo "Generate config using common factory ..."
 
 	echo '<?php return ' \
