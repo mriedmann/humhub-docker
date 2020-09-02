@@ -66,19 +66,6 @@ escape_for_replace() {
 
 echo "=="
 
-if [ ! -f "/var/www/localhost/htdocs/protected/config/common.php" ]; then
-	echo "Generate config using common factory ..."
-
-	echo '<?php return ' \
-		> /var/www/localhost/htdocs/protected/config/common.php
-
-	sh -c "php /var/www/localhost/htdocs/protected/config/common-factory.php" \
-		>> /var/www/localhost/htdocs/protected/config/common.php
-
-	echo ';' \
-		>> /var/www/localhost/htdocs/protected/config/common.php
-fi
-
 
 if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
 	echo "Existing installation found!"
@@ -99,6 +86,19 @@ else
 	echo "Installing source files..."
 	cp -rv /usr/src/humhub/protected/config/* /var/www/localhost/htdocs/protected/config/
 	cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
+
+	if [ ! -f "/var/www/localhost/htdocs/protected/config/common.php" ]; then
+		echo "Generate config using common factory ..."
+
+		echo '<?php return ' \
+			> /var/www/localhost/htdocs/protected/config/common.php
+
+		sh -c "php /var/www/localhost/htdocs/protected/config/common-factory.php" \
+			>> /var/www/localhost/htdocs/protected/config/common.php
+
+		echo ';' \
+			>> /var/www/localhost/htdocs/protected/config/common.php
+	fi
 
 	mkdir -p /var/www/localhost/htdocs/protected/runtime/logs/
 	touch /var/www/localhost/htdocs/protected/runtime/logs/app.log
