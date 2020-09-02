@@ -58,7 +58,7 @@ services:
     expose:
       - '6379'
 #    volumes:
-#      - /srv/nextcloud/redis:/data
+#      - /srv/humhub/redis:/data
     environment:
       #- REDIS_PASSWORD=redis_password
       - ALLOW_EMPTY_PASSWORD=yes
