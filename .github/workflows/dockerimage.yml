@@ -22,4 +22,5 @@ jobs:
       run: docker ps -a
     - name: Test
       run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
-      
+    - name: Test Email
+      run: docker-compose exec -w '/var/www/localhost/htdocs/protected' -T humhub php yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
