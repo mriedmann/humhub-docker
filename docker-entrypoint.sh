@@ -65,6 +65,21 @@ escape_for_replace() {
 }
 
 echo "=="
+
+if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
+	echo "Generate config using common factory ..."
+
+	echo '<?php return ' \
+		> /var/www/localhost/htdocs/protected/config/common.php
+
+	sh -c "php /var/www/localhost/htdocs/protected/config/common-factory.php" \
+		>> /var/www/localhost/htdocs/protected/config/common.php
+
+	echo ';' \
+		>> /var/www/localhost/htdocs/protected/config/common.php
+fi
+
+
 if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
 	echo "Existing installation found!"
 
@@ -101,17 +116,6 @@ else
 	if [ -z "$HUMHUB_DB_USER" ]; then
 		AUTOINSTALL="false"
 	fi
-
-	echo "Config preprocessing before install ..."
-	sed -i \
-		"s|getenv('HUMHUB_REDIS_HOSTNAME')|'$(escape_for_replace ${HUMHUB_REDIS_HOSTNAME} )'|g;
-		s|getenv('HUMHUB_REDIS_PORT')|$(escape_for_replace ${HUMHUB_REDIS_PORT} )|g;
-		s|getenv('HUMHUB_REDIS_PASSWORD')|'$(escape_for_replace ${HUMHUB_REDIS_PASSWORD} )'|g;
-		s|getenv('HUMHUB_CACHE_CLASS')|'$(escape_for_replace ${HUMHUB_CACHE_CLASS} )'|g;
-		s|getenv('HUMHUB_QUEUE_CLASS')|'$(escape_for_replace ${HUMHUB_QUEUE_CLASS} )'|g;
-		s|getenv('HUMHUB_PUSH_URL')|'$(escape_for_replace ${HUMHUB_PUSH_URL} )'|g;
-		s|getenv('HUMHUB_PUSH_JWT_TOKEN')|'$(escape_for_replace ${HUMHUB_PUSH_JWT_TOKEN} )'|g" \
-		/var/www/localhost/htdocs/protected/config/common.php
 
 	if [ "$AUTOINSTALL" != "false" ]; then
 		echo "Installing..."

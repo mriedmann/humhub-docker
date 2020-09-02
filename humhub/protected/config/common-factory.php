@@ -56,4 +56,5 @@ if (!empty(getenv('HUMHUB_REDIS_HOSTNAME'))) {
     }
 }
 
-return $common;
+// Print generated common config
+var_export ( $common );
