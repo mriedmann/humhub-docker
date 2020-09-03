@@ -60,10 +60,6 @@ wait_for_db() {
 	done
 }
 
-escape_for_replace() {
-	printf '%s\n' "${1}" | sed -e 's/[\/&]/\\&/g'
-}
-
 echo "=="
 
 
