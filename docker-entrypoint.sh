@@ -84,7 +84,7 @@ else
 	cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
 
 	if [ ! -f "/var/www/localhost/htdocs/protected/config/common.php" ]; then
-		echo "Generate config using common factory ..."
+		echo "Generate config using common factory..."
 
 		echo '<?php return ' \
 			> /var/www/localhost/htdocs/protected/config/common.php
@@ -94,6 +94,11 @@ else
 
 		echo ';' \
 			>> /var/www/localhost/htdocs/protected/config/common.php
+	fi
+
+	if ! php -l /var/www/localhost/htdocs/protected/config/common.php; then
+		echo "Humhub common config is not valid! Fix errors before restarting."
+		exit 1
 	fi
 
 	mkdir -p /var/www/localhost/htdocs/protected/runtime/logs/
