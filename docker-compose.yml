@@ -53,3 +53,15 @@ services:
       - 1025
     ports:
       - "1080:1080"
+  redis:
+    image: redis:5.0-alpine
+    expose:
+      - '6379'
+#    volumes:
+#      - /srv/nextcloud/redis:/data
+    environment:
+      #- REDIS_PASSWORD=redis_password
+      - ALLOW_EMPTY_PASSWORD=yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+
