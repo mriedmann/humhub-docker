@@ -50,7 +50,9 @@ HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS=${HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS:-0
 export NGINX_ENABLED=${NGINX_ENABLED:-'true'}
 export NGINX_CLIENT_MAX_BODY_SIZE=${NGINX_CLIENT_MAX_BODY_SIZE:-10m}
 export NGINX_KEEPALIVE_TIMEOUT=${NGINX_KEEPALIVE_TIMEOUT:-65}
-export NGINX_CI_PASS=${NGINX_CI_PASS:-'unix:/run/php-fpm.sock'}
+export NGINX_CGI_PASS=${NGINX_CGI_PASS:-'unix:/run/php-fpm.sock'}
+
+export PHP_CGI_PASS=${PHP_CGI_PASS:-'/run/php-fpm.sock'}
 
 wait_for_db() {
 	if [ "$WAIT_FOR_DB" == "false" ]; then
@@ -67,6 +69,8 @@ wait_for_db() {
 echo "=="
 
 if [ "$HUMHUB_ENABLED" != "false" ]; then
+
+	sed -i -e "s|listen = .*|listen = ${PHP_CGI_PASS}|g" /etc/php-fpm.d/pool.conf
 
 	if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
 		echo "Existing installation found!"
@@ -204,7 +208,7 @@ if [ "$NGINX_ENABLED" != "false" ]; then
 	cat /tmp/nginx.conf > /etc/nginx/nginx.conf
 	rm /tmp/nginx.conf
 
-	envsubst "\$NGINX_CI_PASS" < /etc/nginx/nginx.conf > /tmp/nginx.conf
+	envsubst "\$NGINX_CGI_PASS" < /etc/nginx/nginx.conf > /tmp/nginx.conf
 	cat /tmp/nginx.conf > /etc/nginx/nginx.conf
 	rm /tmp/nginx.conf
 
