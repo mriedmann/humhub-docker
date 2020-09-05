@@ -14,5 +14,23 @@ return [
             'showScriptName' => false,
             'enablePrettyUrl' => true,
         ],
+        'redis' => [
+            'class' => 'yii\redis\Connection',
+            'hostname' => 'redis',
+            'port' => 6379,
+            'database' => 0,
+            //'password' => 'redis_password',
+        ],
+        'cache' => [
+            'class' => 'yii\redis\Cache',
+        ],
+        'queue' => [
+            'class' => 'humhub\modules\queue\driver\Redis',
+        ],
+        //'push' => [
+        //    'class' => 'humhub\modules\live\driver\Push',
+        //    'url' => '/socket.io',
+        //    'jwtKey' => 'somethingrandomlygenerated',
+        //],
     ]
 ];
