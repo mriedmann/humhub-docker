@@ -27,6 +27,13 @@ services:
       #HUMHUB_MAILER_PASSWORD:
       #HUMHUB_MAILER_ENCRYPTION:
       HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS: 0
+      # Cache Config
+      HUMHUB_CACHE_EXPIRE_TIME: 3600
+      HUMHUB_CACHE_CLASS: yii\redis\Cache
+      HUMHUB_QUEUE_CLASS: humhub\modules\queue\driver\Redis
+      HUMHUB_REDIS_HOSTNAME: redis
+      HUMHUB_REDIS_PORT: 6379
+      HUMHUB_REDIS_PASSWORD: redis_password
 #   volumes:
 #     - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
     healthcheck:
@@ -60,8 +67,8 @@ services:
 #    volumes:
 #      - /srv/humhub/redis:/data
     environment:
-      #- REDIS_PASSWORD=redis_password
-      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_PASSWORD=redis_password
+      #- ALLOW_EMPTY_PASSWORD=yes
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
 
