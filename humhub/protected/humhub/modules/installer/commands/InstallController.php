@@ -31,6 +31,7 @@ use humhub\libs\DynamicConfig;
  * 
  * @author Luke
  * @author Michael Riedmann
+ * @author Mathieu Brunot
  */
 class InstallController extends Controller
 {
@@ -45,8 +46,8 @@ class InstallController extends Controller
      */
     public function actionAuto()
     {
-        actionWriteSiteConfig();
-        actionCreateAdminAccount();
+        $this->actionWriteSiteConfig();
+        $this->actionCreateAdminAccount();
 
         return ExitCode::OK;
     }
