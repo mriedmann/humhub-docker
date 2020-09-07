@@ -12,6 +12,10 @@ HUMHUB_EMAIL=${HUMHUB_EMAIL:-"humhub@example.com"}
 HUMHUB_LANG=${HUMHUB_LANG:-"en-US"}
 HUMHUB_DEBUG=${HUMHUB_DEBUG:-"false"}
 
+HUMHUB_ADMIN_LOGIN=${HUMHUB_ADMIN_LOGIN:-"admin"}
+HUMHUB_ADMIN_EMAIL=${HUMHUB_ADMIN_EMAIL:-${HUMHUB_EMAIL}}
+HUMHUB_ADMIN_PASSWORD=${HUMHUB_ADMIN_PASSWD:-"test"}
+
 HUMHUB_CACHE_CLASS=${HUMHUB_CACHE_CLASS:-"yii\caching\FileCache"}
 HUMHUB_CACHE_EXPIRE_TIME=${HUMHUB_CACHE_EXPIRE_TIME:-3600}
 
@@ -129,7 +133,7 @@ else
 			echo "Setting base url to: $HUMHUB_BASE_URL"
 			php yii installer/set-base-url "${HUMHUB_BASE_URL}"
 		fi
-		php yii installer/create-admin-account
+		php yii installer/create-admin-account "${HUMHUB_ADMIN_LOGIN}" "${HUMHUB_ADMIN_EMAIL}" "${HUMHUB_ADMIN_PASSWORD}"
 
 		php yii 'settings/set' 'base' 'cache.class' "${HUMHUB_CACHE_CLASS}"
 		php yii 'settings/set' 'base' 'cache.expireTime' "${HUMHUB_CACHE_EXPIRE_TIME}"
