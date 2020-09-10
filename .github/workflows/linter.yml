@@ -51,4 +51,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
+          LINTER_RULES_PATH: .
           DOCKERFILE_HADOLINT_FILE_NAME: .hadolint.yaml
