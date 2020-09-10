@@ -22,13 +22,13 @@ use humhub\libs\DynamicConfig;
 
 /**
  * Console Install
- * 
+ *
  * Example usage:
  *   php yii installer/write-db-config "$HUMHUB_DB_HOST" "$HUMHUB_DB_NAME" "$HUMHUB_DB_USER" "$HUMHUB_DB_PASSWORD"
  *   php yii installer/install-db
  *   php yii installer/write-site-config "$HUMHUB_NAME" "$HUMHUB_EMAIL"
  *   php yii installer/create-admin-account
- * 
+ *
  * @author Luke
  * @author Michael Riedmann
  * @author Mathieu Brunot
@@ -53,11 +53,12 @@ class InstallController extends Controller
     }
 
     /**
-     * Tries to open a connection to given db. 
+     * Tries to open a connection to given db.
      * On success: Writes given settings to config-file and reloads it.
      * On failure: Throws exception
      */
-    public function actionWriteDbConfig($db_host, $db_name, $db_user, $db_pass) {
+    public function actionWriteDbConfig($db_host, $db_name, $db_user, $db_pass)
+    {
         $connectionString = "mysql:host=" . $db_host . ";dbname=" . $db_name;
         $dbConfig = [
             'class' => 'yii\db\Connection',
@@ -89,7 +90,7 @@ class InstallController extends Controller
         $this->stdout("Install DB:\n\n", Console::FG_YELLOW);
 
         $this->stdout("  * Checking Database Connection\n", Console::FG_YELLOW);
-        if(!$this->checkDBConnection()){
+        if (!$this->checkDBConnection()) {
             throw new Exception("Could not connect to DB!");
         }
 
@@ -111,9 +112,14 @@ class InstallController extends Controller
     /**
      * Creates a new user account and adds it to the admin-group
      */
-    public function actionCreateAdminAccount($admin_user='admin', $admin_email='humhub@example.com', $admin_pass='test',
-        $admin_title='System Administration', $admin_firstname='Sys', $admin_lastname='Admin')
-    {
+    public function actionCreateAdminAccount(
+        $admin_user = 'admin',
+        $admin_email = 'humhub@example.com',
+        $admin_pass = 'test',
+        $admin_title = 'System Administration',
+        $admin_firstname = 'Sys',
+        $admin_lastname = 'Admin'
+    ) {
         $user = $this->createUser($admin_user, $admin_email, $admin_pass, $admin_title, $admin_firstname, $admin_lastname);
         $this->addUserToAdminGroup($user);
 
@@ -123,7 +129,8 @@ class InstallController extends Controller
     /**
      * Writes essential site settings to config file and sets installed state
      */
-    public function actionWriteSiteConfig($site_name='HumHub', $site_email='humhub@example.com'){
+    public function actionWriteSiteConfig($site_name = 'HumHub', $site_email = 'humhub@example.com')
+    {
         $this->stdout("Install Site:\n\n", Console::FG_YELLOW);
         InitialData::bootstrap();
 
@@ -137,7 +144,8 @@ class InstallController extends Controller
         return ExitCode::OK;
     }
 
-    public function actionSetBaseUrl($base_url){
+    public function actionSetBaseUrl($base_url)
+    {
         $this->stdout("Setting base url", Console::FG_YELLOW);
         Yii::$app->settings->set('baseUrl', $base_url);
 
@@ -147,7 +155,8 @@ class InstallController extends Controller
     /**
      * Checks install status
      */
-    public function actionStatus(){
+    public function actionStatus()
+    {
         $config = DynamicConfig::load();
 
         if (!isset($config['params']['databaseInstalled']) || empty($config['params']['databaseInstalled'])) {

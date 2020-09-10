@@ -57,7 +57,7 @@ wait_for_db() {
 		return 0
 	fi
 
-	until nc -z -v -w60 $HUMHUB_DB_HOST 3306; do
+	until nc -z -v -w60 "$HUMHUB_DB_HOST" 3306; do
 		echo "Waiting for database connection..."
 		# wait for 5 seconds before check again
 		sleep 5
@@ -210,8 +210,7 @@ fi
 
 if [ "$INTEGRITY_CHECK" != "false" ]; then
 	echo "validating ..."
-	php ./yii integrity/run
-	if [ $? -ne 0 ]; then
+	if ! php ./yii integrity/run; then
 		echo "validation failed!"
 		exit 1
 	fi
@@ -220,6 +219,8 @@ else
 fi
 
 echo "Writing Nginx Config"
+
+# shellcheck disable=SC2016
 envsubst '$NGINX_CLIENT_MAX_BODY_SIZE,$NGINX_KEEPALIVE_TIMEOUT' </etc/nginx/nginx.conf >/tmp/nginx.conf
 cat /tmp/nginx.conf >/etc/nginx/nginx.conf
 rm /tmp/nginx.conf
