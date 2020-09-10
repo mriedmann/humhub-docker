@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file provides to overwrite the default HumHub / Yii configuration by your local common (Console and Web) environments
  * @see http://www.yiiframework.com/doc-2.0/guide-concept-configurations.html
@@ -7,7 +8,7 @@
  */
 
 $common = [
-	'params' => [
+    'params' => [
         'enablePjax' => false
     ],
     'components' => [
@@ -21,7 +22,7 @@ $common = [
 
 /**
  * Redis configuration.
- * 
+ *
  * @see https://docs.humhub.org/docs/admin/redis
  */
 if (!empty(getenv('HUMHUB_REDIS_HOSTNAME'))) {
@@ -57,4 +58,4 @@ if (!empty(getenv('HUMHUB_REDIS_HOSTNAME'))) {
 }
 
 // Print generated common config
-var_export ( $common );
+var_export($common);

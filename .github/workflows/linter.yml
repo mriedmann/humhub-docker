@@ -49,3 +49,6 @@ jobs:
         env:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_PHP_PHPSTAN: false
+          VALIDATE_PHP_PSALM: false
+          DOCKERFILE_HADOLINT_FILE_NAME: .hadolint.yaml
