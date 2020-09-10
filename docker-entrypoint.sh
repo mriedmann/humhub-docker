@@ -53,7 +53,7 @@ export NGINX_CLIENT_MAX_BODY_SIZE=${NGINX_CLIENT_MAX_BODY_SIZE:-10m}
 export NGINX_KEEPALIVE_TIMEOUT=${NGINX_KEEPALIVE_TIMEOUT:-65}
 
 wait_for_db() {
-	if [ "$WAIT_FOR_DB" == "false" ]; then
+	if [ "$WAIT_FOR_DB" = "false" ]; then
 		return 0
 	fi
 
@@ -66,7 +66,6 @@ wait_for_db() {
 
 echo "=="
 
-
 if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
 	echo "Existing installation found!"
 
@@ -74,8 +73,8 @@ if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
 
 	INSTALL_VERSION=$(cat /var/www/localhost/htdocs/protected/config/.version)
 	SOURCE_VERSION=$(cat /usr/src/humhub/.version)
-	cd /var/www/localhost/htdocs/protected/
-	if [[ $INSTALL_VERSION != $SOURCE_VERSION ]]; then
+	cd /var/www/localhost/htdocs/protected/ || exit 1
+	if [ "$INSTALL_VERSION" != "$SOURCE_VERSION" ]; then
 		echo "Updating from version $INSTALL_VERSION to $SOURCE_VERSION"
 		php yii migrate/up --includeModuleMigrations=1 --interactive=0
 		php yii search/rebuild
@@ -91,13 +90,13 @@ else
 		echo "Generate config using common factory..."
 
 		echo '<?php return ' \
-			> /var/www/localhost/htdocs/protected/config/common.php
+			>/var/www/localhost/htdocs/protected/config/common.php
 
 		sh -c "php /var/www/localhost/htdocs/protected/config/common-factory.php" \
-			>> /var/www/localhost/htdocs/protected/config/common.php
+			>>/var/www/localhost/htdocs/protected/config/common.php
 
 		echo ';' \
-			>> /var/www/localhost/htdocs/protected/config/common.php
+			>>/var/www/localhost/htdocs/protected/config/common.php
 	fi
 
 	if ! php -l /var/www/localhost/htdocs/protected/config/common.php; then
@@ -117,7 +116,7 @@ else
 	wait_for_db
 
 	echo "Creating database..."
-	cd /var/www/localhost/htdocs/protected/
+	cd /var/www/localhost/htdocs/protected/ || exit 1
 	if [ -z "$HUMHUB_DB_USER" ]; then
 		AUTOINSTALL="false"
 	fi
@@ -199,7 +198,7 @@ else
 	INTEGRITY_CHECK="false"
 fi
 
-if [ "$HUMHUB_DEBUG" == "false" ]; then
+if [ "$HUMHUB_DEBUG" = "false" ]; then
 	sed -i '/YII_DEBUG/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
 	sed -i '/YII_ENV/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
 	echo "debug disabled"
@@ -221,8 +220,8 @@ else
 fi
 
 echo "Writing Nginx Config"
-envsubst "\$NGINX_CLIENT_MAX_BODY_SIZE,\$NGINX_KEEPALIVE_TIMEOUT" < /etc/nginx/nginx.conf > /tmp/nginx.conf
-cat /tmp/nginx.conf > /etc/nginx/nginx.conf
+envsubst '$NGINX_CLIENT_MAX_BODY_SIZE,$NGINX_KEEPALIVE_TIMEOUT' </etc/nginx/nginx.conf >/tmp/nginx.conf
+cat /tmp/nginx.conf >/etc/nginx/nginx.conf
 rm /tmp/nginx.conf
 
 echo "=="
