@@ -61,56 +61,56 @@ This container supports some further options which can be configured via environ
 
 ### `HUMHUB_DB_USER` & `HUMHUB_DB_PASSWORD`
 
-**default: `""` **
-  
+**default: `""`**
+
 This username and password will be used to connect to the database. Please do not set the HUMHUB_DB_PASSWORD without HUMHUB_DB_USER to avoid problems. If this is not set, the visual installer will show up at the first startup.
-  
+
 
 ### `HUMHUB_DB_NAME`
 
-**default: `humhub` **
+**default: `humhub`**
 
 Defines the name of the database where humhub is installed.
 
 ### `HUMHUB_DB_HOST`
 
-**default: `db` **
+**default: `db`**
 
 Defines the mysql/mariadb-database-host. If you use the `--link` argument please specify the name of the link as host or use `db` as linkname ( `--link <container>:db` ).
 
 ### `HUMHUB_AUTO_INSTALL`
 
-**default: `false` **
+**default: `false`**
 
 If this and `HUMHUB_DB_USER` are set an automated installation will run during the first startup. This feature utilities a hidden installer-feature used for integration testing ( [see code file](https://github.com/humhub/humhub/blob/master/protected/humhub/modules/installer/commands/InstallController.php) ).
 
 ### `HUMHUB_PROTO` & `HUMHUB_HOST`
 
-**default: `http` , `localhost` **
+**default: `http` , `localhost`**
 
 If these are defined during auto-installation, humhub will be installed and configured to use urls with those details. (i.e. If they are set as `HUMHUB_PROTO=https` , `HUMHUB_HOST=example.com` , humhub will be installed and configured so that the base url is `https://example.com/` . Leaving these as default will result in humhub being installed and configured to be at `http://localhost/` .
 
 ### `HUMHUB_ADMIN_LOGIN` & `HUMHUB_ADMIN_EMAIL` & `HUMHUB_ADMIN_PASSWORD`
 
-**default: `admin` , `humhub@example.com` , `test` **
+**default: `admin` , `humhub@example.com` , `test`**
 
 If these are defined during auto-installation, humhub admin will be created with those credentials.
 
 ### `INTEGRITY_CHECK`
 
-**default: `1` **
+**default: `1`**
 
 This can be set to `"false"` to disabled the startup integrity check. Use with caution!
 
 ### `WAIT_FOR_DB`
 
-**default: `1` **
+**default: `1`**
 
 Can be used to let the startup fail if the db host is unavailable. To disable this, set it to `"false"` . Can be useful if an external db-host is used, avoid when using a linked container.
 
 ### `SET_PJAX`
 
-**default: `1` **
+**default: `1`**
 
 PJAX is a jQuery plugin that uses ajax and pushState to deliver a fast browsing experience with real permalinks, page titles, and a working back button. ([ref](https://github.com/yiisoft/jquery-pjax)) This library is known to cause problems with some browsers during  installation. This container starts with PJAX disabled to improve the installation reliability. If this is set (default), PJAX is **enabled** during the **second** startup. Set this to `"false"` to permanently disable PJAX. Please note that changing this after container-creation has no effect on this behavior.
 
@@ -122,12 +122,12 @@ It is possible to configure HumHub email settings using the following environmen
 HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS    [noreply@example.com]
 HUMHUB_MAILER_SYSTEM_EMAIL_NAME       [HumHub]
 HUMHUB_MAILER_TRANSPORT_TYPE          [php]
-HUMHUB_MAILER_HOSTNAME                
-HUMHUB_MAILER_PORT                    
-HUMHUB_MAILER_USERNAME                
-HUMHUB_MAILER_PASSWORD                
-HUMHUB_MAILER_ENCRYPTION              
-HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS 
+HUMHUB_MAILER_HOSTNAME                []
+HUMHUB_MAILER_PORT                    []
+HUMHUB_MAILER_USERNAME                []
+HUMHUB_MAILER_PASSWORD                []
+HUMHUB_MAILER_ENCRYPTION              []
+HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS []
 ```
 
 ### LDAP Config
@@ -135,19 +135,19 @@ HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS
 It is possible to configure HumHub LDAP authentication settings using the following environment variables:
 
 ``` plaintext
-HUMHUB_LDAP_ENABLED             [0]
-HUMHUB_LDAP_HOSTNAME            
-HUMHUB_LDAP_PORT                
-HUMHUB_LDAP_ENCRYPTION          
-HUMHUB_LDAP_USERNAME            
-HUMHUB_LDAP_PASSWORD            
-HUMHUB_LDAP_BASE_DN             
-HUMHUB_LDAP_LOGIN_FILTER        
-HUMHUB_LDAP_USER_FILTER         
-HUMHUB_LDAP_USERNAME_ATTRIBUTE  
-HUMHUB_LDAP_EMAIL_ATTRIBUTE     
-HUMHUB_LDAP_ID_ATTRIBUTE        
-HUMHUB_LDAP_REFRESH_USERS       
+HUMHUB_LDAP_ENABLED            [0]
+HUMHUB_LDAP_HOSTNAME           []
+HUMHUB_LDAP_PORT               []
+HUMHUB_LDAP_ENCRYPTION         []
+HUMHUB_LDAP_USERNAME           []
+HUMHUB_LDAP_PASSWORD           []
+HUMHUB_LDAP_BASE_DN            []
+HUMHUB_LDAP_LOGIN_FILTER       []
+HUMHUB_LDAP_USER_FILTER        []
+HUMHUB_LDAP_USERNAME_ATTRIBUTE []
+HUMHUB_LDAP_EMAIL_ATTRIBUTE    []
+HUMHUB_LDAP_ID_ATTRIBUTE       []
+HUMHUB_LDAP_REFRESH_USERS      []
 ```
 
 ## PHP Config
