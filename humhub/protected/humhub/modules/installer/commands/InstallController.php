@@ -120,7 +120,14 @@ class InstallController extends Controller
         $admin_firstname = 'Sys',
         $admin_lastname = 'Admin'
     ) {
-        $user = $this->createUser($admin_user, $admin_email, $admin_pass, $admin_title, $admin_firstname, $admin_lastname);
+        $user = $this->createUser(
+            $admin_user,
+            $admin_email,
+            $admin_pass,
+            $admin_title,
+            $admin_firstname,
+            $admin_lastname
+        );
         $this->addUserToAdminGroup($user);
 
         return ExitCode::OK;
@@ -209,8 +216,14 @@ class InstallController extends Controller
     /**
      * Creates a new user account.
      */
-    private function createUser(string $username, string $email, string $pass, string $title, string $firstname, string $lastname): User
-    {
+    private function createUser(
+        string $username,
+        string $email,
+        string $pass,
+        string $title,
+        string $firstname,
+        string $lastname
+    ): User {
         $user = new User();
         $user->username = $username;
         $user->email = $email;

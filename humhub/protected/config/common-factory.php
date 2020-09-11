@@ -16,7 +16,6 @@ $common = [
             'showScriptName' => false,
             'enablePrettyUrl' => true,
         ],
-        
     ]
 ];
 
