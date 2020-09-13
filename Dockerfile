@@ -78,7 +78,7 @@ RUN apk add --no-cache \
     php7-json \
     php7-phar \
     php7-iconv \
-    php7-imagick \
+    php7-pecl-imagick \
     php7-openssl \
     php7-curl \
     php7-ctype \
