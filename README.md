@@ -70,7 +70,6 @@ This container supports some further options which can be configured via environ
 
 This username and password will be used to connect to the database. Please do not set the HUMHUB_DB_PASSWORD without HUMHUB_DB_USER to avoid problems. If this is not set, the visual installer will show up at the first startup.
 
-
 ### `HUMHUB_DB_NAME`
 
 **default: `humhub`**
