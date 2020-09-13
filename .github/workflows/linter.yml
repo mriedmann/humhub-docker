@@ -16,7 +16,7 @@ name: Lint Code Base
 #############################
 on:
   push:
-    branches-ignore: [master]
+    branches: [ master ]
   pull_request:
     branches: [master]
   workflow_dispatch:
