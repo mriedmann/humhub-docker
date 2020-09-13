@@ -5,13 +5,14 @@
 ![Docker Image CI](https://github.com/mriedmann/humhub-docker/workflows/Docker%20Image%20CI/badge.svg)
 
 [HumHub](https://github.com/humhub/humhub) is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
-This container provides a quick, flexible and lightweight way to set-up a proof-of-concept for detailed evaluation. Using this in production is possible, but not recommended.
+This container provides a quick, flexible and lightweight way to set up a proof-of-concept for detailed evaluation. 
+Using this in production is possible, but please note that there is currently no official support available for this kind of setup.
 
 ## Versions
 
 * [![dockerimage badge (latest)](https://images.microbadger.com/badges/version/mriedmann/humhub:latest.svg)](https://microbadger.com/images/mriedmann/humhub:latest "Get your own version badge on microbadger.com") `latest` :  unstable master build (use with caution! might be unstable)
-* [![dockerimage badge (1.5.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.5.2.svg)](https://microbadger.com/images/mriedmann/humhub:1.6.2 "Get your own version badge on microbadger.com") `1.5.2` : latest stable release (recommended)
-* [![dockerimage badge (1.6.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.6.2.svg)](https://microbadger.com/images/mriedmann/humhub:1.6.2 "Get your own version badge on microbadger.com") `1.6.2` : latest beta release
+* [![dockerimage badge (1.5.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.5.2.svg)](https://microbadger.com/images/mriedmann/humhub:1.5.2 "Get your own version badge on microbadger.com") `1.5.2` : latest legacy release
+* [![dockerimage badge (1.6.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.6.2.svg)](https://microbadger.com/images/mriedmann/humhub:1.6.2 "Get your own version badge on microbadger.com") `1.6.2` : latest stable release (recommended)
 * [![dockerimage badge (experimental)](https://images.microbadger.com/badges/version/mriedmann/humhub:experimental.svg)](https://microbadger.com/images/mriedmann/humhub:experimental "Get your own version badge on microbadger.com") `experimental` : test build (testing only)
 
 ## Quickstart
@@ -24,36 +25,38 @@ No database integrated. For persistency look at the Compose-File example.
 4. complete the installation wizard (use `db` as database hostname and `humhub` as database name)
 5. finished
 
-## Known issues
-
-* The installation wizard is sometimes not working with chrome. Workaround: Use other browser for installing.
-
 ## Composer File Example
 
-``` Dockerfile
+```Dockerfile
 version: '3.1'
 services:
   humhub:
-    build: .
+    image: mriedmann/humhub:1.6.2
     links:
-
       - "db:db"
-
     ports:
-
-      - "80:80"
-
+      - "8080:80"
     volumes:
-
-      - "_data/config:/var/www/localhost/htdocs/protected/config"
-      - "_data/uploads:/var/www/localhost/htdocs/uploads"
+      - "config:/var/www/localhost/htdocs/protected/config"
+      - "uploads:/var/www/localhost/htdocs/uploads"
+    environment:
+      HUMHUB_DB_USER: humhub
+      HUMHUB_DB_PASSWORD: humhub
 
   db:
     image: mariadb:10.2
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: humhub
+      MYSQL_USER: humhub
+      MYSQL_PASSWORD: humhub
+
+volumes:
+  config: {}
+  uploads: {}
 ```
+
+> In some situations (e.g. with [podman-compose](https://github.com/containers/podman-compose)) you have to run compose `up` twice to give it some time to create the named volumes. 
 
 ## Advanced Config
 
@@ -70,7 +73,7 @@ This username and password will be used to connect to the database. Please do no
 
 **default: `humhub`**
 
-Defines the name of the database where humhub is installed.
+Defines the name of the database where HumHub is installed.
 
 ### `HUMHUB_DB_HOST`
 
@@ -86,39 +89,39 @@ If this and `HUMHUB_DB_USER` are set an automated installation will run during t
 
 ### `HUMHUB_PROTO` & `HUMHUB_HOST`
 
-**default: `http` , `localhost`**
+**default: `http`, `localhost`**
 
-If these are defined during auto-installation, humhub will be installed and configured to use urls with those details. (i.e. If they are set as `HUMHUB_PROTO=https` , `HUMHUB_HOST=example.com` , humhub will be installed and configured so that the base url is `https://example.com/` . Leaving these as default will result in humhub being installed and configured to be at `http://localhost/` .
+If these are defined during auto-installation, HumHub will be installed and configured to use urls with those details. (i.e. If they are set as `HUMHUB_PROTO=https`, `HUMHUB_HOST=example.com`, HumHub will be installed and configured so that the base url is `https://example.com/`. Leaving these as default will result in HumHub being installed and configured to be at `http://localhost/`.
 
 ### `HUMHUB_ADMIN_LOGIN` & `HUMHUB_ADMIN_EMAIL` & `HUMHUB_ADMIN_PASSWORD`
 
-**default: `admin` , `humhub@example.com` , `test`**
+**default: `admin`, `humhub@example.com`, `test`**
 
-If these are defined during auto-installation, humhub admin will be created with those credentials.
+If these are defined during auto-installation, HumHub admin will be created with those credentials.
 
 ### `INTEGRITY_CHECK`
 
 **default: `1`**
 
-This can be set to `"false"` to disabled the startup integrity check. Use with caution!
+This can be set to `"false"` to disable the startup integrity check. Use with caution!
 
 ### `WAIT_FOR_DB`
 
 **default: `1`**
 
-Can be used to let the startup fail if the db host is unavailable. To disable this, set it to `"false"` . Can be useful if an external db-host is used, avoid when using a linked container.
+Can be used to let the startup fail if the db host is unavailable. To disable this, set it to `"false"`. Can be useful if an external db-host is used, avoid when using a linked container.
 
 ### `SET_PJAX`
 
 **default: `1`**
 
-PJAX is a jQuery plugin that uses ajax and pushState to deliver a fast browsing experience with real permalinks, page titles, and a working back button. ([ref](https://github.com/yiisoft/jquery-pjax)) This library is known to cause problems with some browsers during  installation. This container starts with PJAX disabled to improve the installation reliability. If this is set (default), PJAX is **enabled** during the **second** startup. Set this to `"false"` to permanently disable PJAX. Please note that changing this after container-creation has no effect on this behavior.
+PJAX is a jQuery plugin that uses AJAX and pushState to deliver a fast browsing experience with real permalinks, page titles, and a working back button. ([ref](https://github.com/yiisoft/jquery-pjax)) This library is known to cause problems with some browsers during installation. This container starts with PJAX disabled to improve the installation reliability. If this is set (default), PJAX is **enabled** during the **second** startup. Set this to `"false"` to permanently disable PJAX. Please note that changing this after container-creation has no effect on this behavior.
 
 ### Mailer Config
 
 It is possible to configure HumHub email settings using the following environment variables:
 
-``` plaintext
+```plaintext
 HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS    [noreply@example.com]
 HUMHUB_MAILER_SYSTEM_EMAIL_NAME       [HumHub]
 HUMHUB_MAILER_TRANSPORT_TYPE          [php]
@@ -134,7 +137,7 @@ HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS []
 
 It is possible to configure HumHub LDAP authentication settings using the following environment variables:
 
-``` plaintext
+```plaintext
 HUMHUB_LDAP_ENABLED            [0]
 HUMHUB_LDAP_HOSTNAME           []
 HUMHUB_LDAP_PORT               []
@@ -150,13 +153,13 @@ HUMHUB_LDAP_ID_ATTRIBUTE       []
 HUMHUB_LDAP_REFRESH_USERS      []
 ```
 
-## PHP Config
+### PHP Config
 
 It is also possible to change some php-config-settings. This comes in handy if you have to scale this container vertically.
 
 Following environment variables can be used (default values in angle brackets):
 
-``` plaintext
+```plaintext
 PHP_POST_MAX_SIZE       [16M]
 PHP_UPLOAD_MAX_FILESIZE [10M]
 PHP_MAX_EXECUTION_TIME  [60]
@@ -164,11 +167,11 @@ PHP_MEMORY_LIMIT        [1G]
 PHP_TIMEZONE            [UTC]
 ```
 
-## NGINX Config
+### NGINX Config
 
-Following variables can be used to configure the embadded Nginx. The configfile gets rewritten on every container startup and is not persisted. Avoid changing it by hand.
+Following variables can be used to configure the embedded Nginx. The config-file gets rewritten on every container startup and is not persisted. Avoid changing it by hand.
 
-``` plaintext
+```plaintext
 NGINX_CLIENT_MAX_BODY_SIZE [10m]
 NGINX_KEEPALIVE_TIMEOUT    [65]
 ```
@@ -176,3 +179,13 @@ NGINX_KEEPALIVE_TIMEOUT    [65]
 ## Contribution
 
 Please use the issues-page for bugs or suggestions. Pull-requests are highly welcomed.
+
+## Special Thanks
+
+Special thanks go to following contributors for there incredible work on this image:
+
+- @madmath03
+- @pascalberger
+- @bkmeneguello
+
+And also to @luke- and his team for providing, building and maintaining HumHub.
