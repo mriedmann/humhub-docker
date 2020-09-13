@@ -5,12 +5,12 @@
 ![Docker Image CI](https://github.com/mriedmann/humhub-docker/workflows/Docker%20Image%20CI/badge.svg)
 
 [HumHub](https://github.com/humhub/humhub) is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
-This container provides a quick, flexible and lightweight way to set up a proof-of-concept for detailed evaluation. 
+This container provides a quick, flexible and lightweight way to set up a proof-of-concept for detailed evaluation.
 Using this in production is possible, but please note that there is currently no official support available for this kind of setup.
 
 ## Versions
 
-* [![dockerimage badge (latest)](https://images.microbadger.com/badges/version/mriedmann/humhub:latest.svg)](https://microbadger.com/images/mriedmann/humhub:latest "Get your own version badge on microbadger.com") `latest` :  unstable master build (use with caution! might be unstable)
+* [![dockerimage badge (latest)](https://images.microbadger.com/badges/version/mriedmann/humhub:latest.svg)](https://microbadger.com/images/mriedmann/humhub:latest "Get your own version badge on microbadger.com") `latest` : unstable master build (use with caution, might be unstable!)
 * [![dockerimage badge (1.5.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.5.2.svg)](https://microbadger.com/images/mriedmann/humhub:1.5.2 "Get your own version badge on microbadger.com") `1.5.2` : latest legacy release
 * [![dockerimage badge (1.6.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.6.2.svg)](https://microbadger.com/images/mriedmann/humhub:1.6.2 "Get your own version badge on microbadger.com") `1.6.2` : latest stable release (recommended)
 * [![dockerimage badge (experimental)](https://images.microbadger.com/badges/version/mriedmann/humhub:experimental.svg)](https://microbadger.com/images/mriedmann/humhub:experimental "Get your own version badge on microbadger.com") `experimental` : test build (testing only)
@@ -39,6 +39,7 @@ services:
     volumes:
       - "config:/var/www/localhost/htdocs/protected/config"
       - "uploads:/var/www/localhost/htdocs/uploads"
+      - "modules:/var/www/localhost/htdocs/protected/modules"
     environment:
       HUMHUB_DB_USER: humhub
       HUMHUB_DB_PASSWORD: humhub
@@ -54,6 +55,7 @@ services:
 volumes:
   config: {}
   uploads: {}
+  modules: {}
 ```
 
 > In some situations (e.g. with [podman-compose](https://github.com/containers/podman-compose)) you have to run compose `up` twice to give it some time to create the named volumes. 
@@ -184,8 +186,8 @@ Please use the issues-page for bugs or suggestions. Pull-requests are highly wel
 
 Special thanks go to following contributors for there incredible work on this image:
 
-- @madmath03
-- @pascalberger
-- @bkmeneguello
+* @madmath03
+* @pascalberger
+* @bkmeneguello
 
 And also to @luke- and his team for providing, building and maintaining HumHub.
