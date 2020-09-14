@@ -58,7 +58,7 @@ volumes:
   modules: {}
 ```
 
-> In some situations (e.g. with [podman-compose](https://github.com/containers/podman-compose)) you have to run compose `up` twice to give it some time to create the named volumes. 
+> In some situations (e.g. with [podman-compose](https://github.com/containers/podman-compose)) you have to run compose `up` twice to give it some time to create the named volumes.
 
 ## Advanced Config
 
