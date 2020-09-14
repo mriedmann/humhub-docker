@@ -1,22 +1,39 @@
-# NOTE: This files purpose is to spin-up the project for testing it in CI. 
-#       Please do not understand it as recommendation for an production 
-#       docker-compose setup. For that see the README. If you have additions 
-#       to make, please add them there.
+# NOTE: This files shows a possible production setup.
+#       If you are not familiar with handling containers in production, please 
+#       consider a different approach of hosting. This setup can lead to 
+#       errors and loss of production data if handled incorrectly. Currently 
+
+# WARNING: Currently, container based setups are not officially supported by Humhub GmbH.
+#          Use at your own risk!
 version: '3.1'
 services:
+  nginx:
+    build:
+      context: .
+      target: humhub_nginx
+    ports:
+      - "8080:80"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - "uploads:/var/www/localhost/htdocs/uploads"
+      - "assets:/var/www/localhost/htdocs/assets"
   humhub:
     build:
       context: .
-      target: humhub_allinone
-    ports:
-      - "8080:80"
+      target: humhub_phponly
+    expose:
+      - '9000'
     environment:
       HUMHUB_DB_USER: ${HUMHUB_DB_USER}
       HUMHUB_DB_PASSWORD: ${HUMHUB_DB_PASSWORD}
       HUMHUB_DB_HOST: 'db'
       HUMHUB_DB_NAME: 'humhub'
       HUMHUB_AUTO_INSTALL: 1
-      HUMHUB_DEBUG: 1
+      # HUMHUB_DEBUG: 1 # you can currently not use debug in prod 
       HUMHUB_PROTO: 'https'
       HUMHUB_HOST: 'localhost'
       # Mailer install setup
@@ -36,10 +53,12 @@ services:
       HUMHUB_REDIS_HOSTNAME: redis
       HUMHUB_REDIS_PORT: 6379
       HUMHUB_REDIS_PASSWORD: redis_password
-#   volumes:
+    volumes:
+      - "uploads:/var/www/localhost/htdocs/uploads"
+      - "assets:/var/www/localhost/htdocs/assets"
 #     - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/ping"]
+      test: ["CMD", "php-fpm-healthcheck"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -73,4 +92,6 @@ services:
       #- ALLOW_EMPTY_PASSWORD=yes
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-
+volumes:
+  uploads: {}
+  assets: {}
