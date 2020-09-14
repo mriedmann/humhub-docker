@@ -61,7 +61,7 @@ RUN grunt build-assets
 
 RUN rm -rf ./node_modules
 
-FROM alpine:3.12.0
+FROM alpine:3.12.0 as base
 
 ARG HUMHUB_VERSION
 
@@ -96,7 +96,6 @@ RUN apk add --no-cache \
     php7-fileinfo \
     php7-session \
     supervisor \
-    nginx \
     sqlite \
     && rm -rf /var/cache/apk/*
 
@@ -114,29 +113,63 @@ ENV PHP_MAX_EXECUTION_TIME=60
 ENV PHP_MEMORY_LIMIT=1G
 ENV PHP_TIMEZONE=UTC
 
-RUN chown -R nginx:nginx /var/lib/nginx/ && \
-    touch /var/run/supervisor.sock && \
+RUN touch /var/run/supervisor.sock && \
     chmod 777 /var/run/supervisor.sock
 
-COPY --from=builder --chown=nginx:nginx /usr/src/humhub /var/www/localhost/htdocs/
-COPY --chown=nginx:nginx humhub/ /var/www/localhost/htdocs/
+# 100=nginx 101=nginx (group)
+COPY --from=builder --chown=100:101 /usr/src/humhub /var/www/localhost/htdocs/
+COPY --chown=100:101 humhub/ /var/www/localhost/htdocs/ 
 
 RUN mkdir -p /usr/src/humhub/protected/config/ && \
     cp -R /var/www/localhost/htdocs/protected/config/* /usr/src/humhub/protected/config/ && \
     rm -f var/www/localhost/htdocs/protected/config/common.php /usr/src/humhub/protected/config/common.php && \
     echo "v${HUMHUB_VERSION}" >  /usr/src/humhub/.version
 
-COPY etc/ /etc/
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY base/ /
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN chmod 600 /etc/crontabs/nginx && \
-    chmod +x /usr/local/bin/docker-entrypoint.sh
+    chmod +x /docker-entrypoint.sh
 
 VOLUME /var/www/localhost/htdocs/uploads
 VOLUME /var/www/localhost/htdocs/protected/config
 VOLUME /var/www/localhost/htdocs/protected/modules
 
-EXPOSE 80
-
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
+
+FROM base as humhub_phponly
+
+RUN apk add --no-cache fcgi
+
+COPY phponly/ /
+
+RUN wget -O /usr/local/bin/php-fpm-healthcheck \
+ https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/master/php-fpm-healthcheck \
+ && chmod +x /usr/local/bin/php-fpm-healthcheck \
+ && addgroup -g 101 -S nginx \
+ && adduser --uid 100 -g 101 -S nginx
+
+EXPOSE 9000
+
+FROM nginx:stable-alpine as humhub_nginx
+
+ENV NGINX_ENABLED=1 \
+    NGINX_CLIENT_MAX_BODY_SIZE=10m \
+    NGINX_KEEPALIVE_TIMEOUT=65 \
+    NGINX_UPSTREAM=humhub:9000
+
+COPY nginx/ /
+COPY --from=builder --chown=nginx:nginx /usr/src/humhub/ /var/www/localhost/htdocs/
+
+FROM base as humhub_allinone
+
+ENV NGINX_ENABLED=1
+
+RUN apk add --no-cache nginx
+
+RUN chown -R nginx:nginx /var/lib/nginx/
+
+COPY nginx/ /
+
+EXPOSE 80

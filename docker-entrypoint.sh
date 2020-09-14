@@ -1,12 +1,15 @@
 #!/bin/sh
 
-INTEGRITY_CHECK=${HUMHUB_INTEGRITY_CHECK:-1}
+set -e
+
 WAIT_FOR_DB=${HUMHUB_WAIT_FOR_DB:-1}
 SET_PJAX=${HUMHUB_SET_PJAX:-1}
 AUTOINSTALL=${HUMHUB_AUTO_INSTALL:-"false"}
+ENTRYPOINT_QUIET_LOGS=${ENTRYPOINT_QUIET_LOGS:-}
 
 HUMHUB_DB_NAME=${HUMHUB_DB_NAME:-"humhub"}
 HUMHUB_DB_HOST=${HUMHUB_DB_HOST:-"db"}
+HUMHUB_DB_PORT=${HUMHUB_DB_PORT:-3306}
 HUMHUB_NAME=${HUMHUB_NAME:-"HumHub"}
 HUMHUB_EMAIL=${HUMHUB_EMAIL:-"humhub@example.com"}
 HUMHUB_LANG=${HUMHUB_LANG:-"en-US"}
@@ -51,6 +54,13 @@ HUMHUB_MAILER_PASSWORD=${HUMHUB_MAILER_PASSWORD}
 HUMHUB_MAILER_ENCRYPTION=${HUMHUB_MAILER_ENCRYPTION}
 HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS=${HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS:-0}
 
+# Redis Config
+HUMHUB_REDIS_HOSTNAME=${HUMHUB_REDIS_HOSTNAME}
+HUMHUB_REDIS_PORT=${HUMHUB_REDIS_PORT:-6379}
+HUMHUB_REDIS_PASSWORD=${HUMHUB_REDIS_PASSWORD}
+
+NGINX_ENABLED=${NGINX_ENABLED:-"false"}
+NGINX_UPSTREAM=${NGINX_UPSTREAM:-unix:/run/php-fpm.sock}
 export NGINX_CLIENT_MAX_BODY_SIZE=${NGINX_CLIENT_MAX_BODY_SIZE:-10m}
 export NGINX_KEEPALIVE_TIMEOUT=${NGINX_KEEPALIVE_TIMEOUT:-65}
 
@@ -59,17 +69,31 @@ wait_for_db() {
 		return 0
 	fi
 
-	until nc -z -v -w60 "$HUMHUB_DB_HOST" 3306; do
-		echo "Waiting for database connection..."
+	if [ -n "$HUMHUB_REDIS_HOSTNAME" ]; then
+		until nc -z -v -w60 "$HUMHUB_REDIS_HOSTNAME" "$HUMHUB_REDIS_PORT"; do
+			echo >&3 "$0: Waiting for redis connection..."
+			# wait for 5 seconds before check again
+			sleep 5
+		done
+	fi
+
+	until nc -z -v -w60 "$HUMHUB_DB_HOST" "$HUMHUB_DB_PORT"; do
+		echo >&3 "$0: Waiting for database connection..."
 		# wait for 5 seconds before check again
 		sleep 5
 	done
 }
 
-echo "=="
+if [ -z "$ENTRYPOINT_QUIET_LOGS" ]; then
+    exec 3>&1
+else
+    exec 3>/dev/null
+fi
+
+echo >&3 "$0: Starting pre-launch ..."
 
 if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
-	echo "Existing installation found!"
+	echo >&3 "$0: Existing installation found!"
 
 	wait_for_db
 
@@ -77,19 +101,19 @@ if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
 	SOURCE_VERSION=$(cat /usr/src/humhub/.version)
 	cd /var/www/localhost/htdocs/protected/ || exit 1
 	if [ "$INSTALL_VERSION" != "$SOURCE_VERSION" ]; then
-		echo "Updating from version $INSTALL_VERSION to $SOURCE_VERSION"
+		echo >&3 "$0: Updating from version $INSTALL_VERSION to $SOURCE_VERSION"
 		php yii migrate/up --includeModuleMigrations=1 --interactive=0
 		php yii search/rebuild
 		cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
 	fi
 else
-	echo "No existing installation found!"
-	echo "Installing source files..."
+	echo >&3 "$0: No existing installation found!"
+	echo >&3 "$0: Installing source files..."
 	cp -rv /usr/src/humhub/protected/config/* /var/www/localhost/htdocs/protected/config/
 	cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
 
 	if [ ! -f "/var/www/localhost/htdocs/protected/config/common.php" ]; then
-		echo "Generate config using common factory..."
+		echo >&3 "$0: Generate config using common factory..."
 
 		echo '<?php return ' \
 			>/var/www/localhost/htdocs/protected/config/common.php
@@ -102,14 +126,14 @@ else
 	fi
 
 	if ! php -l /var/www/localhost/htdocs/protected/config/common.php; then
-		echo "Humhub common config is not valid! Fix errors before restarting."
+		echo >&3 "$0: Humhub common config is not valid! Fix errors before restarting."
 		exit 1
 	fi
 
 	mkdir -p /var/www/localhost/htdocs/protected/runtime/logs/
 	touch /var/www/localhost/htdocs/protected/runtime/logs/app.log
 
-	echo "Setting permissions..."
+	echo >&3 "$0: Setting permissions..."
 	chown -R nginx:nginx /var/www/localhost/htdocs/uploads
 	chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules
 	chown -R nginx:nginx /var/www/localhost/htdocs/protected/config
@@ -117,21 +141,21 @@ else
 
 	wait_for_db
 
-	echo "Creating database..."
+	echo >&3 "$0: Creating database..."
 	cd /var/www/localhost/htdocs/protected/ || exit 1
 	if [ -z "$HUMHUB_DB_USER" ]; then
 		AUTOINSTALL="false"
 	fi
 
 	if [ "$AUTOINSTALL" != "false" ]; then
-		echo "Installing..."
+		echo >&3 "$0: Installing..."
 		php yii installer/write-db-config "$HUMHUB_DB_HOST" "$HUMHUB_DB_NAME" "$HUMHUB_DB_USER" "$HUMHUB_DB_PASSWORD"
 		php yii installer/install-db
 		php yii installer/write-site-config "$HUMHUB_NAME" "$HUMHUB_EMAIL"
 		# Set baseUrl if provided
 		if [ -n "$HUMHUB_PROTO" ] && [ -n "$HUMHUB_HOST" ]; then
 			HUMHUB_BASE_URL="${HUMHUB_PROTO}://${HUMHUB_HOST}${HUMHUB_SUB_DIR}/"
-			echo "Setting base url to: $HUMHUB_BASE_URL"
+			echo >&3 "$0: Setting base url to: $HUMHUB_BASE_URL"
 			php yii installer/set-base-url "${HUMHUB_BASE_URL}"
 		fi
 		php yii installer/create-admin-account "${HUMHUB_ADMIN_LOGIN}" "${HUMHUB_ADMIN_EMAIL}" "${HUMHUB_ADMIN_PASSWORD}"
@@ -144,7 +168,7 @@ else
 		php yii 'settings/set' 'user' 'auth.needApproval' "${HUMHUB_NEED_APPROVAL}"
 
 		if [ "$HUMHUB_LDAP_ENABLED" != "0" ]; then
-			echo "Setting LDAP configuration..."
+			echo >&3 "$0: Setting LDAP configuration..."
 			php yii 'settings/set' 'ldap' 'enabled' "${HUMHUB_LDAP_ENABLED}"
 			php yii 'settings/set' 'ldap' 'hostname' "${HUMHUB_LDAP_HOSTNAME}"
 			php yii 'settings/set' 'ldap' 'port' "${HUMHUB_LDAP_PORT}"
@@ -174,7 +198,7 @@ else
 		php yii 'settings/set' 'base' 'mailer.systemEmailAddress' "${HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS}"
 		php yii 'settings/set' 'base' 'mailer.systemEmailName' "${HUMHUB_MAILER_SYSTEM_EMAIL_NAME}"
 		if [ "$HUMHUB_MAILER_TRANSPORT_TYPE" != "php" ]; then
-			echo "Setting Mailer configuration..."
+			echo >&3 "$0: Setting Mailer configuration..."
 			php yii 'settings/set' 'base' 'mailer.transportType' "${HUMHUB_MAILER_TRANSPORT_TYPE}"
 			php yii 'settings/set' 'base' 'mailer.hostname' "${HUMHUB_MAILER_HOSTNAME}"
 			php yii 'settings/set' 'base' 'mailer.port' "${HUMHUB_MAILER_PORT}"
@@ -189,11 +213,11 @@ else
 	fi
 fi
 
-echo "Config preprocessing ..."
+echo >&3 "$0: Config preprocessing ..."
 
 if test -e /var/www/localhost/htdocs/protected/config/dynamic.php &&
 	grep "'installed' => true" /var/www/localhost/htdocs/protected/config/dynamic.php -q; then
-	echo "installation active"
+	echo >&3 "$0: installation active"
 
 	if [ "$SET_PJAX" != "false" ]; then
 		sed -i \
@@ -207,37 +231,44 @@ if test -e /var/www/localhost/htdocs/protected/config/dynamic.php &&
 			/var/www/localhost/htdocs/protected/config/web.php
 	fi
 else
-	echo "no installation config found or not installed"
-	INTEGRITY_CHECK="false"
+	echo >&3 "$0: no installation config found or not installed"
+	export HUMHUB_INTEGRITY_CHECK="false"
 fi
 
 if [ "$HUMHUB_DEBUG" = "false" ]; then
 	sed -i '/YII_DEBUG/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
 	sed -i '/YII_ENV/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
-	echo "debug disabled"
+	echo >&3 "$0: debug disabled"
 else
 	sed -i '/YII_DEBUG/s/^\/*//' /var/www/localhost/htdocs/index.php
 	sed -i '/YII_ENV/s/^\/*//' /var/www/localhost/htdocs/index.php
-	echo "debug enabled"
+	echo >&3 "$0: debug enabled"
 fi
 
-if [ "$INTEGRITY_CHECK" != "false" ]; then
-	echo "validating ..."
-	if ! php ./yii integrity/run; then
-		echo "validation failed!"
-		exit 1
-	fi
+if /usr/bin/find "/docker-entrypoint.d/" -mindepth 1 -maxdepth 1 -type f -print -quit 2>/dev/null; then
+	echo >&3 "$0: /docker-entrypoint.d/ is not empty, will attempt to perform configuration"
+	echo >&3 "$0: Looking for shell scripts in /docker-entrypoint.d/"
+
+	find "/docker-entrypoint.d/" -follow -type f -print | sort -n | while read -r f; do
+		case "$f" in
+			*.sh)
+				if [ -x "$f" ]; then
+					echo >&3 "$0: Launching $f";
+					"$f"
+				else
+					# warn on shell scripts without exec bit
+					echo >&3 "$0: Ignoring $f, not executable";
+				fi
+				;;
+			*) echo >&3 "$0: Ignoring $f";;
+		esac
+	done
+
+	echo >&3 "$0: Configuration complete; ready for start up"
 else
-	echo "validation skipped"
+	echo >&3 "$0: No files found in /docker-entrypoint.d/, skipping configuration"
 fi
 
-echo "Writing Nginx Config"
-
-# shellcheck disable=SC2016
-envsubst '$NGINX_CLIENT_MAX_BODY_SIZE,$NGINX_KEEPALIVE_TIMEOUT' </etc/nginx/nginx.conf >/tmp/nginx.conf
-cat /tmp/nginx.conf >/etc/nginx/nginx.conf
-rm /tmp/nginx.conf
-
-echo "=="
+echo >&3 "$0: Entrypoint finished! Launching ..."
 
 exec "$@"
