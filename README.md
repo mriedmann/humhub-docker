@@ -186,6 +186,7 @@ Please use the issues-page for bugs or suggestions. Pull-requests are highly wel
 Special thanks go to following contributors for there incredible work on this image:
 
 * @madmath03
+* @ArchBlood
 * @pascalberger
 * @bkmeneguello
 
