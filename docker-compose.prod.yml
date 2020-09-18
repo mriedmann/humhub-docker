@@ -21,6 +21,8 @@ services:
     volumes:
       - "uploads:/var/www/localhost/htdocs/uploads"
       - "assets:/var/www/localhost/htdocs/assets"
+      - "modules:/var/www/localhost/htdocs/protected/modules"
+      - "themes:/var/www/localhost/htdocs/themes"
   humhub:
     build:
       context: .
@@ -56,6 +58,8 @@ services:
     volumes:
       - "uploads:/var/www/localhost/htdocs/uploads"
       - "assets:/var/www/localhost/htdocs/assets"
+      - "modules:/var/www/localhost/htdocs/protected/modules"
+      - "themes:/var/www/localhost/htdocs/themes"
 #     - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
     healthcheck:
       test: ["CMD", "php-fpm-healthcheck"]
@@ -63,7 +67,7 @@ services:
       timeout: 10s
       retries: 3
   db:
-    image: mariadb
+    image: mariadb:10.4
     environment:
       MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
       MYSQL_DATABASE: 'humhub'
@@ -95,3 +99,5 @@ services:
 volumes:
   uploads: {}
   assets: {}
+  modules: {}
+  themes: {}
