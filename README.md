@@ -10,10 +10,10 @@ Using this in production is possible, but please note that there is currently no
 
 ## Versions
 
-* [![dockerimage badge (latest)](https://images.microbadger.com/badges/version/mriedmann/humhub:latest.svg)](https://microbadger.com/images/mriedmann/humhub:latest "Get your own version badge on microbadger.com") `latest` : unstable master build (use with caution, might be unstable!)
-* [![dockerimage badge (1.5.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.5.2.svg)](https://microbadger.com/images/mriedmann/humhub:1.5.2 "Get your own version badge on microbadger.com") `1.5.2` : latest legacy release
-* [![dockerimage badge (1.6.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.6.2.svg)](https://microbadger.com/images/mriedmann/humhub:1.6.2 "Get your own version badge on microbadger.com") `1.6.2` : latest stable release (recommended)
-* [![dockerimage badge (experimental)](https://images.microbadger.com/badges/version/mriedmann/humhub:experimental.svg)](https://microbadger.com/images/mriedmann/humhub:experimental "Get your own version badge on microbadger.com") `experimental` : test build (testing only)
+- [![dockerimage badge (latest)](https://images.microbadger.com/badges/version/mriedmann/humhub:latest.svg)](https://microbadger.com/images/mriedmann/humhub:latest "Get your own version badge on microbadger.com") `latest` : unstable master build (use with caution, might be unstable!)
+- [![dockerimage badge (1.5.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.5.2.svg)](https://microbadger.com/images/mriedmann/humhub:1.5.2 "Get your own version badge on microbadger.com") `1.5.2` : latest legacy release
+- [![dockerimage badge (1.6.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.6.2.svg)](https://microbadger.com/images/mriedmann/humhub:1.6.2 "Get your own version badge on microbadger.com") `1.6.2` : latest stable release (recommended)
+- [![dockerimage badge (experimental)](https://images.microbadger.com/badges/version/mriedmann/humhub:experimental.svg)](https://microbadger.com/images/mriedmann/humhub:experimental "Get your own version badge on microbadger.com") `experimental` : test build (testing only)
 
 ## Quickstart
 
@@ -21,7 +21,7 @@ No database integrated. For persistency look at the Compose-File example.
 
 1. `docker run -d --name humhub_db -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=humhub mariadb:10.2`
 2. `docker run -d --name humhub -p 80:80 --link humhub_db:db mriedmann/humhub:1.2.0`
-3. open [http://localhost/](http://localhost/) in browser
+3. open <http://localhost/> in browser
 4. complete the installation wizard (use `db` as database hostname and `humhub` as database name)
 5. finished
 
@@ -185,9 +185,9 @@ Please use the issues-page for bugs or suggestions. Pull-requests are highly wel
 
 Special thanks go to following contributors for there incredible work on this image:
 
-* @madmath03
-* @ArchBlood
-* @pascalberger
-* @bkmeneguello
+- @madmath03
+- @ArchBlood
+- @pascalberger
+- @bkmeneguello
 
 And also to @luke- and his team for providing, building and maintaining HumHub.
