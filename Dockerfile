@@ -118,7 +118,7 @@ RUN touch /var/run/supervisor.sock && \
 
 # 100=nginx 101=nginx (group)
 COPY --from=builder --chown=100:101 /usr/src/humhub /var/www/localhost/htdocs/
-COPY --chown=100:101 humhub/ /var/www/localhost/htdocs/ 
+COPY --chown=100:101 humhub/ /var/www/localhost/htdocs/
 
 RUN mkdir -p /usr/src/humhub/protected/config/ && \
     cp -R /var/www/localhost/htdocs/protected/config/* /usr/src/humhub/protected/config/ && \
