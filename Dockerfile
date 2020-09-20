@@ -154,8 +154,7 @@ EXPOSE 9000
 
 FROM nginx:stable-alpine as humhub_nginx
 
-ENV NGINX_ENABLED=1 \
-    NGINX_CLIENT_MAX_BODY_SIZE=10m \
+ENV NGINX_CLIENT_MAX_BODY_SIZE=10m \
     NGINX_KEEPALIVE_TIMEOUT=65 \
     NGINX_UPSTREAM=humhub:9000
 
@@ -163,8 +162,6 @@ COPY nginx/ /
 COPY --from=builder --chown=nginx:nginx /usr/src/humhub/ /var/www/localhost/htdocs/
 
 FROM base as humhub_allinone
-
-ENV NGINX_ENABLED=1
 
 RUN apk add --no-cache nginx
 
