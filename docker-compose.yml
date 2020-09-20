@@ -44,7 +44,7 @@ services:
       timeout: 10s
       retries: 3
   db:
-    image: mariadb
+    image: mariadb:10.4
     environment:
       MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
       MYSQL_DATABASE: 'humhub'
