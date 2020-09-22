@@ -8,9 +8,7 @@
 version: '3.1'
 services:
   nginx:
-    build:
-      context: .
-      target: humhub_nginx
+    image: ghcr.io/mriedmann/humhub:nginx-stable
     ports:
       - "8080:80"
     healthcheck:
@@ -24,9 +22,7 @@ services:
       - "modules:/var/www/localhost/htdocs/protected/modules"
       - "themes:/var/www/localhost/htdocs/themes"
   humhub:
-    build:
-      context: .
-      target: humhub_phponly
+    image: ghcr.io/mriedmann/humhub:phponly-stable
     expose:
       - '9000'
     environment:
