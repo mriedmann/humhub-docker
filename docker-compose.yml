@@ -5,9 +5,7 @@
 version: '3.1'
 services:
   humhub:
-    build:
-      context: .
-      target: humhub_allinone
+    image: ghcr.io/mriedmann/humhub:latest
     ports:
       - "8080:80"
     environment:

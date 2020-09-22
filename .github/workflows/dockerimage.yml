@@ -8,14 +8,92 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build_bases:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["1.6.3", "1.5.4", "1.4.5"]
     steps:
     - uses: actions/checkout@v2
-    - name: Build docker image
-      run: docker-compose build
+    - uses: FranzDiebold/github-env-vars-action@v1.2.0
+    - name: Login to registry
+      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username mriedmann --password-stdin
+    - name: Build and push docker image
+      run: |
+        docker build \
+          --build-arg HUMHUB_VERSION="${{ matrix.version }}" \
+          --target base \
+          -t ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-base-${{ matrix.version }} \
+          .
+        docker push ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-base-${{ matrix.version }}
+  build_variants:
+    needs: build_bases
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["1.6.3", "1.5.4", "1.4.5"]
+        target: ["allinone", "nginx", "phponly"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: FranzDiebold/github-env-vars-action@v1.2.0
+    - name: Login to registry
+      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username mriedmann --password-stdin
+    - name: Build and push docker image
+      run: |
+        docker pull ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-base-${{ matrix.version }}
+        docker build \
+          --build-arg HUMHUB_VERSION="${{ matrix.version }}" \
+          --target humhub_${{ matrix.target }} \
+          -t ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.target }}-${{ matrix.version }} \
+          .
+        docker push ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.target }}-${{ matrix.version }}
+  test_aio:
+    needs: build_variants
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["1.6.3", "1.5.4", "1.4.5"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: FranzDiebold/github-env-vars-action@v1.2.0
+    - name: Login to registry
+      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username mriedmann --password-stdin
+    - name: Pull images 
+      run: |
+        docker pull ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-allinone-${{ matrix.version }}
+    - name: replace image
+      run: sed -i "s/mriedmann\/humhub:latest/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-allinone-${{ matrix.version }}/g" docker-compose.yml
     - name: Spin up services
-      run: docker-compose up -d
+      run: docker-compose -f docker-compose.yml up -d
+    - name: Wait 
+      run: sleep 60
+    - name: Check status
+      run: docker ps -a
+    - name: Test
+      run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
+    - name: Test Email
+      run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
+  test_prod:
+    needs: build_variants
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["1.6.3", "1.5.4", "1.4.5"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: FranzDiebold/github-env-vars-action@v1.2.0
+    - name: Login to registry
+      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username mriedmann --password-stdin
+    - name: Pull images 
+      run: |
+        docker pull ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-phponly-${{ matrix.version }}
+        docker pull ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-nginx-${{ matrix.version }}
+    - name: replace image
+      run: |
+        sed -i "s/mriedmann\/humhub:nginx-stable/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-nginx-${{ matrix.version }}/g" docker-compose.prod.yml
+        sed -i "s/mriedmann\/humhub:phponly-stable/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-phponly-${{ matrix.version }}/g" docker-compose.prod.yml
+    - name: Spin up services
+      run: docker-compose -f docker-compose.prod.yml up -d
     - name: Wait 
       run: sleep 60
     - name: Check status
