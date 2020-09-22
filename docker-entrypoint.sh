@@ -167,7 +167,7 @@ else
 
 		if [ "$HUMHUB_LDAP_CACERT" != "" ]; then
 			echo "Setting LDAP CACERT"
-			echo $HUMHUB_LDAP_CACERT > /etc/ssl/certs/cacert.crt
+			echo "$HUMHUB_LDAP_CACERT" > /etc/ssl/certs/cacert.crt
 			echo "TLS_CACERT  /etc/ssl/certs/cacert.crt" >> /etc/openldap/ldap.conf
 		fi
 		
