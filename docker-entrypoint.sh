@@ -37,6 +37,8 @@ HUMHUB_LDAP_USERNAME_ATTRIBUTE=${HUMHUB_LDAP_USERNAME_ATTRIBUTE}
 HUMHUB_LDAP_EMAIL_ATTRIBUTE=${HUMHUB_LDAP_EMAIL_ATTRIBUTE}
 HUMHUB_LDAP_ID_ATTRIBUTE=${HUMHUB_LDAP_ID_ATTRIBUTE}
 HUMHUB_LDAP_REFRESH_USERS=${HUMHUB_LDAP_REFRESH_USERS:-1}
+HUMHUB_LDAP_CACERT=${HUMHUB_LDAP_CACERT:""}
+HUMHUB_LDAP_SKIP_VERIFY=${HUMHUB_LDAP_SKIP_VERIFY:-0}
 
 # Mailer Config
 HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS=${HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS:-"noreply@example.com"}
@@ -158,6 +160,17 @@ else
 			php yii 'settings/set' 'ldap' 'refreshUsers' "${HUMHUB_LDAP_REFRESH_USERS}"
 		fi
 
+		if [ "$HUMHUB_LDAP_SKIP_VERIFY" != "0" ]; then
+			echo "Setting LDAP TLS SKIP VERIFY"
+			echo "TLS_REQCERT ALLOW" >> /etc/openldap/ldap.conf
+		fi
+
+		if [ "$HUMHUB_LDAP_CACERT" != "" ]; then
+			echo "Setting LDAP CACERT"
+			echo $HUMHUB_LDAP_CACERT > /etc/ssl/certs/cacert.crt
+			echo "TLS_CACERT  /etc/ssl/certs/cacert.crt" >> /etc/openldap/ldap.conf
+		fi
+		
 		php yii 'settings/set' 'base' 'mailer.systemEmailAddress' "${HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS}"
 		php yii 'settings/set' 'base' 'mailer.systemEmailName' "${HUMHUB_MAILER_SYSTEM_EMAIL_NAME}"
 		if [ "$HUMHUB_MAILER_TRANSPORT_TYPE" != "php" ]; then
