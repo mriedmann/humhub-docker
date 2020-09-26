@@ -23,9 +23,9 @@ jobs:
         docker build \
           --build-arg HUMHUB_VERSION="${{ matrix.version }}" \
           --target base \
-          -t ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-base-${{ matrix.version }} \
+          -t ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.version }}-base \
           .
-        docker push ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-base-${{ matrix.version }}
+        docker push ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.version }}-base
   build_variants:
     needs: build_bases
     runs-on: ubuntu-latest
@@ -40,13 +40,13 @@ jobs:
       run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username mriedmann --password-stdin
     - name: Build and push docker image
       run: |
-        docker pull ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-base-${{ matrix.version }}
+        docker pull ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.version }}-base
         docker build \
           --build-arg HUMHUB_VERSION="${{ matrix.version }}" \
           --target humhub_${{ matrix.target }} \
-          -t ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.target }}-${{ matrix.version }} \
+          -t ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.version }}-${{ matrix.target }} \
           .
-        docker push ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.target }}-${{ matrix.version }}
+        docker push ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.version }}-${{ matrix.target }}
   test_aio:
     needs: build_variants
     runs-on: ubuntu-latest
@@ -60,9 +60,9 @@ jobs:
       run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username mriedmann --password-stdin
     - name: Pull images 
       run: |
-        docker pull ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-allinone-${{ matrix.version }}
+        docker pull ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.version }}-allinone
     - name: replace image
-      run: sed -i "s/mriedmann\/humhub:latest/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-allinone-${{ matrix.version }}/g" docker-compose.yml
+      run: sed -i "s/docker.io\/mriedmann\/humhub:latest/ghcr.io\/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.version }}-allinone/g" docker-compose.yml
     - name: Spin up services
       run: docker-compose -f docker-compose.yml up -d
     - name: Wait 
@@ -86,12 +86,12 @@ jobs:
       run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username mriedmann --password-stdin
     - name: Pull images 
       run: |
-        docker pull ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-phponly-${{ matrix.version }}
-        docker pull ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-nginx-${{ matrix.version }}
+        docker pull ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.version }}-phponly
+        docker pull ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.version }}-nginx
     - name: replace image
       run: |
-        sed -i "s/mriedmann\/humhub:nginx-stable/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-nginx-${{ matrix.version }}/g" docker-compose.prod.yml
-        sed -i "s/mriedmann\/humhub:phponly-stable/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-phponly-${{ matrix.version }}/g" docker-compose.prod.yml
+        sed -i "s/docker.io\/mriedmann\/humhub:stable-nginx/ghcr.io\/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.version }}-nginx/g" docker-compose.prod.yml
+        sed -i "s/docker.io\/mriedmann\/humhub:stable-phponly/ghcr.io\/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-${{ matrix.version }}-phponly/g" docker-compose.prod.yml
     - name: Spin up services
       run: docker-compose -f docker-compose.prod.yml up -d
     - name: Wait 
