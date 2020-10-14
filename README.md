@@ -152,7 +152,7 @@ HUMHUB_LDAP_USERNAME_ATTRIBUTE                    []
 HUMHUB_LDAP_EMAIL_ATTRIBUTE                       []
 HUMHUB_LDAP_ID_ATTRIBUTE                          []
 HUMHUB_LDAP_REFRESH_USERS                         []
-HUMHUB_Advanced_LDAP_THUMBNAIL_SYNC_PROPERTY      [thumbnailphoto]
+HUMHUB_ADVANCED_LDAP_THUMBNAIL_SYNC_PROPERTY      [thumbnailphoto]
 ```
 
 ### PHP Config

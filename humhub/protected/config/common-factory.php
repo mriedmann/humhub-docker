@@ -21,13 +21,13 @@ $common = [
 
 /**
  * LDAP Thumbnailsync for Advanced LDAP Module
- * 
+ *
  * @see https://www.humhub.com/de/marketplace/advanced-ldap/
  */
-if (!empty(getenv('HUMHUB_Advanced_LDAP_THUMBNAIL_SYNC_PROPERTY'))) {
+if (!empty(getenv('HUMHUB_ADVANCED_LDAP_THUMBNAIL_SYNC_PROPERTY'))) {
     $common['components']['authClientCollection']['clients']['ldap'] = [
         'class' => 'humhub\modules\advancedLdap\authclient\LdapAuth',
-        'profileImageAttribute' => getenv('HUMHUB_Advanced_LDAP_THUMBNAIL_SYNC_PROPERTY')
+        'profileImageAttribute' => getenv('HUMHUB_ADVANCED_LDAP_THUMBNAIL_SYNC_PROPERTY')
     ];
 }
 
