@@ -139,19 +139,20 @@ HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS []
 It is possible to configure HumHub LDAP authentication settings using the following environment variables:
 
 ```plaintext
-HUMHUB_LDAP_ENABLED            [0]
-HUMHUB_LDAP_HOSTNAME           []
-HUMHUB_LDAP_PORT               []
-HUMHUB_LDAP_ENCRYPTION         []
-HUMHUB_LDAP_USERNAME           []
-HUMHUB_LDAP_PASSWORD           []
-HUMHUB_LDAP_BASE_DN            []
-HUMHUB_LDAP_LOGIN_FILTER       []
-HUMHUB_LDAP_USER_FILTER        []
-HUMHUB_LDAP_USERNAME_ATTRIBUTE []
-HUMHUB_LDAP_EMAIL_ATTRIBUTE    []
-HUMHUB_LDAP_ID_ATTRIBUTE       []
-HUMHUB_LDAP_REFRESH_USERS      []
+HUMHUB_LDAP_ENABLED                               [0]
+HUMHUB_LDAP_HOSTNAME                              []
+HUMHUB_LDAP_PORT                                  []
+HUMHUB_LDAP_ENCRYPTION                            []
+HUMHUB_LDAP_USERNAME                              []
+HUMHUB_LDAP_PASSWORD                              []
+HUMHUB_LDAP_BASE_DN                               []
+HUMHUB_LDAP_LOGIN_FILTER                          []
+HUMHUB_LDAP_USER_FILTER                           []
+HUMHUB_LDAP_USERNAME_ATTRIBUTE                    []
+HUMHUB_LDAP_EMAIL_ATTRIBUTE                       []
+HUMHUB_LDAP_ID_ATTRIBUTE                          []
+HUMHUB_LDAP_REFRESH_USERS                         []
+HUMHUB_Advanced_LDAP_THUMBNAIL_SYNC_PROPERTY      [thumbnailphoto]
 ```
 
 ### PHP Config
