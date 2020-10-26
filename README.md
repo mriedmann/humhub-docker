@@ -4,6 +4,8 @@
 
 ![Docker Image CI](https://github.com/mriedmann/humhub-docker/workflows/Docker%20Image%20CI/badge.svg)
 
+> :warning: **New Releases**: We are currently working on a new release pipeline to support multi-version and multi-variant releases! This should not affect the state of the current latest tag. Please feel free to open an issue if you are experiencing any problems.
+
 [HumHub](https://github.com/humhub/humhub) is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
 This container provides a quick, flexible and lightweight way to set up a proof-of-concept for detailed evaluation.
 Using this in production is possible, but please note that there is currently no official support available for this kind of setup.
