@@ -26,6 +26,7 @@ jobs:
       run: |
         docker build \
           --build-arg HUMHUB_VERSION="${HUMHUB_VERSION}" \
+          --build-arg VCS_REF=`git rev-parse --short HEAD` \
           --target base \
           -t ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-base \
           .
@@ -51,6 +52,7 @@ jobs:
         docker pull ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-base
         docker build \
           --build-arg HUMHUB_VERSION="${HUMHUB_VERSION}" \
+          --build-arg VCS_REF=`git rev-parse --short HEAD` \
           --target humhub_${{ matrix.target }} \
           -t ghcr.io/mriedmann/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-${{ matrix.target }} \
           .

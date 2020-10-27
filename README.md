@@ -12,17 +12,37 @@ Using this in production is possible, but please note that there is currently no
 
 ## Versions
 
-- [![dockerimage badge (latest)](https://images.microbadger.com/badges/version/mriedmann/humhub:latest.svg)](https://microbadger.com/images/mriedmann/humhub:latest "Get your own version badge on microbadger.com") `latest` : unstable master build (use with caution, might be unstable!)
-- [![dockerimage badge (1.5.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.5.2.svg)](https://microbadger.com/images/mriedmann/humhub:1.5.2 "Get your own version badge on microbadger.com") `1.5.2` : latest legacy release
-- [![dockerimage badge (1.6.x)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.6.2.svg)](https://microbadger.com/images/mriedmann/humhub:1.6.2 "Get your own version badge on microbadger.com") `1.6.2` : latest stable release (recommended)
-- [![dockerimage badge (experimental)](https://images.microbadger.com/badges/version/mriedmann/humhub:experimental.svg)](https://microbadger.com/images/mriedmann/humhub:experimental "Get your own version badge on microbadger.com") `experimental` : test build (testing only)
+This project provides different images and tags for different purposes. For evaluation use `humhub:stable`, for production consider using the newest minor-version tag (e.g. `humhub:1.6`).
+
+- `latest` : unstable master build (not recommended for production; use with caution, might be unstable!)
+- Minor (e.g `1.6`): Always points to latest release of given minor version. (Recommended)
+- Build (e.g `1.6.3`): Always points to latest release of given build. Very stable but might be outdated.
+- `stable`: Always points to latest stable version. Updates include minor-version changes which can include db-schema changes (higher risk).
+
+### Variants
+
+There are 3 different variants of this image. Use the unspecific tag (e.g. `humhub:1.6`) if you what a running installation as fast as possible. If plan to build some kind of hosted solution, have a look at `docker-compose.prod.yml` to understand how the variant images can be used.
+
+- default / all-in-one (e.g. `humhub:1.6`): Multi-service image (nginx + php-fpm). Use this if you are not sure what you need.
+- `nginx` (e.g. `humhub:1.6-nginx`): Only static files and nginx proxy config without php.
+- `phponly` (e.g. `humhub:1.6-phponly`): HumHub sources bundled with php-fpm. Needs a fcgi application-server to be able to deliver http.
+
+### Matrix
+
+| Version  | Status       | AllInOne                                                                                                                                                           | Nginx                                                                                                                                                                          | PHP-Only                                                                                                                                                                           |
+| -------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `1.4`    | EndOfLife    | [![dockerimage badge (1.4)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.4.svg)](https://microbadger.com/images/mriedmann/humhub:1.4)          | [![dockerimage badge (1.4)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.4-nginx.svg)](https://microbadger.com/images/mriedmann/humhub:1.4-nginx)          | [![dockerimage badge (1.4)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.4-phponly.svg)](https://microbadger.com/images/mriedmann/humhub:1.4-phponly)          |
+| `1.5`    | Deprecated   | [![dockerimage badge (1.5)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.5.svg)](https://microbadger.com/images/mriedmann/humhub:1.5)          | [![dockerimage badge (1.5)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.5-nginx.svg)](https://microbadger.com/images/mriedmann/humhub:1.5-nginx)          | [![dockerimage badge (1.5)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.5-phponly.svg)](https://microbadger.com/images/mriedmann/humhub:1.5-phponly)          |
+| `1.6`    | Stable       | [![dockerimage badge (1.6)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.6.svg)](https://microbadger.com/images/mriedmann/humhub:1.6)          | [![dockerimage badge (1.6)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.6-nginx.svg)](https://microbadger.com/images/mriedmann/humhub:1.6-nginx)          | [![dockerimage badge (1.6)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.6-phponly.svg)](https://microbadger.com/images/mriedmann/humhub:1.6-phponly)          |
+| `stable` | Stable       | [![dockerimage badge (stable)](https://images.microbadger.com/badges/version/mriedmann/humhub:stable.svg)](https://microbadger.com/images/mriedmann/humhub:stable) | [![dockerimage badge (stable)](https://images.microbadger.com/badges/version/mriedmann/humhub:stable-nginx.svg)](https://microbadger.com/images/mriedmann/humhub:stable-nginx) | [![dockerimage badge (stable)](https://images.microbadger.com/badges/version/mriedmann/humhub:stable-phponly.svg)](https://microbadger.com/images/mriedmann/humhub:stable-phponly) |
+| `latest` | Experimental | [![dockerimage badge (latest)](https://images.microbadger.com/badges/version/mriedmann/humhub:latest.svg)](https://microbadger.com/images/mriedmann/humhub:latest) | [![dockerimage badge (latest)](https://images.microbadger.com/badges/version/mriedmann/humhub:latest-nginx.svg)](https://microbadger.com/images/mriedmann/humhub:latest-nginx) | [![dockerimage badge (latest)](https://images.microbadger.com/badges/version/mriedmann/humhub:latest-phponly.svg)](https://microbadger.com/images/mriedmann/humhub:latest-phponly) |
 
 ## Quickstart
 
 No database integrated. For persistency look at the Compose-File example.
 
 1. `docker run -d --name humhub_db -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=humhub mariadb:10.2`
-2. `docker run -d --name humhub -p 80:80 --link humhub_db:db mriedmann/humhub:1.2.0`
+2. `docker run -d --name humhub -p 80:80 --link humhub_db:db mriedmann/humhub:stable`
 3. open <http://localhost/> in browser
 4. complete the installation wizard (use `db` as database hostname and `humhub` as database name)
 5. finished
@@ -66,57 +86,58 @@ volumes:
 
 This container supports some further options which can be configured via environment variables. Look at the [docker-compose.yml](https://github.com/mriedmann/humhub-docker/blob/master/docker-compose.yml) for some inspiration.
 
-### `HUMHUB_DB_USER` & `HUMHUB_DB_PASSWORD`
+### Database Config
 
-**default: `""`**
+To avoid the visual installer at the first startup, set the HUMHUB_DB_PASSWORD **and** HUMHUB_DB_USER.
+If you use the `--link` argument please specify the name of the link as host (via `HUMHUB_DB_HOST`) or use `db` as linkname ( `--link <container>:db` ).
 
-This username and password will be used to connect to the database. Please do not set the HUMHUB_DB_PASSWORD without HUMHUB_DB_USER to avoid problems. If this is not set, the visual installer will show up at the first startup.
+```plaintext
+HUMHUB_DB_USER     []
+HUMHUB_DB_PASSWORD []
+HUMHUB_DB_NAME     [humhub]
+HUMHUB_DB_HOST     [db]
+```
 
-### `HUMHUB_DB_NAME`
+### Autoinstall Config
 
-**default: `humhub`**
-
-Defines the name of the database where HumHub is installed.
-
-### `HUMHUB_DB_HOST`
-
-**default: `db`**
-
-Defines the mysql/mariadb-database-host. If you use the `--link` argument please specify the name of the link as host or use `db` as linkname ( `--link <container>:db` ).
-
-### `HUMHUB_AUTO_INSTALL`
-
-**default: `false`**
+```plaintext
+HUMHUB_AUTO_INSTALL [false]
+```
 
 If this and `HUMHUB_DB_USER` are set an automated installation will run during the first startup. This feature utilities a hidden installer-feature used for integration testing ( [see code file](https://github.com/humhub/humhub/blob/master/protected/humhub/modules/installer/commands/InstallController.php) ).
 
-### `HUMHUB_PROTO` & `HUMHUB_HOST`
-
-**default: `http`, `localhost`**
+```plaintext
+HUMHUB_PROTO [http]
+HUMHUB_HOST  [localhost]
+```
 
 If these are defined during auto-installation, HumHub will be installed and configured to use urls with those details. (i.e. If they are set as `HUMHUB_PROTO=https`, `HUMHUB_HOST=example.com`, HumHub will be installed and configured so that the base url is `https://example.com/`. Leaving these as default will result in HumHub being installed and configured to be at `http://localhost/`.
 
-### `HUMHUB_ADMIN_LOGIN` & `HUMHUB_ADMIN_EMAIL` & `HUMHUB_ADMIN_PASSWORD`
-
-**default: `admin`, `humhub@example.com`, `test`**
+```plaintext
+HUMHUB_ADMIN_LOGIN    [admin]
+HUMHUB_ADMIN_EMAIL    [humhub@example.com]
+HUMHUB_ADMIN_PASSWORD [test]
+```
 
 If these are defined during auto-installation, HumHub admin will be created with those credentials.
 
-### `INTEGRITY_CHECK`
+### Startup Config
 
-**default: `1`**
+```plaintext
+INTEGRITY_CHECK [1]
+```
 
 This can be set to `"false"` to disable the startup integrity check. Use with caution!
 
-### `WAIT_FOR_DB`
-
-**default: `1`**
+```plaintext
+WAIT_FOR_DB [1]
+```
 
 Can be used to let the startup fail if the db host is unavailable. To disable this, set it to `"false"`. Can be useful if an external db-host is used, avoid when using a linked container.
 
-### `SET_PJAX`
-
-**default: `1`**
+```plaintext
+SET_PJAX [1]
+```
 
 PJAX is a jQuery plugin that uses AJAX and pushState to deliver a fast browsing experience with real permalinks, page titles, and a working back button. ([ref](https://github.com/yiisoft/jquery-pjax)) This library is known to cause problems with some browsers during installation. This container starts with PJAX disabled to improve the installation reliability. If this is set (default), PJAX is **enabled** during the **second** startup. Set this to `"false"` to permanently disable PJAX. Please note that changing this after container-creation has no effect on this behavior.
 
