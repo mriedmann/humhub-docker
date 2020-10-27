@@ -1,4 +1,4 @@
-ARG HUMHUB_VERSION=1.6.2
+ARG HUMHUB_VERSION
 
 FROM composer:1.10.13 as builder-composer
 
@@ -64,6 +64,7 @@ RUN rm -rf ./node_modules
 FROM alpine:3.12.1 as base
 
 ARG HUMHUB_VERSION
+LABEL name=humhub version=${HUMHUB_VERSION} variant=base
 
 RUN apk add --no-cache \
     curl \
@@ -140,6 +141,8 @@ CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
 
 FROM base as humhub_phponly
 
+LABEL variant=phponly
+
 RUN apk add --no-cache fcgi
 
 COPY phponly/ /
@@ -154,6 +157,8 @@ EXPOSE 9000
 
 FROM nginx:stable-alpine as humhub_nginx
 
+LABEL variant=nginx
+
 ENV NGINX_CLIENT_MAX_BODY_SIZE=10m \
     NGINX_KEEPALIVE_TIMEOUT=65 \
     NGINX_UPSTREAM=humhub:9000
@@ -162,6 +167,8 @@ COPY nginx/ /
 COPY --from=builder --chown=nginx:nginx /usr/src/humhub/ /var/www/localhost/htdocs/
 
 FROM base as humhub_allinone
+
+LABEL variant=allinone
 
 RUN apk add --no-cache nginx
 
