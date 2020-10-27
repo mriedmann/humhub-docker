@@ -1,4 +1,5 @@
 ARG HUMHUB_VERSION
+ARG VCS_REF
 
 FROM composer:1.10.13 as builder-composer
 
@@ -64,7 +65,16 @@ RUN rm -rf ./node_modules
 FROM alpine:3.12.1 as base
 
 ARG HUMHUB_VERSION
-LABEL name=humhub version=${HUMHUB_VERSION} variant=base
+LABEL name="HumHub" version=${HUMHUB_VERSION} variant="base" \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="HumHub" \
+      org.label-schema.description="HumHub is a feature rich and highly flexible OpenSource Social Network Kit written in PHP" \
+      org.label-schema.url="https://www.humhub.com/" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/mriedmann/humhub-docker" \
+      org.label-schema.vendor="HumHub GmbH" \
+      org.label-schema.version=${HUMHUB_VERSION} \
+      org.label-schema.schema-version="1.0"
 
 RUN apk add --no-cache \
     curl \
@@ -141,7 +151,7 @@ CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
 
 FROM base as humhub_phponly
 
-LABEL variant=phponly
+LABEL variant="phponly"
 
 RUN apk add --no-cache fcgi
 
@@ -157,7 +167,7 @@ EXPOSE 9000
 
 FROM nginx:stable-alpine as humhub_nginx
 
-LABEL variant=nginx
+LABEL variant="nginx"
 
 ENV NGINX_CLIENT_MAX_BODY_SIZE=10m \
     NGINX_KEEPALIVE_TIMEOUT=65 \
@@ -168,7 +178,7 @@ COPY --from=builder --chown=nginx:nginx /usr/src/humhub/ /var/www/localhost/htdo
 
 FROM base as humhub_allinone
 
-LABEL variant=allinone
+LABEL variant="allinone"
 
 RUN apk add --no-cache nginx
 
