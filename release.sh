@@ -25,7 +25,8 @@ function publish_image() {
     done
 }
 
-publish_image 1.6.3 1.6 stable
-publish_image 1.5.4 1.5
-publish_image 1.4.5 1.4
+while read -r line; do 
+    IFS=' ' read -ra versions <<< "$line"
+    publish_image "${versions[0]}" "${versions[@]:1}"
+done < versions.txt
  
