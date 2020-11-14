@@ -1,8 +1,6 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
   workflow_dispatch:
@@ -20,17 +18,20 @@ jobs:
       run: |
         export HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> $GITHUB_ENV
-    - name: Login to registry
-      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username ${GITHUB_REPOSITORY_OWNER} --password-stdin
     - name: Build and push docker image
       run: |
         docker build \
           --build-arg HUMHUB_VERSION="${HUMHUB_VERSION}" \
           --build-arg VCS_REF=`git rev-parse --short HEAD` \
           --target base \
-          -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-base \
+          -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-base\
           .
-        docker push ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-base
+        docker save ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-base | gzip > build-${{ matrix.version }}.tar.gz
+    - name: Upload image archive
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-${{ matrix.version }}
+        path: build-${{ matrix.version }}.tar.gz
   build_variants:
     needs: build_bases
     runs-on: ubuntu-latest
@@ -45,18 +46,25 @@ jobs:
       run: |
         export HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> $GITHUB_ENV
-    - name: Login to registry
-      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username ${GITHUB_REPOSITORY_OWNER} --password-stdin
+    - name: Download image archive
+      uses: actions/download-artifact@v2
+      with:
+        name: build-${{ matrix.version }}
     - name: Build and push docker image
       run: |
-        docker pull ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-base
+        docker load --input build-${{ matrix.version }}.tar.gz
         docker build \
           --build-arg HUMHUB_VERSION="${HUMHUB_VERSION}" \
           --build-arg VCS_REF=`git rev-parse --short HEAD` \
           --target humhub_${{ matrix.target }} \
           -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-${{ matrix.target }} \
           .
-        docker push ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-${{ matrix.target }}
+        docker save ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-${{ matrix.target }} | gzip > build-${{ matrix.version }}-${{ matrix.target }}.tar.gz
+    - name: Upload image archive
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-${{ matrix.version }}-${{ matrix.target }}
+        path: build-${{ matrix.version }}-${{ matrix.target }}.tar.gz
   test_aio:
     needs: build_variants
     runs-on: ubuntu-latest
@@ -70,11 +78,13 @@ jobs:
       run: |
         export HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> $GITHUB_ENV
-    - name: Login to registry
-      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username ${GITHUB_REPOSITORY_OWNER} --password-stdin
-    - name: Pull images 
+    - name: Download image archive
+      uses: actions/download-artifact@v2
+      with:
+        name: build-${{ matrix.version }}-allinone
+    - name: Load images 
       run: |
-        docker pull ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-allinone
+        docker load --input build-${{ matrix.version }}-allinone.tar.gz
     - name: replace image
       run: sed -i "s/docker.io\/mriedmann\/humhub:latest/ghcr.io\/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-allinone/g" docker-compose.yml
     - name: Spin up services
@@ -100,12 +110,18 @@ jobs:
       run: |
         export HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> $GITHUB_ENV
-    - name: Login to registry
-      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username ${GITHUB_REPOSITORY_OWNER} --password-stdin
-    - name: Pull images 
+    - name: Download image archive (phponly)
+      uses: actions/download-artifact@v2
+      with:
+        name: build-${{ matrix.version }}-phponly
+    - name: Download image archive (nginx)
+      uses: actions/download-artifact@v2
+      with:
+        name: build-${{ matrix.version }}-nginx
+    - name: Load images 
       run: |
-        docker pull ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-phponly
-        docker pull ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-nginx
+        docker load --input build-${{ matrix.version }}-phponly.tar.gz
+        docker load --input build-${{ matrix.version }}-nginx.tar.gz
     - name: replace image
       run: |
         sed -i "s/docker.io\/mriedmann\/humhub:stable-nginx/ghcr.io\/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-nginx/g" docker-compose.prod.yml
