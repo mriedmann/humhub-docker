@@ -1,0 +1,120 @@
+name: Build Master
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build_bases:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["1.7", "1.6", "1.5", "1.4"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: FranzDiebold/github-env-vars-action@v1.2.0
+    - name: Set Humhub version
+      run: |
+        export HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
+        echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> $GITHUB_ENV
+    - name: Login to registry
+      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username ${GITHUB_REPOSITORY_OWNER} --password-stdin
+    - name: Build and push docker image
+      run: |
+        docker build \
+          --build-arg HUMHUB_VERSION="${HUMHUB_VERSION}" \
+          --build-arg VCS_REF=`git rev-parse --short HEAD` \
+          --target base \
+          -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-base \
+          .
+        docker push ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-base
+  build_variants:
+    needs: build_bases
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["1.7", "1.6", "1.5", "1.4"]
+        target: ["allinone", "nginx", "phponly"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: FranzDiebold/github-env-vars-action@v1.2.0
+    - name: Set Humhub version
+      run: |
+        export HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
+        echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> $GITHUB_ENV
+    - name: Login to registry
+      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username ${GITHUB_REPOSITORY_OWNER} --password-stdin
+    - name: Build and push docker image
+      run: |
+        docker pull ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-base
+        docker build \
+          --build-arg HUMHUB_VERSION="${HUMHUB_VERSION}" \
+          --build-arg VCS_REF=`git rev-parse --short HEAD` \
+          --target humhub_${{ matrix.target }} \
+          -t ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-${{ matrix.target }} \
+          .
+        docker push ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-${{ matrix.target }}
+  test_aio:
+    needs: build_variants
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["1.7", "1.6", "1.5", "1.4"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: FranzDiebold/github-env-vars-action@v1.2.0
+    - name: Set Humhub version
+      run: |
+        export HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
+        echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> $GITHUB_ENV
+    - name: Login to registry
+      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username ${GITHUB_REPOSITORY_OWNER} --password-stdin
+    - name: Pull images 
+      run: |
+        docker pull ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-allinone
+    - name: replace image
+      run: sed -i "s/docker.io\/mriedmann\/humhub:latest/ghcr.io\/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-allinone/g" docker-compose.yml
+    - name: Spin up services
+      run: docker-compose -f docker-compose.yml up -d
+    - name: Wait 
+      run: sleep 60
+    - name: Check status
+      run: docker ps -a
+    - name: Test
+      run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
+    - name: Test Email
+      run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
+  test_prod:
+    needs: build_variants
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["1.7", "1.6", "1.5", "1.4"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: FranzDiebold/github-env-vars-action@v1.2.0
+    - name: Set Humhub version
+      run: |
+        export HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
+        echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> $GITHUB_ENV
+    - name: Login to registry
+      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username ${GITHUB_REPOSITORY_OWNER} --password-stdin
+    - name: Pull images 
+      run: |
+        docker pull ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-phponly
+        docker pull ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-nginx
+    - name: replace image
+      run: |
+        sed -i "s/docker.io\/mriedmann\/humhub:stable-nginx/ghcr.io\/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-nginx/g" docker-compose.prod.yml
+        sed -i "s/docker.io\/mriedmann\/humhub:stable-phponly/ghcr.io\/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-phponly/g" docker-compose.prod.yml
+    - name: Spin up services
+      run: docker-compose -f docker-compose.prod.yml up -d
+    - name: Wait 
+      run: sleep 60
+    - name: Check status
+      run: docker ps -a
+    - name: Test
+      run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
+    - name: Test Email
+      run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
