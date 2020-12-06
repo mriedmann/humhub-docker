@@ -86,7 +86,7 @@ jobs:
       run: |
         docker load --input build-${{ matrix.version }}-allinone.tar.gz
     - name: replace image
-      run: sed -i "s/docker.io\/mriedmann\/humhub:latest/ghcr.io\/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-allinone/g" docker-compose.yml
+      run: sed -i "s/docker.io\/mriedmann\/humhub:latest/ghcr.io\/${GITHUB_REPOSITORY_OWNER}\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-allinone/g" docker-compose.yml
     - name: Spin up services
       run: docker-compose -f docker-compose.yml up -d
     - name: Wait 
@@ -124,8 +124,8 @@ jobs:
         docker load --input build-${{ matrix.version }}-nginx.tar.gz
     - name: replace image
       run: |
-        sed -i "s/docker.io\/mriedmann\/humhub:stable-nginx/ghcr.io\/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-nginx/g" docker-compose.prod.yml
-        sed -i "s/docker.io\/mriedmann\/humhub:stable-phponly/ghcr.io\/mriedmann\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-phponly/g" docker-compose.prod.yml
+        sed -i "s/docker.io\/mriedmann\/humhub:stable-nginx/ghcr.io\/${GITHUB_REPOSITORY_OWNER}\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-nginx/g" docker-compose.prod.yml
+        sed -i "s/docker.io\/mriedmann\/humhub:stable-phponly/ghcr.io\/${GITHUB_REPOSITORY_OWNER}\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-phponly/g" docker-compose.prod.yml
     - name: Spin up services
       run: docker-compose -f docker-compose.prod.yml up -d
     - name: Wait 
