@@ -9,6 +9,7 @@ jobs:
   build_bases:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         version: ["1.7", "1.6", "1.5", "1.4"]
     steps:
@@ -33,6 +34,7 @@ jobs:
     needs: build_bases
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         version: ["1.7", "1.6", "1.5", "1.4"]
         target: ["allinone", "nginx", "phponly"]
@@ -59,6 +61,7 @@ jobs:
     needs: build_variants
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         version: ["1.7", "1.6", "1.5", "1.4"]
     steps:
@@ -89,6 +92,7 @@ jobs:
     needs: build_variants
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         version: ["1.7", "1.6", "1.5", "1.4"]
     steps:
