@@ -95,7 +95,7 @@ class InstallController extends Controller
         }
 
         $this->stdout("  * Installing Database\n", Console::FG_YELLOW);
-        
+
         Yii::$app->cache->flush();
         // Disable max execution time to avoid timeouts during migrations
         @ini_set('max_execution_time', 0);
@@ -177,7 +177,7 @@ class InstallController extends Controller
         return ExitCode::OK;
     }
 
-     /**
+    /**
      * Sets application in installed state (disables installer)
      */
     private function setInstalled()
