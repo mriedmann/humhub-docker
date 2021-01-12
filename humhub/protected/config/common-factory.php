@@ -27,7 +27,7 @@ $common = [
 if (!empty(getenv('HUMHUB_PROTO'))) {
 	if (!empty(getenv('HUMHUB_HOST'))) {
 		$common['components']['urlManager']["hostInfo"] = getenv('HUMHUB_PROTO')."://".getenv('HUMHUB_HOST');
-		$common['components']['urlManager']["baseUrl"] = "/"
+		$common['components']['urlManager']["baseUrl"] = "/";
 	}
 }
 
