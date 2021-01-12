@@ -20,6 +20,18 @@ $common = [
 ];
 
 /**
+ * UrlManager
+ *
+ * @see https://github.com/humhub/humhub/issues/2220
+ */
+if (!empty(getenv('HUMHUB_PROTO'))) {
+	if (!empty(getenv('HUMHUB_HOST'))) {
+		$common['components']['urlManager']["hostInfo"] = getenv('HUMHUB_PROTO')."://".getenv('HUMHUB_HOST');
+		$common['components']['urlManager']["baseUrl"] = "/"
+	}
+}
+
+/**
  * LDAP Thumbnailsync for Advanced LDAP Module
  *
  * @see https://www.humhub.com/de/marketplace/advanced-ldap/
