@@ -25,10 +25,10 @@ $common = [
  * @see https://github.com/humhub/humhub/issues/2220
  */
 if (!empty(getenv('HUMHUB_PROTO'))) {
-	if (!empty(getenv('HUMHUB_HOST'))) {
-		$common['components']['urlManager']["hostInfo"] = getenv('HUMHUB_PROTO')."://".getenv('HUMHUB_HOST');
-		$common['components']['urlManager']["baseUrl"] = "/";
-	}
+    if (!empty(getenv('HUMHUB_HOST'))) {
+        $common['components']['urlManager']["hostInfo"] = getenv('HUMHUB_PROTO') . "://" . getenv('HUMHUB_HOST');
+        $common['components']['urlManager']["baseUrl"] = "/";
+    }
 }
 
 /**
