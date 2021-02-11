@@ -179,17 +179,6 @@ else
 			php yii 'settings/set' 'ldap' 'refreshUsers' "${HUMHUB_LDAP_REFRESH_USERS}"
 		fi
 
-		if [ "$HUMHUB_LDAP_SKIP_VERIFY" != "0" ]; then
-			echo "Setting LDAP TLS SKIP VERIFY"
-			echo "TLS_REQCERT ALLOW" >> /etc/openldap/ldap.conf
-		fi
-
-		if [ "$HUMHUB_LDAP_CACERT" != "" ]; then
-			echo "Setting LDAP CACERT"
-			echo "$HUMHUB_LDAP_CACERT" > /etc/ssl/certs/cacert.crt
-			echo "TLS_CACERT  /etc/ssl/certs/cacert.crt" >> /etc/openldap/ldap.conf
-		fi
-		
 		php yii 'settings/set' 'base' 'mailer.systemEmailAddress' "${HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS}"
 		php yii 'settings/set' 'base' 'mailer.systemEmailName' "${HUMHUB_MAILER_SYSTEM_EMAIL_NAME}"
 		if [ "$HUMHUB_MAILER_TRANSPORT_TYPE" != "php" ]; then
@@ -238,6 +227,17 @@ else
 	sed -i '/YII_DEBUG/s/^\/*//' /var/www/localhost/htdocs/index.php
 	sed -i '/YII_ENV/s/^\/*//' /var/www/localhost/htdocs/index.php
 	echo >&3 "$0: debug enabled"
+fi
+
+if [ "$HUMHUB_LDAP_SKIP_VERIFY" != "0" ]; then
+	echo "Setting LDAP TLS SKIP VERIFY"
+	echo "TLS_REQCERT ALLOW" >> /etc/openldap/ldap.conf
+fi
+
+if [ "$HUMHUB_LDAP_CACERT" != "" ]; then
+	echo "Setting LDAP CACERT"
+	echo "$HUMHUB_LDAP_CACERT" > /etc/ssl/certs/cacert.crt
+	echo "TLS_CACERT  /etc/ssl/certs/cacert.crt" >> /etc/openldap/ldap.conf
 fi
 
 if /usr/bin/find "/docker-entrypoint.d/" -mindepth 1 -maxdepth 1 -type f -print -quit 2>/dev/null; then
