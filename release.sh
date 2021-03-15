@@ -16,7 +16,8 @@ function publish_image() {
             postfix="-$variant"
         fi
 
-        src_tag="master-${src_version}-$variant"
+        src_image="$src_image-$variant"
+        src_tag="${src_version}"
         for version in "$@"; do
             dst_tag="${version}$postfix"    
             echo "copy $src_image:$src_tag => $dst_image:$dst_tag"

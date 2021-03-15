@@ -167,6 +167,6 @@ jobs:
     - name: Load, retag and Push images 
       run: |
         docker load --input build-${{ matrix.version }}-${{ matrix.target }}.tar.gz
-        docker tag ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-${{ matrix.target }} ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${HUMHUB_VERSION}-${{ matrix.target }}
-        docker push ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${HUMHUB_VERSION}-${{ matrix.target }}
+        docker tag ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-${{ matrix.target }} ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub-${{ matrix.target }}:${HUMHUB_VERSION}
+        docker push ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub-${{ matrix.target }}:${HUMHUB_VERSION}
         
