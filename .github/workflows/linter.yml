@@ -48,5 +48,6 @@ jobs:
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
           VALIDATE_DOCKERFILE: false
+          VALIDATE_JSCPD: false
           LINTER_RULES_PATH: .
           DOCKERFILE_HADOLINT_FILE_NAME: .hadolint.yaml
