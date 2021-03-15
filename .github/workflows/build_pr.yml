@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: &versions ["1.8", "1.7", "1.6"]
+        version: ["1.8", "1.7", "1.6"]
     steps:
     - uses: actions/checkout@v2
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
@@ -41,8 +41,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: *versions
-        target: &variants ["allinone", "nginx", "phponly"]
+        version: ["1.8", "1.7", "1.6"]
+        target: ["allinone", "nginx", "phponly"]
     steps:
     - uses: actions/checkout@v2
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
@@ -75,7 +75,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: *versions
+        version: ["1.8", "1.7", "1.6"]
     steps:
     - uses: actions/checkout@v2
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
@@ -108,7 +108,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: *versions
+        version: ["1.8", "1.7", "1.6"]
     steps:
     - uses: actions/checkout@v2
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
@@ -149,8 +149,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: *versions
-        target: *variants
+        version: ["1.8", "1.7", "1.6"]
+        target: ["allinone", "nginx", "phponly"]
     steps:
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
     - name: Login to registry
