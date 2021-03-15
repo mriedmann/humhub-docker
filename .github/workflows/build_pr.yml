@@ -1,7 +1,9 @@
-name: Build PR
+name: Build
 
 on:
   pull_request:
+    branches: [ master ]
+  push:
     branches: [ master ]
   workflow_dispatch:
 
@@ -11,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.7", "1.6"]
+        version: &versions ["1.8", "1.7", "1.6"]
     steps:
     - uses: actions/checkout@v2
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
@@ -39,8 +41,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.7", "1.6"]
-        target: ["allinone", "nginx", "phponly"]
+        version: *versions
+        target: &variants ["allinone", "nginx", "phponly"]
     steps:
     - uses: actions/checkout@v2
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
@@ -73,7 +75,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.7", "1.6"]
+        version: *versions
     steps:
     - uses: actions/checkout@v2
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
@@ -106,7 +108,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.7", "1.6"]
+        version: *versions
     steps:
     - uses: actions/checkout@v2
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
@@ -140,3 +142,30 @@ jobs:
       run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
     - name: Test Email
       run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
+  push_ghcr:
+    needs: ["test_aio", "test_prod"]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    strategy:
+      fail-fast: false
+      matrix:
+        version: *versions
+        target: *variants
+    steps:
+    - uses: FranzDiebold/github-env-vars-action@v1.2.1
+    - name: Login to registry
+      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username ${GITHUB_REPOSITORY_OWNER} --password-stdin
+    - name: Set Humhub version
+      run: |
+        export HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
+        echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> $GITHUB_ENV
+    - name: Download image archive
+      uses: actions/download-artifact@v2
+      with:
+        name: build-${{ matrix.version }}-${{ matrix.target }}
+    - name: Load, retag and Push images 
+      run: |
+        docker load --input build-${{ matrix.version }}-${{ matrix.target }}.tar.gz
+        docker tag ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-${{ matrix.target }} ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${HUMHUB_VERSION}-${{ matrix.target }}
+        docker push ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${HUMHUB_VERSION}-${{ matrix.target }}
+        
