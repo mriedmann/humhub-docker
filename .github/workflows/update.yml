@@ -19,9 +19,9 @@ jobs:
       id: update
       run: |
         . ./update.sh
-        echo ::set-env name=CUR_VERSION::$CUR_VERSION
-        echo ::set-env name=NEW_VERSION::$NEW_VERSION
-        echo ::set-env name=GIT_BRANCH::$GIT_BRANCH
+        echo "CUR_VERSION=$CUR_VERSION" >> $GITHUB_ENV
+        echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+        echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
     - name: Check git status and log
       run: |
         git status
