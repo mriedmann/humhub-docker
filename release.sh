@@ -2,7 +2,7 @@
 
 set -eo pipefail
 
-src_image="ghcr.io/mriedmann/humhub"
+src_image_base="ghcr.io/mriedmann/humhub"
 dst_image="${1:-docker.io/mriedmann/humhub}"
 variants=("allinone" "nginx" "phponly")
 
@@ -16,7 +16,7 @@ function publish_image() {
             postfix="-$variant"
         fi
 
-        src_image="$src_image-$variant"
+        src_image="$src_image_base-$variant"
         src_tag="${src_version}"
         for version in "$@"; do
             dst_tag="${version}$postfix"    
