@@ -3,7 +3,7 @@ ARG VCS_REF
 
 FROM composer:2.0.11 as builder-composer
 
-FROM alpine:3.13.2 as builder
+FROM alpine:3.13.4 as builder
 
 ARG HUMHUB_VERSION
 
@@ -62,7 +62,7 @@ RUN grunt build-assets
 
 RUN rm -rf ./node_modules
 
-FROM alpine:3.13.2 as base
+FROM alpine:3.13.4 as base
 
 ARG HUMHUB_VERSION
 LABEL name="HumHub" version=${HUMHUB_VERSION} variant="base" \
