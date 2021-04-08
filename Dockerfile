@@ -1,9 +1,9 @@
 ARG HUMHUB_VERSION
 ARG VCS_REF
 
-FROM docker.io/library/composer:2.0.11 as builder-composer
+FROM composer:2.0.11 as builder-composer
 
-FROM docker.io/library/alpine:3.13.2 as builder
+FROM alpine:3.13.2 as builder
 
 ARG HUMHUB_VERSION
 
@@ -163,7 +163,7 @@ RUN chmod +x /usr/local/bin/php-fpm-healthcheck \
 
 EXPOSE 9000
 
-FROM docker.io/library/nginx:stable-alpine as humhub_nginx
+FROM nginx:stable-alpine as humhub_nginx
 
 LABEL variant="nginx"
 
