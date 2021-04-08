@@ -1,23 +1,22 @@
 ARG HUMHUB_VERSION
 ARG VCS_REF
 
-FROM composer:2.0.11 as builder-composer
+FROM docker.io/library/composer:2.0.11 as builder-composer
 
-FROM alpine:3.13.2 as builder
+FROM docker.io/library/alpine:3.13.2 as builder
 
 ARG HUMHUB_VERSION
 
 RUN apk update
 RUN apk add --no-cache \
     ca-certificates \
-    tzdata \
-    wget
+    tzdata
 
 WORKDIR /usr/src/
-RUN wget --progress=dot:giga https://github.com/humhub/humhub/archive/v${HUMHUB_VERSION}.tar.gz -q -O humhub.tar.gz && \
-    tar xzf humhub.tar.gz && \
+ADD https://github.com/humhub/humhub/archive/v${HUMHUB_VERSION}.tar.gz /usr/src/
+RUN tar xzf v${HUMHUB_VERSION}.tar.gz && \
     mv humhub-${HUMHUB_VERSION} humhub && \
-    rm humhub.tar.gz
+    rm v${HUMHUB_VERSION}.tar.gz
     
 WORKDIR /usr/src/humhub
 
@@ -62,7 +61,7 @@ RUN grunt build-assets
 
 RUN rm -rf ./node_modules
 
-FROM alpine:3.13.2 as base
+FROM docker.io/library/alpine:3.13.2 as base
 
 ARG HUMHUB_VERSION
 LABEL name="HumHub" version=${HUMHUB_VERSION} variant="base" \
@@ -157,15 +156,14 @@ RUN apk add --no-cache fcgi
 
 COPY phponly/ /
 
-RUN wget --progress=dot:giga -O /usr/local/bin/php-fpm-healthcheck \
- https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/master/php-fpm-healthcheck \
- && chmod +x /usr/local/bin/php-fpm-healthcheck \
+ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/master/php-fpm-healthcheck /usr/local/bin/php-fpm-healthcheck
+RUN chmod +x /usr/local/bin/php-fpm-healthcheck \
  && addgroup -g 101 -S nginx \
  && adduser --uid 100 -g 101 -S nginx
 
 EXPOSE 9000
 
-FROM nginx:stable-alpine as humhub_nginx
+FROM docker.io/library/nginx:stable-alpine as humhub_nginx
 
 LABEL variant="nginx"
 
