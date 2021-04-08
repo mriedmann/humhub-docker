@@ -14,7 +14,7 @@ RUN apk add --no-cache \
     wget
 
 WORKDIR /usr/src/
-RUN wget https://github.com/humhub/humhub/archive/v${HUMHUB_VERSION}.tar.gz -q -O humhub.tar.gz && \
+RUN wget --progress=dot:giga https://github.com/humhub/humhub/archive/v${HUMHUB_VERSION}.tar.gz -q -O humhub.tar.gz && \
     tar xzf humhub.tar.gz && \
     mv humhub-${HUMHUB_VERSION} humhub && \
     rm humhub.tar.gz
@@ -157,7 +157,7 @@ RUN apk add --no-cache fcgi
 
 COPY phponly/ /
 
-RUN wget -O /usr/local/bin/php-fpm-healthcheck \
+RUN wget --progress=dot:giga -O /usr/local/bin/php-fpm-healthcheck \
  https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/master/php-fpm-healthcheck \
  && chmod +x /usr/local/bin/php-fpm-healthcheck \
  && addgroup -g 101 -S nginx \
