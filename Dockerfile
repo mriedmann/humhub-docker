@@ -61,7 +61,7 @@ RUN grunt build-assets
 
 RUN rm -rf ./node_modules
 
-FROM docker.io/library/alpine:3.13.4 as base
+FROM docker.io/library/alpine:3.13.5 as base
 
 ARG HUMHUB_VERSION
 LABEL name="HumHub" version=${HUMHUB_VERSION} variant="base" \
