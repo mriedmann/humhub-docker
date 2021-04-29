@@ -1,7 +1,7 @@
 ARG HUMHUB_VERSION
 ARG VCS_REF
 
-FROM composer:2.0.12 as builder-composer
+FROM composer:2.0.13 as builder-composer
 
 FROM alpine:3.13.5 as builder
 
