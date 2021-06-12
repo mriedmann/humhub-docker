@@ -59,9 +59,6 @@ HUMHUB_REDIS_HOSTNAME=${HUMHUB_REDIS_HOSTNAME}
 HUMHUB_REDIS_PORT=${HUMHUB_REDIS_PORT:-6379}
 HUMHUB_REDIS_PASSWORD=${HUMHUB_REDIS_PASSWORD}
 
-# Reverseproxy
-HUMHUB_REVERSEPROXY_WHITELIST=${HUMHUB_REVERSEPROXY_WHITELIST:-"127.0.0.1;"}
-
 wait_for_db() {
 	if [ "$WAIT_FOR_DB" = "false" ]; then
 		return 0
@@ -242,15 +239,6 @@ if [ "$HUMHUB_LDAP_CACERT" != "" ]; then
 	echo "$HUMHUB_LDAP_CACERT" > /etc/ssl/certs/cacert.crt
 	echo "TLS_CACERT  /etc/ssl/certs/cacert.crt" >> /etc/openldap/ldap.conf
 fi
-
-echo "Setting HUMHUB_REVERSEPROXY_WHITELIST"
-reverseproxyips=$(echo $HUMHUB_REVERSEPROXY_WHITELIST | tr ";" "\n")
-touch /etc/nginx/allowedips.conf
-for ip in $reverseproxyips
-do
-	echo "allow $ip;" >>  /etc/nginx/allowedips.conf
-	echo "Added $ip to Reverseproxy Whitelist"
-done
 
 if /usr/bin/find "/docker-entrypoint.d/" -mindepth 1 -maxdepth 1 -type f -print -quit 2>/dev/null; then
 	echo >&3 "$0: /docker-entrypoint.d/ is not empty, will attempt to perform configuration"
