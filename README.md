@@ -186,6 +186,16 @@ HUMHUB_LDAP_REFRESH_USERS                         []
 HUMHUB_ADVANCED_LDAP_THUMBNAIL_SYNC_PROPERTY      [thumbnailphoto]
 ```
 
+### Search Config
+
+It is possible to configure HumHub search settings using the following environment variables:
+
+```plaintext
+HUMHUB_SEARCH_ITEM_LIMIT                               [2048]
+```
+
+`HUMHUB_SEARCH_ITEM_LIMIT` sets the `termsPerQueryLimit` of the Zend Lucene Search, it defaults to 2048.
+
 ### PHP Config
 
 It is also possible to change some php-config-settings. This comes in handy if you have to scale this container vertically.
