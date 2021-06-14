@@ -207,9 +207,9 @@ Following variables can be used to configure the embedded Nginx. The config-file
 ```plaintext
 NGINX_CLIENT_MAX_BODY_SIZE [10m]
 NGINX_KEEPALIVE_TIMEOUT    [65]
-HUMHUB_REVERSEPROXY_WHITELIST ["127.0.0.1;"]
+HUMHUB_REVERSEPROXY_WHITELIST ["127.0.0.1"]
 ```
-Hint: HUMHUB_REVERSEPROXY_WHITELIST must end with an ';'
+`HUMHUB_REVERSEPROXY_WHITELIST` allows access to the `/ping` endpoint for the given IP-Address. CIDR notation is supported.
 
 ## Contribution
 
