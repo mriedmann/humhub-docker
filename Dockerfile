@@ -3,7 +3,7 @@ ARG VCS_REF
 
 FROM composer:2.1.3 as builder-composer
 
-FROM docker.io/library/alpine:3.13.5 as builder
+FROM docker.io/library/alpine:3.14.0 as builder
 
 ARG HUMHUB_VERSION
 
@@ -61,7 +61,7 @@ RUN grunt build-assets
 
 RUN rm -rf ./node_modules
 
-FROM docker.io/library/alpine:3.13.5 as base
+FROM docker.io/library/alpine:3.14.0 as base
 
 ARG HUMHUB_VERSION
 LABEL name="HumHub" version=${HUMHUB_VERSION} variant="base" \
