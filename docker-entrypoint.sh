@@ -25,6 +25,7 @@ HUMHUB_CACHE_EXPIRE_TIME=${HUMHUB_CACHE_EXPIRE_TIME:-3600}
 HUMHUB_ANONYMOUS_REGISTRATION=${HUMHUB_ANONYMOUS_REGISTRATION:-1}
 HUMHUB_ALLOW_GUEST_ACCESS=${HUMHUB_ALLOW_GUEST_ACCESS:-0}
 HUMHUB_NEED_APPROVAL=${HUMHUB_NEED_APPROVAL:-0}
+HUMHUB_SEARCH_ITEM_LIMIT=${HUMHUB_SEARCH_ITEM_LIMIT:-2048}
 
 # LDAP Config
 HUMHUB_LDAP_ENABLED=${HUMHUB_LDAP_ENABLED:-0}
@@ -228,6 +229,10 @@ else
 	sed -i '/YII_ENV/s/^\/*//' /var/www/localhost/htdocs/index.php
 	echo >&3 "$0: debug enabled"
 fi
+
+echo "Setting search item limit to $HUMHUB_SEARCH_ITEM_LIMIT"
+sed -i  s/"public \$searchItemLimit = 2048;"/"public \$searchItemLimit = $HUMHUB_SEARCH_ITEM_LIMIT;"/ /var/www/localhost/htdocs/protected/humhub/modules/search/engine/ZendLuceneSearch.php
+
 
 if [ "$HUMHUB_LDAP_SKIP_VERIFY" != "0" ]; then
 	echo "Setting LDAP TLS SKIP VERIFY"
