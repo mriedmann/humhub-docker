@@ -1,7 +1,7 @@
 ARG HUMHUB_VERSION
 ARG VCS_REF
 
-FROM composer:2.1.4 as builder-composer
+FROM composer:2.1.5 as builder-composer
 
 FROM docker.io/library/alpine:3.14.0 as builder
 
