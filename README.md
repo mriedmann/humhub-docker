@@ -4,7 +4,9 @@
 
 ![Docker Image CI](https://github.com/mriedmann/humhub-docker/workflows/Docker%20Image%20CI/badge.svg)
 
-> :warning: **New Releases**: We are currently working on a new release pipeline to support multi-version and multi-variant releases! This should not affect the state of the current latest tag. Please feel free to open an issue if you are experiencing any problems.
+![Docker Pulls](https://img.shields.io/docker/pulls/mriedmann/humhub)
+
+> :warning: **Version Shift**: We lately changed the versions of latest (1.8->1.9) / stable (1.7->1.8) / legacy (1.7). This can lead to an unexpected update when you are using these moving tags. If you do not want to upgrade, use the corresponding version-tags.
 
 [HumHub](https://github.com/humhub/humhub) is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
 This container provides a quick, flexible and lightweight way to set up a proof-of-concept for detailed evaluation.
@@ -35,15 +37,41 @@ There are 3 different variants of this image. Use the unspecific tag (e.g. `humh
 - You can use **Testing** Versions if you need special new features. The newest HumHub versions will be first released in this way to find migration bugs in a save way. If you want to test upgrades to the next major version, this can be done with this tag.
 - **Experimental** is reserved for development of this project and always defines an early and potentially broken build. We are doing our best to avoid broken releases to latest, but please be warned and do not use this in production environments.
 
-| Version  | Status       | AllInOne                                                                                                                                                           | Nginx                                                                                                                                                                          | PHP-Only                                                                                                                                                                           |
-| -------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `1.4`    | :warning: EndOfLife    | [![dockerimage badge (1.4)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.4.svg)](https://microbadger.com/images/mriedmann/humhub:1.4)          | [![dockerimage badge (1.4)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.4-nginx.svg)](https://microbadger.com/images/mriedmann/humhub:1.4-nginx)          | [![dockerimage badge (1.4)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.4-phponly.svg)](https://microbadger.com/images/mriedmann/humhub:1.4-phponly)          |
-| `1.5`    | :warning: EndOfLife   | [![dockerimage badge (1.5)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.5.svg)](https://microbadger.com/images/mriedmann/humhub:1.5)          | [![dockerimage badge (1.5)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.5-nginx.svg)](https://microbadger.com/images/mriedmann/humhub:1.5-nginx)          | [![dockerimage badge (1.5)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.5-phponly.svg)](https://microbadger.com/images/mriedmann/humhub:1.5-phponly)          |
-| `1.6`    | :thumbsdown: Deprecated       | [![dockerimage badge (1.6)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.6.svg)](https://microbadger.com/images/mriedmann/humhub:1.6)          | [![dockerimage badge (1.6)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.6-nginx.svg)](https://microbadger.com/images/mriedmann/humhub:1.6-nginx)          | [![dockerimage badge (1.6)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.6-phponly.svg)](https://microbadger.com/images/mriedmann/humhub:1.6-phponly)          |
-| `1.7`    | :thumbsup: Stable      | [![dockerimage badge (1.7)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.7.svg)](https://microbadger.com/images/mriedmann/humhub:1.7)          | [![dockerimage badge (1.7)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.7-nginx.svg)](https://microbadger.com/images/mriedmann/humhub:1.7-nginx)          | [![dockerimage badge (1.7)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.7-phponly.svg)](https://microbadger.com/images/mriedmann/humhub:1.7-phponly)          |
-| `1.8`    | :boom: Experimental      | [![dockerimage badge (1.8)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.8.svg)](https://microbadger.com/images/mriedmann/humhub:1.8)          | [![dockerimage badge (1.8)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.8-nginx.svg)](https://microbadger.com/images/mriedmann/humhub:1.8-nginx)          | [![dockerimage badge (1.8)](https://images.microbadger.com/badges/version/mriedmann/humhub:1.8-phponly.svg)](https://microbadger.com/images/mriedmann/humhub:1.8-phponly)          |
-| `stable` | :thumbsup: Stable       | [![dockerimage badge (stable)](https://images.microbadger.com/badges/version/mriedmann/humhub:stable.svg)](https://microbadger.com/images/mriedmann/humhub:stable) | [![dockerimage badge (stable)](https://images.microbadger.com/badges/version/mriedmann/humhub:stable-nginx.svg)](https://microbadger.com/images/mriedmann/humhub:stable-nginx) | [![dockerimage badge (stable)](https://images.microbadger.com/badges/version/mriedmann/humhub:stable-phponly.svg)](https://microbadger.com/images/mriedmann/humhub:stable-phponly) |
-| `latest` | :boom: Experimental | [![dockerimage badge (latest)](https://images.microbadger.com/badges/version/mriedmann/humhub:latest.svg)](https://microbadger.com/images/mriedmann/humhub:latest) |  |  |
+| Version  | Status                  | AllInOne                            | Nginx                                     | PHP-Only                                    |
+| -------- | ----------------------- | ----------------------------------- | ----------------------------------------- | ------------------------------------------- |
+| `1.4`    | :warning: EndOfLife     | `docker.io/mriedmann/humhub:1.4`    | `docker.io/mriedmann/humhub:1.4-nginx`    | `docker.io/mriedmann/humhub:1.4-phponly`    |
+| `1.5`    | :warning: EndOfLife     | `docker.io/mriedmann/humhub:1.5`    | `docker.io/mriedmann/humhub:1.5-nginx`    | `docker.io/mriedmann/humhub:1.5-phponly`    |
+| `1.6`    | :warning: EndOfLife     | `docker.io/mriedmann/humhub:1.6`    | `docker.io/mriedmann/humhub:1.6-nginx`    | `docker.io/mriedmann/humhub:1.6-phponly`    |
+| `1.7`    | :thumbsdown: Deprecated | `docker.io/mriedmann/humhub:1.7`    | `docker.io/mriedmann/humhub:1.7-nginx`    | `docker.io/mriedmann/humhub:1.7-phponly`    |
+| `1.8`    | :thumbsup: Stable       | `docker.io/mriedmann/humhub:1.8`    | `docker.io/mriedmann/humhub:1.8-nginx`    | `docker.io/mriedmann/humhub:1.8-phponly`    |
+| `1.9`    | :boom: Experimental     | `docker.io/mriedmann/humhub:1.9`    | `docker.io/mriedmann/humhub:1.9-nginx`    | `docker.io/mriedmann/humhub:1.9-phponly`    |
+
+### Moving Tags
+
+This project uses 3 moving tags. For critical environments we recommend that you stick to the version-tags or digest, not using moving tags at all. 
+
+- Using the **stable** tag should work for most private installations. It is used for the oldest, still supported HumHub version. We also try to avoid including any breaking changes in the container for this version. 
+- Please be careful with **lastest**, these versions can be quite new and might break your existing installation. It reflected the current state of this project and might not have been tested thoroughly.
+- Try to avoid the **legacy**-tag as much as possible. If your current installation is flagged as "deprecated" the tag is also retagged as "legacy". Please try to upgrade as fast as possible to avoid security and other issues.
+
+| Tag      | Status                     | Version                                                                                   |                                     |                                           |                                             |
+| -------- | -------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------- | ----------------------------------------- | ------------------------------------------- |
+| `stable` | :thumbsup: Recommended     | ![Docker Image Version (stable)](https://img.shields.io/docker/v/mriedmann/humhub/stable) | `docker.io/mriedmann/humhub:stable` | `docker.io/mriedmann/humhub:stable-nginx` | `docker.io/mriedmann/humhub:stable-phponly` |
+| `latest` | :warning: Use with caution | ![Docker Image Version (latest)](https://img.shields.io/docker/v/mriedmann/humhub/latest) | `docker.io/mriedmann/humhub:latest` | `docker.io/mriedmann/humhub:latest-nginx` | `docker.io/mriedmann/humhub:latest-phponly` |
+| `legacy` | :thumbsdown: Avoid         | ![Docker Image Version (legacy)](https://img.shields.io/docker/v/mriedmann/humhub/legacy) | `docker.io/mriedmann/humhub:legacy` | `docker.io/mriedmann/humhub:legacy-nginx` | `docker.io/mriedmann/humhub:legacy-phponly` |
+
+### Flavors
+
+There are 3 different flavors for each version.
+
+- Use **AllInOne** if you want to get started as fast as possible or for small deployments. This image combines all components (nginx + php) into one container.  
+- Use **Nginx** and **PHP-Only** if you want to build bigger setups or if you want to split the frontend- (nginx) and backend-tiers. Also, if you are thinking about using your own reverse-proxy infrastructure, you can take the nginx-config and just start the phponly container.
+
+| Flavor   | Stable                                      | Latest                                      | Legacy                                      |
+| -------- | ------------------------------------------- | ------------------------------------------- | ------------------------------------------- |
+| AllInOne | `docker.io/mriedmann/humhub:stable`         | `docker.io/mriedmann/humhub:latest`         | `docker.io/mriedmann/humhub:legacy`         |
+| Nginx    | `docker.io/mriedmann/humhub-nginx:stable`   | `docker.io/mriedmann/humhub-nginx:latest`   | `docker.io/mriedmann/humhub-nginx:legacy`   |
+| PHP-Only | `docker.io/mriedmann/humhub-phponly:stable` | `docker.io/mriedmann/humhub-phponly:latest` | `docker.io/mriedmann/humhub-phponly:legacy` |
 
 ## Quickstart
 
