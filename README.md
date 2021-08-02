@@ -1,12 +1,10 @@
 # Alpine-based PHP-FPM and NGINX HumHub docker-container
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e2c25ed0c4ce479aa9a97be05d1d5b20)](https://app.codacy.com/app/mriedmann/humhub-docker?utm_source=github.com&utm_medium=referral&utm_content=mriedmann/humhub-docker&utm_campaign=Badge_Grade_Dashboard)
-
-![Docker Image CI](https://github.com/mriedmann/humhub-docker/workflows/Docker%20Image%20CI/badge.svg)
-
-![Docker Pulls](https://img.shields.io/docker/pulls/mriedmann/humhub)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e2c25ed0c4ce479aa9a97be05d1d5b20)](https://app.codacy.com/app/mriedmann/humhub-docker?utm_source=github.com&utm_medium=referral&utm_content=mriedmann/humhub-docker&utm_campaign=Badge_Grade_Dashboard) ![Docker Image CI](https://github.com/mriedmann/humhub-docker/workflows/Docker%20Image%20CI/badge.svg) ![Docker Pulls](https://img.shields.io/docker/pulls/mriedmann/humhub)
 
 > :warning: **Version Shift**: We lately changed the versions of latest (1.8->1.9) / stable (1.7->1.8) / legacy (1.7). This can lead to an unexpected update when you are using these moving tags. If you do not want to upgrade, use the corresponding version-tags.
+
+> :warning: **Image Removal**: We will purge all registries from End-Of-Life images soon. These images are not maintained anymore and contain major security flaws. To protect the public we will remove them. If you really want to use these images, you have to make a local copy. 
 
 [HumHub](https://github.com/humhub/humhub) is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
 This container provides a quick, flexible and lightweight way to set up a proof-of-concept for detailed evaluation.
@@ -37,20 +35,20 @@ There are 3 different variants of this image. Use the unspecific tag (e.g. `humh
 - You can use **Testing** Versions if you need special new features. The newest HumHub versions will be first released in this way to find migration bugs in a save way. If you want to test upgrades to the next major version, this can be done with this tag.
 - **Experimental** is reserved for development of this project and always defines an early and potentially broken build. We are doing our best to avoid broken releases to latest, but please be warned and do not use this in production environments.
 
-| Version  | Status                  | AllInOne                            | Nginx                                     | PHP-Only                                    |
-| -------- | ----------------------- | ----------------------------------- | ----------------------------------------- | ------------------------------------------- |
-| `1.4`    | :warning: EndOfLife     | `docker.io/mriedmann/humhub:1.4`    | `docker.io/mriedmann/humhub:1.4-nginx`    | `docker.io/mriedmann/humhub:1.4-phponly`    |
-| `1.5`    | :warning: EndOfLife     | `docker.io/mriedmann/humhub:1.5`    | `docker.io/mriedmann/humhub:1.5-nginx`    | `docker.io/mriedmann/humhub:1.5-phponly`    |
-| `1.6`    | :warning: EndOfLife     | `docker.io/mriedmann/humhub:1.6`    | `docker.io/mriedmann/humhub:1.6-nginx`    | `docker.io/mriedmann/humhub:1.6-phponly`    |
-| `1.7`    | :thumbsdown: Deprecated | `docker.io/mriedmann/humhub:1.7`    | `docker.io/mriedmann/humhub:1.7-nginx`    | `docker.io/mriedmann/humhub:1.7-phponly`    |
-| `1.8`    | :thumbsup: Stable       | `docker.io/mriedmann/humhub:1.8`    | `docker.io/mriedmann/humhub:1.8-nginx`    | `docker.io/mriedmann/humhub:1.8-phponly`    |
-| `1.9`    | :boom: Experimental     | `docker.io/mriedmann/humhub:1.9`    | `docker.io/mriedmann/humhub:1.9-nginx`    | `docker.io/mriedmann/humhub:1.9-phponly`    |
+| Version | Status                  | AllInOne                         | Nginx                                  | PHP-Only                                 |
+| ------- | ----------------------- | -------------------------------- | -------------------------------------- | ---------------------------------------- |
+| `1.4`   | :warning: EndOfLife     | `docker.io/mriedmann/humhub:1.4` | `docker.io/mriedmann/humhub:1.4-nginx` | `docker.io/mriedmann/humhub:1.4-phponly` |
+| `1.5`   | :warning: EndOfLife     | `docker.io/mriedmann/humhub:1.5` | `docker.io/mriedmann/humhub:1.5-nginx` | `docker.io/mriedmann/humhub:1.5-phponly` |
+| `1.6`   | :warning: EndOfLife     | `docker.io/mriedmann/humhub:1.6` | `docker.io/mriedmann/humhub:1.6-nginx` | `docker.io/mriedmann/humhub:1.6-phponly` |
+| `1.7`   | :thumbsdown: Deprecated | `docker.io/mriedmann/humhub:1.7` | `docker.io/mriedmann/humhub:1.7-nginx` | `docker.io/mriedmann/humhub:1.7-phponly` |
+| `1.8`   | :thumbsup: Stable       | `docker.io/mriedmann/humhub:1.8` | `docker.io/mriedmann/humhub:1.8-nginx` | `docker.io/mriedmann/humhub:1.8-phponly` |
+| `1.9`   | :boom: Experimental     | `docker.io/mriedmann/humhub:1.9` | `docker.io/mriedmann/humhub:1.9-nginx` | `docker.io/mriedmann/humhub:1.9-phponly` |
 
 ### Moving Tags
 
 This project uses 3 moving tags. For critical environments we recommend that you stick to the version-tags or digest, not using moving tags at all. 
 
-- Using the **stable** tag should work for most private installations. It is used for the oldest, still supported HumHub version. We also try to avoid including any breaking changes in the container for this version. 
+- Using the **stable** tag should work for most private installations. It is used for the oldest, still supported HumHub version. We also try to avoid including any breaking changes in the container for this version.
 - Please be careful with **lastest**, these versions can be quite new and might break your existing installation. It reflected the current state of this project and might not have been tested thoroughly.
 - Try to avoid the **legacy**-tag as much as possible. If your current installation is flagged as "deprecated" the tag is also retagged as "legacy". Please try to upgrade as fast as possible to avoid security and other issues.
 
