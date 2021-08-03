@@ -42,7 +42,8 @@ RUN apk add --no-cache \
     php7-zip \
     php7-tokenizer \
     php7-exif \
-    php7-fileinfo
+    php7-fileinfo \
+    php7-intl
 
 RUN composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader && \
     chmod +x protected/yii && \
