@@ -7,23 +7,10 @@ FROM docker.io/library/alpine:3.14.0 as builder
 
 ARG HUMHUB_VERSION
 
-RUN apk update
-RUN apk add --no-cache \
+RUN apk update && \
+    apk add --no-cache \
     ca-certificates \
-    tzdata
-
-WORKDIR /usr/src/
-ADD https://github.com/humhub/humhub/archive/v${HUMHUB_VERSION}.tar.gz /usr/src/
-RUN tar xzf v${HUMHUB_VERSION}.tar.gz && \
-    mv humhub-${HUMHUB_VERSION} humhub && \
-    rm v${HUMHUB_VERSION}.tar.gz
-    
-WORKDIR /usr/src/humhub
-
-COPY --from=builder-composer /usr/bin/composer /usr/bin/composer
-RUN chmod +x /usr/bin/composer
-
-RUN apk add --no-cache \
+    tzdata \
     php7 \
     php7-gd \
     php7-ldap \
@@ -43,24 +30,30 @@ RUN apk add --no-cache \
     php7-tokenizer \
     php7-exif \
     php7-fileinfo \
-    php7-intl
+    php7-intl \
+    nodejs \
+    npm \
+    php7-pdo_mysql && \
+    rm -rf /var/cache/apk/*
+
+COPY --from=builder-composer /usr/bin/composer /usr/bin/composer
+RUN chmod +x /usr/bin/composer
+
+WORKDIR /usr/src/
+ADD https://github.com/humhub/humhub/archive/v${HUMHUB_VERSION}.tar.gz /usr/src/
+RUN tar xzf v${HUMHUB_VERSION}.tar.gz && \
+    mv humhub-${HUMHUB_VERSION} humhub && \
+    rm v${HUMHUB_VERSION}.tar.gz
+    
+WORKDIR /usr/src/humhub
 
 RUN composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader && \
     chmod +x protected/yii && \
-    chmod +x protected/yii.bat
-
-RUN apk add --no-cache \
-    nodejs \
-    npm
-
-RUN npm install grunt
-RUN npm install -g grunt-cli
-
-RUN apk add --no-cache \
-    php7-pdo_mysql
-RUN grunt build-assets
-
-RUN rm -rf ./node_modules
+    chmod +x protected/yii.bat && \
+    npm install grunt && \
+    npm install -g grunt-cli && \
+    grunt build-assets && \
+    rm -rf ./node_modules
 
 FROM docker.io/library/alpine:3.14.0 as base
 
@@ -76,7 +69,9 @@ LABEL name="HumHub" version=${HUMHUB_VERSION} variant="base" \
       org.label-schema.version=${HUMHUB_VERSION} \
       org.label-schema.schema-version="1.0"
 
-RUN apk add --no-cache \
+RUN BUILD_DEPS="gettext"  \
+    RUNTIME_DEPS="\
+    libintl \
     curl \
     ca-certificates \
     imagemagick \
@@ -108,15 +103,12 @@ RUN apk add --no-cache \
     php7-session \
     supervisor \
     sqlite \
-    && rm -rf /var/cache/apk/*
-
-RUN BUILD_DEPS="gettext"  \
-    RUNTIME_DEPS="libintl" && \
-    set -x && \
-    apk add --no-cache --update $RUNTIME_DEPS && \
-    apk add --no-cache --virtual build_deps $BUILD_DEPS && \
+    " && \
+    apk add --no-cache --update "$RUNTIME_DEPS" && \
+    apk add --no-cache --virtual build_deps "$BUILD_DEPS" && \
     cp /usr/bin/envsubst /usr/local/bin/envsubst && \
-    apk del build_deps
+    apk del build_deps && \
+    rm -rf /var/cache/apk/*
 
 ENV PHP_POST_MAX_SIZE=16M
 ENV PHP_UPLOAD_MAX_FILESIZE=10M
@@ -179,9 +171,8 @@ FROM base as humhub_allinone
 
 LABEL variant="allinone"
 
-RUN apk add --no-cache nginx
-
-RUN chown -R nginx:nginx /var/lib/nginx/
+RUN apk add --no-cache nginx && \
+    chown -R nginx:nginx /var/lib/nginx/
 
 COPY nginx/ /
 
