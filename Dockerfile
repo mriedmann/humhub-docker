@@ -1,39 +1,76 @@
 ARG HUMHUB_VERSION
 ARG VCS_REF
+ARG BUILD_DEPS="\
+    ca-certificates \
+    nodejs \
+    npm \
+    php7 \
+    php7-ctype \
+    php7-curl \
+    php7-dom \
+    php7-exif \
+    php7-fileinfo \
+    php7-gd \
+    php7-iconv \
+    php7-intl \
+    php7-json \
+    php7-ldap \
+    php7-mbstring \
+    php7-openssl \
+    php7-pdo_mysql \
+    php7-phar \
+    php7-simplexml \
+    php7-tokenizer \
+    php7-xml \
+    php7-xmlreader \
+    php7-xmlwriter \
+    php7-zip \
+    tzdata \
+    "
+
+ARG RUNTIME_DEPS="\
+    ca-certificates \
+    curl \
+    imagemagick \
+    libintl \
+    php7 \
+    php7-apcu \
+    php7-ctype \
+    php7-curl \
+    php7-dom \
+    php7-exif \
+    php7-fileinfo \
+    php7-fpm \
+    php7-gd \
+    php7-iconv \
+    php7-intl \
+    php7-json \
+    php7-ldap \
+    php7-mbstring \
+    php7-openssl \
+    php7-pdo_mysql \
+    php7-pecl-imagick \
+    php7-phar \
+    php7-session \
+    php7-simplexml \
+    php7-sqlite3 \
+    php7-xml \
+    php7-xmlreader \
+    php7-xmlwriter \
+    php7-zip \
+    sqlite \
+    supervisor \
+    tzdata \
+    "
 
 FROM composer:2.1.5 as builder-composer
 
 FROM docker.io/library/alpine:3.14.0 as builder
 
 ARG HUMHUB_VERSION
+ARG BUILD_DEPS
 
-RUN apk update && \
-    apk add --no-cache \
-    ca-certificates \
-    tzdata \
-    php7 \
-    php7-gd \
-    php7-ldap \
-    php7-json \
-    php7-phar \
-    php7-iconv \
-    php7-openssl \
-    php7-curl \
-    php7-ctype \
-    php7-dom \
-    php7-mbstring \
-    php7-simplexml \
-    php7-xml \
-    php7-xmlreader \
-    php7-xmlwriter \
-    php7-zip \
-    php7-tokenizer \
-    php7-exif \
-    php7-fileinfo \
-    php7-intl \
-    nodejs \
-    npm \
-    php7-pdo_mysql && \
+RUN apk add --no-cache --update $BUILD_DEPS && \
     rm -rf /var/cache/apk/*
 
 COPY --from=builder-composer /usr/bin/composer /usr/bin/composer
@@ -58,6 +95,7 @@ RUN composer install --no-ansi --no-dev --no-interaction --no-progress --no-scri
 FROM docker.io/library/alpine:3.14.0 as base
 
 ARG HUMHUB_VERSION
+ARG RUNTIME_DEPS
 LABEL name="HumHub" version=${HUMHUB_VERSION} variant="base" \
       org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="HumHub" \
@@ -69,45 +107,10 @@ LABEL name="HumHub" version=${HUMHUB_VERSION} variant="base" \
       org.label-schema.version=${HUMHUB_VERSION} \
       org.label-schema.schema-version="1.0"
 
-RUN BUILD_DEPS="gettext"  \
-    RUNTIME_DEPS="\
-    libintl \
-    curl \
-    ca-certificates \
-    imagemagick \
-    tzdata \
-    php7 \
-    php7-fpm \
-    php7-pdo_mysql \
-    php7-gd \
-    php7-ldap \
-    php7-json \
-    php7-phar \
-    php7-iconv \
-    php7-pecl-imagick \
-    php7-openssl \
-    php7-curl \
-    php7-ctype \
-    php7-dom \
-    php7-mbstring \
-    php7-simplexml \
-    php7-xml \
-    php7-xmlreader \
-    php7-xmlwriter \
-    php7-zip \
-    php7-sqlite3 \
-    php7-intl \
-    php7-apcu \
-    php7-exif \
-    php7-fileinfo \
-    php7-session \
-    supervisor \
-    sqlite \
-    " && \
-    apk add --no-cache --update "$RUNTIME_DEPS" && \
-    apk add --no-cache --virtual build_deps "$BUILD_DEPS" && \
+RUN apk add --no-cache --update $RUNTIME_DEPS && \
+    apk add --no-cache --virtual temp_pkgs gettext && \
     cp /usr/bin/envsubst /usr/local/bin/envsubst && \
-    apk del build_deps && \
+    apk del temp_pkgs && \
     rm -rf /var/cache/apk/*
 
 ENV PHP_POST_MAX_SIZE=16M
