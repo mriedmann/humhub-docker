@@ -63,7 +63,7 @@ ARG RUNTIME_DEPS="\
     tzdata \
     "
 
-FROM composer:2.1.5 as builder-composer
+FROM composer:2.1.6 as builder-composer
 
 FROM docker.io/library/alpine:3.14.0 as builder
 
