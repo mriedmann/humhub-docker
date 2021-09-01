@@ -65,7 +65,7 @@ ARG RUNTIME_DEPS="\
 
 FROM composer:2.1.5 as builder-composer
 
-FROM docker.io/library/alpine:3.14.0 as builder
+FROM docker.io/library/alpine:3.14.2 as builder
 
 ARG HUMHUB_VERSION
 ARG BUILD_DEPS
@@ -92,7 +92,7 @@ RUN composer install --no-ansi --no-dev --no-interaction --no-progress --no-scri
     grunt build-assets && \
     rm -rf ./node_modules
 
-FROM docker.io/library/alpine:3.14.0 as base
+FROM docker.io/library/alpine:3.14.2 as base
 
 ARG HUMHUB_VERSION
 ARG RUNTIME_DEPS
