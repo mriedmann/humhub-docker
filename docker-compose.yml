@@ -48,6 +48,8 @@ services:
       MYSQL_DATABASE: 'humhub'
       MYSQL_USER: ${HUMHUB_DB_USER}
       MYSQL_PASSWORD: ${HUMHUB_DB_PASSWORD}
+    volumes:
+      - "mysql:/var/lib/mysql"
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "--silent"]
       interval: 30s
@@ -72,3 +74,6 @@ services:
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
 
+volumes:
+  config: {}
+  mysql: {}
