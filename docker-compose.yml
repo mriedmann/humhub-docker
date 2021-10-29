@@ -34,8 +34,8 @@ services:
       HUMHUB_REDIS_HOSTNAME: redis
       HUMHUB_REDIS_PORT: 6379
       HUMHUB_REDIS_PASSWORD: redis_password
-#   volumes:
-#     - "${HUMHUB_VOLUME_CONFIG}:/var/www/localhost/htdocs/protected/config"
+    volumes:
+      - "config:/var/www/localhost/htdocs/protected/config"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/ping"]
       interval: 30s
