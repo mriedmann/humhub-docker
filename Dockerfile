@@ -102,7 +102,7 @@ LABEL name="HumHub" version=${HUMHUB_VERSION} variant="base" \
       org.label-schema.description="HumHub is a feature rich and highly flexible OpenSource Social Network Kit written in PHP" \
       org.label-schema.url="https://www.humhub.com/" \
       org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/mriedmann/humhub-docker" \
+      org.label-schema.vcs-url="https://github.com/dantefromhell/humhub-docker" \
       org.label-schema.vendor="HumHub GmbH" \
       org.label-schema.version=${HUMHUB_VERSION} \
       org.label-schema.schema-version="1.0"
