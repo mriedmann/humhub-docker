@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -ex
 
 WAIT_FOR_DB=${HUMHUB_WAIT_FOR_DB:-1}
 SET_PJAX=${HUMHUB_SET_PJAX:-1}
