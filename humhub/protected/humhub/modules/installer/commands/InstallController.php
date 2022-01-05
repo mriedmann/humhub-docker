@@ -35,7 +35,6 @@ use humhub\libs\DynamicConfig;
  */
 class InstallController extends Controller
 {
-
     /**
      * @inheritdoc
      */
