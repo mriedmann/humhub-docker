@@ -191,9 +191,6 @@ else
 			php yii 'settings/set' 'base' 'mailer.encryption' "${HUMHUB_MAILER_ENCRYPTION}"
 			php yii 'settings/set' 'base' 'mailer.allowSelfSignedCerts' "${HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS}"
 		fi
-
-		chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
-		chown nginx:nginx /var/www/localhost/htdocs/protected/config/dynamic.php
 	fi
 fi
 
@@ -263,6 +260,13 @@ if /usr/bin/find "/docker-entrypoint.d/" -mindepth 1 -maxdepth 1 -type f -print 
 else
 	echo >&3 "$0: No files found in /docker-entrypoint.d/, skipping configuration"
 fi
+
+echo >&3 "$0: Setting file permissions"
+chown -R nginx:nginx /var/www/localhost/htdocs/assets
+chown -R nginx:nginx /var/www/localhost/htdocs/protected/config
+chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules
+chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
+chown -R nginx:nginx /var/www/localhost/htdocs/uploads
 
 echo >&3 "$0: Entrypoint finished! Launching ..."
 
