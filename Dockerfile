@@ -49,6 +49,7 @@ ARG RUNTIME_DEPS="\
     php7-mbstring \
     php7-openssl \
     php7-pdo_mysql \
+    php7-pecl-gmagick \
     php7-pecl-imagick \
     php7-phar \
     php7-session \
