@@ -127,7 +127,7 @@ HUMHUB_PROTO [http]
 HUMHUB_HOST  [localhost]
 ```
 
-If these are defined during auto-installation, HumHub will be installed and configured to use urls with those details. (i.e. If they are set as `HUMHUB_PROTO=https`, `HUMHUB_HOST=example.com`, HumHub will be installed and configured so that the base url is `https://example.com/`. Leaving these as default will result in HumHub being installed and configured to be at `http://localhost/`.
+If these are defined during auto-installation, HumHub will be installed and configured to use URLs with those details. (i.e. If they are set as `HUMHUB_PROTO=https`, `HUMHUB_HOST=example.com`, HumHub will be installed and configured so that the base URL is `https://example.com/`. Leaving these as default will result in HumHub being installed and configured to be at `http://localhost/`.
 
 ```plaintext
 HUMHUB_ADMIN_LOGIN    [admin]
@@ -155,7 +155,7 @@ Can be used to let the startup fail if the db host is unavailable. To disable th
 SET_PJAX [1]
 ```
 
-PJAX is a jQuery plugin that uses AJAX and pushState to deliver a fast browsing experience with real permalinks, page titles, and a working back button. ([ref](https://github.com/yiisoft/jquery-pjax)) This library is known to cause problems with some browsers during installation. This container starts with PJAX disabled to improve the installation reliability. If this is set (default), PJAX is **enabled** during the **second** startup. Set this to `"false"` to permanently disable PJAX. Please note that changing this after container-creation has no effect on this behavior.
+PJAX is a jQuery plugin that uses Ajax and pushState to deliver a fast browsing experience with real permalinks, page titles, and a working back button. ([ref](https://github.com/yiisoft/jquery-pjax)) This library is known to cause problems with some browsers during installation. This container starts with PJAX disabled to improve the installation reliability. If this is set (default), PJAX is **enabled** during the **second** startup. Set this to `"false"` to permanently disable PJAX. Please note that changing this after container-creation has no effect on this behavior.
 
 ### Mailer Config
 
