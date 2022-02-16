@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# TODO: Remove after this script has matured more.
+# TODO: Remove after this script has matured more more.
 set -x
 
 # Space seperated list of modules names to install, as displayed in the
