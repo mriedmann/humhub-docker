@@ -13,4 +13,7 @@ for module in ${HUMHUB_MODULES}
 do
     echo "... Installing ${module}"
     su -s /bin/sh nginx -c "php yii module/install ${module}"
+
+    echo "... Enalbing ${module}"
+    su -s /bin/sh nginx -c "php yii module/enable ${module}"
 done
