@@ -2,7 +2,7 @@
 
 # Space seperated list of modules names to install, as displayed in the
 # 'ID' column of `php yii module/list-online` command.
-HUMHUB_MODULES_ENABLED="calendar cfiles content-bookmarks gallery newmembers polls scrollup spotify tasks wiki"
+HUMHUB_MODULES_ENABLED="calendar cfiles content-bookmarks external_calendar gallery newmembers polls scrollup spotify tasks wiki"
 
 echo "Installing HumHub modules"
 for module in ${HUMHUB_MODULES_ENABLED}
