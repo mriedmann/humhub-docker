@@ -34,6 +34,11 @@ services:
       HUMHUB_REDIS_HOSTNAME: redis
       HUMHUB_REDIS_PORT: 6379
       HUMHUB_REDIS_PASSWORD: redis_password
+      # Module Config
+      # If a module is listed as enabled and disabled, the disabled status will always
+      # overrule the enabled status.
+      #HUMHUB_DISABLE_MODULES: 'ModA ModB ModC'
+      #HUMHUB_ENABLE_MODULES: 'ModX ModY ModZ'
     volumes:
       - "config:/var/www/localhost/htdocs/protected/config"
     healthcheck:
