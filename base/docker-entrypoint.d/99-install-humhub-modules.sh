@@ -4,12 +4,10 @@
 # 'ID' column of `php yii module/list-online` command.
 ENABLED_MODULES="calendar cfiles content-bookmarks external_calendar gallery newmembers polls scrollup spotify tasks wiki"
 
-echo "Modules enabled by docker env: ${HUMHUB_ENABLE_MODULES}"
-echo "Modules disabled by docker env: ${HUMHUB_DISABLE_MODULES}"
-
 
 echo "Installing HumHub modules"
-for module in ${ENABLED_MODULES}
+echo "Modules enabled by docker env: ${HUMHUB_ENABLE_MODULES}"
+for module in ${ENABLED_MODULES} ${HUMHUB_ENABLE_MODULES}
 do
     echo "... Installing module ${module}"
     su -s /bin/sh nginx -c "php yii module/install ${module}"
@@ -25,7 +23,8 @@ echo "Module installation finished."
 DISABLED_MODULES=''
 
 echo "Disabling HumHub modules"
-for module in ${DISABLED_MODULES}
+echo "Modules disabled by docker env: ${HUMHUB_DISABLE_MODULES}"
+for module in ${DISABLED_MODULES} ${HUMHUB_DISABLE_MODULES}
 do
     echo "... Disabling module ${module}"
     su -s /bin/sh nginx -c "php yii module/disable ${module}"
