@@ -1,8 +1,10 @@
 #!/bin/sh
 
-# Space seperated list of modules enabled per default, as displayed in the
-# 'ID' column of `php yii module/list-online` command.
-ENABLED_MODULES="calendar cfiles content-bookmarks external_calendar gallery newmembers polls scrollup spotify tasks wiki"
+# All module names refer to the official name from the store, a complete listing can be
+# obtained via the `php yii module/list-online` command.
+
+# Per default enabled modules in all installations.
+ENABLED_MODULES="calendar cfiles content-bookmarks external_calendar gallery newmembers polls scrollup tasks wiki"
 
 
 echo "Installing HumHub modules"
