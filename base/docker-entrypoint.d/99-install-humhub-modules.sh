@@ -8,11 +8,11 @@ ENABLED_MODULES="calendar cfiles content-bookmarks external_calendar gallery new
 
 
 # TODO: Remove when cache log issues are resolved
-echo -e "DEBUG for troubleshooting file cache permission issues."
+echo "DEBUG for troubleshooting file cache permission issues."
 # Let's see if timestamps actually line up with the commands executed here
 date
 # Let's see the cache content
-echo -e "\n\nCache folder content:"
+echo "\n\nCache folder content:"
 ls -laR  /var/www/localhost/htdocs/protected/runtime/cache
 
 
