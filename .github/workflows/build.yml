@@ -98,9 +98,11 @@ jobs:
     - name: Spin up services
       run: docker-compose -f docker-compose.yml up -d
     - name: Wait 
-      run: sleep 60
+      run: sleep 120
     - name: Check status
       run: docker ps -a
+    - name: Show HumHub logs
+      run: docker-compose logs humhub-docker_humhub_1
     - name: Test
       run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
     - name: Test Email
@@ -139,9 +141,11 @@ jobs:
     - name: Spin up services
       run: docker-compose -f docker-compose.prod.yml up -d
     - name: Wait 
-      run: sleep 60
+      run: sleep 120
     - name: Check status
       run: docker ps -a
+    - name: Show HumHub logs
+      run: docker-compose logs humhub-docker_humhub_1
     - name: Test
       run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
     - name: Test Email
