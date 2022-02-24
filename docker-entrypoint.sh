@@ -197,6 +197,8 @@ else
 		fi
 	fi
 fi
+echo >&3 "$0: Fix cache file permissions"
+chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime/cache
 
 echo >&3 "$0: Config preprocessing ..."
 
