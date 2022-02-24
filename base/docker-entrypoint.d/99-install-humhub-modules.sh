@@ -12,7 +12,7 @@ echo "DEBUG for troubleshooting file cache permission issues."
 # Let's see if timestamps actually line up with the commands executed here
 date
 # Let's see the cache content
-echo "\n\nCache folder content:"
+echo "Cache folder content:"
 ls -laR  /var/www/localhost/htdocs/protected/runtime/cache
 
 
