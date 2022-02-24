@@ -29,8 +29,7 @@ done
 echo "Module installation finished."
 
 
-# Space separated list of modules name disabled per default, as displayed in the
-# 'ID' column of `php yii module/list-online` command.
+# Per default disabled modules in all installations.
 DISABLED_MODULES=''
 
 echo "Disabling HumHub modules"
