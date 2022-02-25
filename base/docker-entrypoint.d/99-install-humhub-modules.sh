@@ -6,16 +6,6 @@
 # Per default enabled modules in all installations.
 ENABLED_MODULES="calendar cfiles content-bookmarks external_calendar gallery newmembers polls scrollup tasks wiki"
 
-
-# TODO: Remove when cache log issues are resolved
-echo "DEBUG for troubleshooting file cache permission issues."
-# Let's see if timestamps actually line up with the commands executed here
-date
-# Let's see the cache content
-echo "Cache folder content:"
-ls -laR  /var/www/localhost/htdocs/protected/runtime/cache
-
-
 echo "Installing HumHub modules"
 echo "Modules enabled by docker env: ${HUMHUB_ENABLE_MODULES}"
 for module in ${ENABLED_MODULES} ${HUMHUB_ENABLE_MODULES}
