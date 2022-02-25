@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -ex
+set -e
 
 WAIT_FOR_DB=${HUMHUB_WAIT_FOR_DB:-1}
 SET_PJAX=${HUMHUB_SET_PJAX:-1}
@@ -195,14 +195,11 @@ else
 			php yii 'settings/set' 'base' 'mailer.encryption' "${HUMHUB_MAILER_ENCRYPTION}"
 			php yii 'settings/set' 'base' 'mailer.allowSelfSignedCerts' "${HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS}"
 		fi
+
+                chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
+                chown nginx:nginx /var/www/localhost/htdocs/protected/config/dynamic.php
 	fi
 fi
-
-# TODO: Remove when debugging successful finished
-echo >&3 "$0: Fix cache file permissions"
-date
-ls -laR /var/www/localhost/htdocs/protected/runtime
-chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
 
 echo >&3 "$0: Config preprocessing ..."
 
@@ -247,11 +244,6 @@ if [ "$HUMHUB_LDAP_CACERT" != "" ]; then
 	echo "TLS_CACERT  /etc/ssl/certs/cacert.crt" >> /etc/openldap/ldap.conf
 fi
 
-# TODO: Remove when debugging successful finished
-echo >&3 "$0: Cache folder before processing /docker-entrypoint.d"
-date
-ls -laR /var/www/localhost/htdocs/protected/runtime
-
 
 if /usr/bin/find "/docker-entrypoint.d/" -mindepth 1 -maxdepth 1 -type f -print -quit 2>/dev/null; then
 	echo >&3 "$0: /docker-entrypoint.d/ is not empty, will attempt to perform configuration"
@@ -263,10 +255,6 @@ if /usr/bin/find "/docker-entrypoint.d/" -mindepth 1 -maxdepth 1 -type f -print 
 				if [ -x "$f" ]; then
 					echo >&3 "$0: Launching $f";
 					"$f"
-					# TODO: Remove when debugging successful finished
-					echo >&3 "$0: Cache folder after processing $f"
-					date
-					ls -laR /var/www/localhost/htdocs/protected/runtime
 				else
 					# warn on shell scripts without exec bit
 					echo >&3 "$0: Ignoring $f, not executable";
@@ -281,22 +269,12 @@ else
 	echo >&3 "$0: No files found in /docker-entrypoint.d/, skipping configuration"
 fi
 
-# TODO: Remove when debugging successful finished
-echo >&3 "$0: Cache folder after processing all /docker-entrypoint.d/ scripts"
-date
-ls -laR /var/www/localhost/htdocs/protected/runtime
-
 echo >&3 "$0: Setting file permissions"
 chown -R nginx:nginx /var/www/localhost/htdocs/assets
 chown -R nginx:nginx /var/www/localhost/htdocs/protected/config
 chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules
 chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
 chown -R nginx:nginx /var/www/localhost/htdocs/uploads
-
-# TODO: Remove when debugging successful finished
-echo >&3 "$0: Cache folder after fixing file permissions"
-date
-ls -laR /var/www/localhost/htdocs/protected/runtime
 
 echo >&3 "$0: Entrypoint finished! Launching ..."
 
