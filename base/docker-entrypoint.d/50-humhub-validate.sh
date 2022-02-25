@@ -17,6 +17,10 @@ else
 	echo "validation skipped"
 fi
 
+echo >&3 "$0: Fixing file cache permissions after integrity check"
+chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
+
+
 # TODO: Remove when debugging successful finished
 echo >&3 "$0: Cache folder after integrity check"
 date
