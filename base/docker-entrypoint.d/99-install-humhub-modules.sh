@@ -4,7 +4,7 @@
 # obtained via the `php yii module/list-online` command.
 
 # Per default enabled modules in all installations.
-ENABLED_MODULES="calendar cfiles content-bookmarks gallery newmembers polls scrollup tasks wiki"
+ENABLED_MODULES="calendar cfiles content-bookmarks external_calendar gallery newmembers polls scrollup tasks wiki"
 
 
 # TODO: Remove when cache log issues are resolved
