@@ -196,8 +196,8 @@ else
 			php yii 'settings/set' 'base' 'mailer.allowSelfSignedCerts' "${HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS}"
 		fi
 
-                chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
-                chown nginx:nginx /var/www/localhost/htdocs/protected/config/dynamic.php
+		chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
+		chown nginx:nginx /var/www/localhost/htdocs/protected/config/dynamic.php
 	fi
 fi
 
@@ -243,7 +243,6 @@ if [ "$HUMHUB_LDAP_CACERT" != "" ]; then
 	echo "$HUMHUB_LDAP_CACERT" > /etc/ssl/certs/cacert.crt
 	echo "TLS_CACERT  /etc/ssl/certs/cacert.crt" >> /etc/openldap/ldap.conf
 fi
-
 
 if /usr/bin/find "/docker-entrypoint.d/" -mindepth 1 -maxdepth 1 -type f -print -quit 2>/dev/null; then
 	echo >&3 "$0: /docker-entrypoint.d/ is not empty, will attempt to perform configuration"
