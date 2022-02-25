@@ -102,7 +102,7 @@ jobs:
     - name: Check status
       run: docker ps -a
     - name: Show HumHub logs
-      run: docker-compose logs humhub-docker_humhub_1
+      run: docker logs humhub-docker_humhub_1
     - name: Test
       run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
     - name: Test Email
@@ -145,7 +145,7 @@ jobs:
     - name: Check status
       run: docker ps -a
     - name: Show HumHub logs
-      run: docker-compose logs humhub-docker_humhub_1
+      run: docker logs humhub-docker_humhub_1
     - name: Test
       run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
     - name: Test Email
