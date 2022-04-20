@@ -4,7 +4,7 @@
 
 > :warning: **Version Shift**: We lately changed the versions of latest (1.9->1.10) / stable (1.8->1.9) / legacy (1.8). This can lead to an unexpected update when you are using these moving tags. If you do not want to upgrade, use the corresponding version-tags.
 
-> :warning: **Image Removal**: We will purged all registries from End-Of-Life images (1.4,1.5,1.6). These images were not maintained anymore and contained major security flaws. To protect the public we removed them. If you really want to use these images, you have to build them from source.
+> :warning: **Image Removal**: We have purged all registries from End-Of-Life images (1.4,1.5,1.6). These images were not maintained anymore and contained major security flaws. To protect the public we removed them. If you really want to use these images, you have to build them from source.
 
 [HumHub](https://github.com/humhub/humhub) is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
 This container provides a quick, flexible and lightweight way to set up a proof-of-concept for detailed evaluation.
