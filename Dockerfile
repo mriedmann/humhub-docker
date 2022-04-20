@@ -63,9 +63,9 @@ ARG RUNTIME_DEPS="\
     tzdata \
     "
 
-FROM composer:2.2.6 as builder-composer
+FROM composer:2.3.5 as builder-composer
 
-FROM docker.io/library/alpine:3.15.0 as builder
+FROM docker.io/library/alpine:3.15.4 as builder
 
 ARG HUMHUB_VERSION
 ARG BUILD_DEPS
@@ -92,7 +92,7 @@ RUN composer install --no-ansi --no-dev --no-interaction --no-progress --no-scri
     grunt build-assets && \
     rm -rf ./node_modules
 
-FROM docker.io/library/alpine:3.15.0 as base
+FROM docker.io/library/alpine:3.15.4 as base
 
 ARG HUMHUB_VERSION
 ARG RUNTIME_DEPS
