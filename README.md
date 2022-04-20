@@ -4,7 +4,7 @@
 
 > :warning: **Version Shift**: We lately changed the versions of latest (1.9->1.10) / stable (1.8->1.9) / legacy (1.8). This can lead to an unexpected update when you are using these moving tags. If you do not want to upgrade, use the corresponding version-tags.
 
-> :warning: **Image Removal**: We will purge all registries from End-Of-Life images soon. These images are not maintained anymore and contain major security flaws. To protect the public we will remove them. If you really want to use these images, you have to make a local copy.
+> :warning: **Image Removal**: We will purged all registries from End-Of-Life images (1.4,1.5,1.6). These images were not maintained anymore and contained major security flaws. To protect the public we removed them. If you really want to use these images, you have to build them from source.
 
 [HumHub](https://github.com/humhub/humhub) is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
 This container provides a quick, flexible and lightweight way to set up a proof-of-concept for detailed evaluation.
@@ -40,9 +40,6 @@ If plan to build some kind of hosted solution, have a look at `docker-compose.pr
 
 | Version | Status                  | AllInOne                                                                                                                          | Nginx                                                                                                                                    | PHP-Only                                                                                                                                   |
 | ------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `1.4`   | :warning: EndOfLife     | [![humhub:1.4](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.4-lightgrey)](https://hub.docker.com/r/mriedmann/humhub) | [![humhub:1.4](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.4--nginx-lightgrey)](https://hub.docker.com/r/mriedmann/humhub) | [![humhub:1.4](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.4--phponly-lightgrey)](https://hub.docker.com/r/mriedmann/humhub) |
-| `1.5`   | :warning: EndOfLife     | [![humhub:1.5](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.5-lightgrey)](https://hub.docker.com/r/mriedmann/humhub) | [![humhub:1.5](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.5--nginx-lightgrey)](https://hub.docker.com/r/mriedmann/humhub) | [![humhub:1.5](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.5--phponly-lightgrey)](https://hub.docker.com/r/mriedmann/humhub) |
-| `1.6`   | :warning: EndOfLife     | [![humhub:1.6](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.6-lightgrey)](https://hub.docker.com/r/mriedmann/humhub) | [![humhub:1.6](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.6--nginx-lightgrey)](https://hub.docker.com/r/mriedmann/humhub) | [![humhub:1.6](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.6--phponly-lightgrey)](https://hub.docker.com/r/mriedmann/humhub) |
 | `1.7`   | :thumbsdown: Deprecated | [![humhub:1.7](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.7-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.7](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.7--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.7](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.7--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
 | `1.8`   | :thumbsdown: Deprecated       | [![humhub:1.8](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.8-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.8](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.8--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.8](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.8--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
 | `1.9`   | :thumbsup: Stable     | [![humhub:1.9](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.9-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.9](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.9--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.9](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.9--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
@@ -70,7 +67,7 @@ No database integrated. For persistency look at the Compose-File example.
 version: '3.1'
 services:
   humhub:
-    image: mriedmann/humhub:1.6.2
+    image: mriedmann/humhub:stable
     links:
       - "db:db"
     ports:
