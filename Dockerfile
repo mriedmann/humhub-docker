@@ -129,6 +129,8 @@ COPY --chown=100:101 humhub/ /var/www/localhost/htdocs/
 RUN mkdir -p /usr/src/humhub/protected/config/ && \
     cp -R /var/www/localhost/htdocs/protected/config/* /usr/src/humhub/protected/config/ && \
     rm -f var/www/localhost/htdocs/protected/config/common.php /usr/src/humhub/protected/config/common.php && \
+    mv /var/www/localhost/htdocs/protected/modules /var/www/localhost/htdocs/protected/modules-marketplace && \
+    mkdir /var/www/localhost/htdocs/protected/modules-custom && \
     echo "v${HUMHUB_VERSION}" >  /usr/src/humhub/.version
 
 COPY base/ /
@@ -139,7 +141,8 @@ RUN chmod 600 /etc/crontabs/nginx && \
 
 VOLUME /var/www/localhost/htdocs/uploads
 VOLUME /var/www/localhost/htdocs/protected/config
-VOLUME /var/www/localhost/htdocs/protected/modules
+VOLUME /var/www/localhost/htdocs/protected/modules-custom
+VOLUME /var/www/localhost/htdocs/protected/modules-marketplace
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
