@@ -9,7 +9,10 @@
 
 $common = [
     'params' => [
-        'enablePjax' => false
+        'enablePjax' => false,
+        'moduleAutoloadPaths' => [
+            '/var/www/localhost/htdocs/protected/modules-marketplace'
+        ]
     ],
     'components' => [
         'urlManager' => [
