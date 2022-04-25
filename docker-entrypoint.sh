@@ -134,8 +134,7 @@ else
 
 	echo >&3 "$0: Setting permissions..."
 	chown -R nginx:nginx /var/www/localhost/htdocs/uploads
-	chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules-custom
-	chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules-marketplace
+	chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules
 	chown -R nginx:nginx /var/www/localhost/htdocs/protected/config
 	chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
 
@@ -272,8 +271,7 @@ fi
 echo >&3 "$0: Setting file permissions"
 chown -R nginx:nginx /var/www/localhost/htdocs/assets
 chown -R nginx:nginx /var/www/localhost/htdocs/protected/config
-chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules-custom
-chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules-marketplace
+chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules
 chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
 chown -R nginx:nginx /var/www/localhost/htdocs/uploads
 
