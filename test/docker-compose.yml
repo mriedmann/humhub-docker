@@ -25,8 +25,7 @@ services:
 
     volumes:
       - '/opt/docker/humhub/data/humhub/protected/config:/var/www/localhost/htdocs/protected/config:Z'
-      - '/opt/docker/humhub/data/humhub/protected/modules-custom:/var/www/localhost/htdocs/protected/modules-custom:Z'
-      - '/opt/docker/humhub/data/humhub/protected/modules-marketplace:/var/www/localhost/htdocs/protected/modules-marketplace:Z'
+      - '/opt/docker/humhub/data/humhub/protected/modules:/var/www/localhost/htdocs/protected/modules:Z'
       - '/opt/docker/humhub/data/humhub/uploads:/var/www/localhost/htdocs/uploads:Z'
       - '/opt/docker/humhub/data/humhub/themes:/var/www/localhost/htdocs/themes/humhum:Z'
       # Not strictly necessary, just to shut up the log file
