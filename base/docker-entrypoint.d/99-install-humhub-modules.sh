@@ -4,7 +4,7 @@
 # obtained via the `php yii module/list-online` command.
 
 # Per default enabled modules in all installations.
-ENABLED_MODULES="calendar cfiles content-bookmarks external_calendar gallery newmembers polls popover-vcard scrollup tasks wiki"
+ENABLED_MODULES="calendar cfiles content-bookmarks external_calendar gallery mail newmembers polls popover-vcard scrollup tasks wiki"
 
 echo "Installing HumHub modules"
 echo "Modules enabled by docker env: ${HUMHUB_ENABLE_MODULES}"
