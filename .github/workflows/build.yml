@@ -157,8 +157,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.11", "1.10"]
-        target: ["allinone", "nginx", "phponly"]
+        version: ["1.11"]
+        target: ["allinone"]
     steps:
     - uses: actions/checkout@v2
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
