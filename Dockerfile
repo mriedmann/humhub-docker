@@ -25,6 +25,7 @@ ARG BUILD_DEPS="\
     php8-xmlreader \
     php8-xmlwriter \
     php8-zip \
+    composer \
     tzdata \
     "
 
@@ -63,8 +64,6 @@ ARG RUNTIME_DEPS="\
     tzdata \
     "
 
-FROM composer:2.5.5 as builder-composer
-
 FROM docker.io/library/alpine:3.15.4 as builder
 
 ARG HUMHUB_VERSION
@@ -72,9 +71,6 @@ ARG BUILD_DEPS
 
 RUN apk add --no-cache --update $BUILD_DEPS && \
     rm -rf /var/cache/apk/*
-
-COPY --from=builder-composer /usr/bin/composer /usr/bin/composer
-RUN chmod +x /usr/bin/composer
 
 WORKDIR /usr/src/
 ADD https://github.com/humhub/humhub/archive/v${HUMHUB_VERSION}.tar.gz /usr/src/
