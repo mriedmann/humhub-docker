@@ -4,27 +4,27 @@ ARG BUILD_DEPS="\
     ca-certificates \
     nodejs \
     npm \
-    php7 \
-    php7-ctype \
-    php7-curl \
-    php7-dom \
-    php7-exif \
-    php7-fileinfo \
-    php7-gd \
-    php7-iconv \
-    php7-intl \
-    php7-json \
-    php7-ldap \
-    php7-mbstring \
-    php7-openssl \
-    php7-pdo_mysql \
-    php7-phar \
-    php7-simplexml \
-    php7-tokenizer \
-    php7-xml \
-    php7-xmlreader \
-    php7-xmlwriter \
-    php7-zip \
+    php8 \
+    php8-ctype \
+    php8-curl \
+    php8-dom \
+    php8-exif \
+    php8-fileinfo \
+    php8-gd \
+    php8-iconv \
+    php8-intl \
+    php8-json \
+    php8-ldap \
+    php8-mbstring \
+    php8-openssl \
+    php8-pdo_mysql \
+    php8-phar \
+    php8-simplexml \
+    php8-tokenizer \
+    php8-xml \
+    php8-xmlreader \
+    php8-xmlwriter \
+    php8-zip \
     tzdata \
     "
 
@@ -33,31 +33,31 @@ ARG RUNTIME_DEPS="\
     curl \
     imagemagick \
     libintl \
-    php7 \
-    php7-apcu \
-    php7-ctype \
-    php7-curl \
-    php7-dom \
-    php7-exif \
-    php7-fileinfo \
-    php7-fpm \
-    php7-gd \
-    php7-iconv \
-    php7-intl \
-    php7-json \
-    php7-ldap \
-    php7-mbstring \
-    php7-openssl \
-    php7-pdo_mysql \
-    php7-pecl-imagick \
-    php7-phar \
-    php7-session \
-    php7-simplexml \
-    php7-sqlite3 \
-    php7-xml \
-    php7-xmlreader \
-    php7-xmlwriter \
-    php7-zip \
+    php8 \
+    php8-apcu \
+    php8-ctype \
+    php8-curl \
+    php8-dom \
+    php8-exif \
+    php8-fileinfo \
+    php8-fpm \
+    php8-gd \
+    php8-iconv \
+    php8-intl \
+    php8-json \
+    php8-ldap \
+    php8-mbstring \
+    php8-openssl \
+    php8-pdo_mysql \
+    php8-pecl-imagick \
+    php8-phar \
+    php8-session \
+    php8-simplexml \
+    php8-sqlite3 \
+    php8-xml \
+    php8-xmlreader \
+    php8-xmlwriter \
+    php8-zip \
     sqlite \
     supervisor \
     tzdata \
