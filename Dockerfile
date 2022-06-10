@@ -82,6 +82,7 @@ WORKDIR /usr/src/humhub
 
 RUN composer config --no-plugins allow-plugins.yiisoft/yii2-composer true && \
     composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader && \
+    ln -s /usr/bin/php8 /usr/bin/php && \
     chmod +x protected/yii && \
     chmod +x protected/yii.bat && \
     npm install grunt && \
