@@ -102,6 +102,8 @@ jobs:
       run: sleep 60
     - name: Check status
       run: docker ps -a
+    - name: Logs
+      run: docker-compose logs
     - name: Test
       run: curl http://localhost:8080/ -L --fail && curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
     - name: Test Email
@@ -143,6 +145,8 @@ jobs:
       run: sleep 60
     - name: Check status
       run: docker ps -a
+    - name: Logs
+      run: docker-compose logs
     - name: Test
       run: curl http://localhost:8080/ -L --fail && curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
     - name: Test Email
