@@ -5,6 +5,7 @@
 
 # WARNING: Currently, container based setups are not officially supported by Humhub GmbH.
 #          Use at your own risk!
+---
 version: '3.1'
 services:
   nginx:
@@ -95,8 +96,8 @@ services:
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
 volumes:
-  uploads: {}
-  assets: {}
-  modules: {}
-  themes: {}
-  mysql: {}
+  uploads: { }
+  assets: { }
+  modules: { }
+  themes: { }
+  mysql: { }

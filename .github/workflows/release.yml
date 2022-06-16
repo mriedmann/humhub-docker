@@ -1,3 +1,4 @@
+---
 name: Auto Release
 
 on:
@@ -12,12 +13,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Login to github registry
-      run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username mriedmann --password-stdin
-    - name: Login to docker-hub registry
-      run: echo "${{ secrets.DOCKERHUB_PAT }}" | docker login docker.io --username mriedmann --password-stdin
-    - name: Execute Release
-      id: release
-      run: |
-        . ./release.sh
+      - uses: actions/checkout@v2
+      - name: Login to github registry
+        run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username mriedmann --password-stdin
+      - name: Login to docker-hub registry
+        run: echo "${{ secrets.DOCKERHUB_PAT }}" | docker login docker.io --username mriedmann --password-stdin
+      - name: Execute Release
+        id: release
+        run: |
+          . ./release.sh

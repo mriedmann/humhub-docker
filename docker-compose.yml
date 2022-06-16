@@ -2,6 +2,7 @@
 #       Please do not understand it as recommendation for an production 
 #       docker-compose setup. For that see the README. If you have additions 
 #       to make, please add them there.
+---
 version: '3.1'
 services:
   humhub:
@@ -35,8 +36,8 @@ services:
       HUMHUB_REDIS_PORT: 6379
       HUMHUB_REDIS_PASSWORD: redis_password
       # Module Config
-      # If a module is listed as enabled and disabled, the disabled status will always
-      # overrule the enabled status.
+      # If a module is listed as enabled and disabled, the disabled status
+      # will always overrule the enabled status.
       #HUMHUB_DISABLE_MODULES: 'ModA ModB ModC'
       #HUMHUB_ENABLE_MODULES: 'ModX ModY ModZ'
     volumes:
@@ -80,5 +81,5 @@ services:
       test: ["CMD", "redis-cli", "ping"]
 
 volumes:
-  config: {}
-  mysql: {}
+  config: { }
+  mysql: { }
