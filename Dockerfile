@@ -1,5 +1,3 @@
-ARG HUMHUB_VERSION
-ARG VCS_REF
 ARG BUILD_DEPS="\
     ca-certificates \
     nodejs \
@@ -96,15 +94,17 @@ FROM docker.io/library/alpine:3.15.4 as base
 
 ARG HUMHUB_VERSION
 ARG RUNTIME_DEPS
-LABEL name="HumHub" version=${HUMHUB_VERSION} variant="base" \
-      org.label-schema.build-date=$BUILD_DATE \
+ARG VCS_REF
+ARG BUILD_DATE
+LABEL name="HumHub" version="${HUMHUB_VERSION}-git-${VCS_REF}" variant="base" \
+      org.label-schema.build-date=${BUILD_DATE} \
       org.label-schema.name="HumHub" \
       org.label-schema.description="HumHub is a feature rich and highly flexible OpenSource Social Network Kit written in PHP" \
       org.label-schema.url="https://www.humhub.com/" \
-      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-ref=${VCS_REF} \
       org.label-schema.vcs-url="https://github.com/dantefromhell/humhub-docker" \
       org.label-schema.vendor="HumHub GmbH" \
-      org.label-schema.version=${HUMHUB_VERSION} \
+      org.label-schema.version="${HUMHUB_VERSION}-git-${VCS_REF}" \
       org.label-schema.schema-version="1.0"
 
 RUN apk add --no-cache --update $RUNTIME_DEPS && \
