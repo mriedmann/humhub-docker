@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.11"]
+        version: ["1.12", "1.11"]
     steps:
       - uses: actions/checkout@v2
       - uses: FranzDiebold/github-env-vars-action@v1.2.1
@@ -48,7 +48,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.11"]
+        version: ["1.12", "1.11"]
         target: ["allinone", "nginx", "phponly"]
     steps:
       - uses: actions/checkout@v2
@@ -87,7 +87,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.11"]
+        version: ["1.12", "1.11"]
     steps:
       - uses: actions/checkout@v2
       - uses: FranzDiebold/github-env-vars-action@v1.2.1
@@ -128,7 +128,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.11"]
+        version: ["1.12", "1.11"]
     steps:
       - uses: actions/checkout@v2
       - uses: FranzDiebold/github-env-vars-action@v1.2.1
@@ -177,7 +177,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.11"]
+        version: ["1.12", "1.11"]
         target: ["allinone"]
     steps:
       - uses: actions/checkout@v2
