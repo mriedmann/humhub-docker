@@ -102,8 +102,8 @@ jobs:
       run: sleep 60
     - name: Check status
       run: docker ps -a
-    - name: Test
-      run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
+    - name: Test Installer
+      run: curl http://localhost:8080/ -L --fail -s | grep 'Powered by' -q
     - name: Test Email
       run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
   test_prod:
@@ -143,8 +143,8 @@ jobs:
       run: sleep 60
     - name: Check status
       run: docker ps -a
-    - name: Test
-      run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
+    - name: Test Installer
+      run: curl http://localhost:8080/ -L --fail -s | grep 'Powered by' -q
     - name: Test Email
       run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
   push_ghcr:
