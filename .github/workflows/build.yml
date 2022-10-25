@@ -116,6 +116,7 @@ jobs:
           timeout: 120000
           log: true
           verbose: true
+          interval: 10000
       - name: Check status
         run: docker ps -a
       - name: Show HumHub logs
