@@ -17,7 +17,7 @@ jobs:
         version: ["1.12", "1.11"]
     steps:
       - uses: actions/checkout@v3
-      - uses: FranzDiebold/github-env-vars-action@v1.2.1
+      - uses: FranzDiebold/github-env-vars-action@v2.7.0
       - name: Set Humhub version
         run: |
           HUMHUB_VERSION="$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)"
@@ -33,9 +33,9 @@ jobs:
             --build-arg VCS_REF="${GIT_REV}" \
             --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
             --target base \
-            -t "ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-base" \
+            -t "ghcr.io/${CI_REPOSITORY_OWNER}/humhub:${CI_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-base" \
             .
-          docker save "ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-base" \
+          docker save "ghcr.io/${CI_REPOSITORY_OWNER}/humhub:${CI_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-base" \
             | gzip > "build-${{ matrix.version }}-git-${GIT_REV}.tar.gz"
       - name: Upload image archive
         uses: actions/upload-artifact@v3
@@ -52,7 +52,7 @@ jobs:
         target: ["allinone", "nginx", "phponly"]
     steps:
       - uses: actions/checkout@v3
-      - uses: FranzDiebold/github-env-vars-action@v1.2.1
+      - uses: FranzDiebold/github-env-vars-action@v2.7.0
       - name: Set Humhub version
         run: |
           HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
@@ -72,9 +72,9 @@ jobs:
             --build-arg HUMHUB_VERSION="${HUMHUB_VERSION}" \
             --build-arg VCS_REF="${GIT_REV}" \
             --target "humhub_${{ matrix.target }}" \
-            -t "ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-${{ matrix.target }}" \
+            -t "ghcr.io/${CI_REPOSITORY_OWNER}/humhub:${CI_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-${{ matrix.target }}" \
             .
-          docker save "ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-${{ matrix.target }}" \
+          docker save "ghcr.io/${CI_REPOSITORY_OWNER}/humhub:${CI_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-${{ matrix.target }}" \
             | gzip > "build-${{ matrix.version }}-git-${{ env.GIT_REV }}-${{ matrix.target }}.tar.gz"
       - name: Upload image archive
         uses: actions/upload-artifact@v3
@@ -90,7 +90,7 @@ jobs:
         version: ["1.12", "1.11"]
     steps:
       - uses: actions/checkout@v3
-      - uses: FranzDiebold/github-env-vars-action@v1.2.1
+      - uses: FranzDiebold/github-env-vars-action@v2.7.0
       - name: Set Humhub version
         run: |
           HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
@@ -107,7 +107,7 @@ jobs:
         run: |
           docker load --input "build-${{ matrix.version }}-git-${GIT_REV}-allinone.tar.gz"
       - name: replace image
-        run: sed -i "s/docker.io\/mriedmann\/humhub:latest/ghcr.io\/${GITHUB_REPOSITORY_OWNER}\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-allinone/g" docker-compose.yml
+        run: sed -i "s/docker.io\/mriedmann\/humhub:latest/ghcr.io\/${CI_REPOSITORY_OWNER}\/humhub:${CI_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-allinone/g" docker-compose.yml
       - name: Spin up services
         run: docker-compose -f docker-compose.yml up -d
       - name: Wait 
@@ -131,7 +131,7 @@ jobs:
         version: ["1.12", "1.11"]
     steps:
       - uses: actions/checkout@v3
-      - uses: FranzDiebold/github-env-vars-action@v1.2.1
+      - uses: FranzDiebold/github-env-vars-action@v2.7.0
       - name: Set Humhub version
         run: |
           HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
@@ -154,8 +154,8 @@ jobs:
           docker load --input "build-${{ matrix.version }}-git-${GIT_REV}-nginx.tar.gz"
       - name: replace image
         run: |
-          sed -i "s/docker.io\/mriedmann\/humhub:stable-nginx/ghcr.io\/${GITHUB_REPOSITORY_OWNER}\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-nginx/g" docker-compose.prod.yml
-          sed -i "s/docker.io\/mriedmann\/humhub:stable-phponly/ghcr.io\/${GITHUB_REPOSITORY_OWNER}\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-phponly/g" docker-compose.prod.yml
+          sed -i "s/docker.io\/mriedmann\/humhub:stable-nginx/ghcr.io\/${CI_REPOSITORY_OWNER}\/humhub:${CI_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-nginx/g" docker-compose.prod.yml
+          sed -i "s/docker.io\/mriedmann\/humhub:stable-phponly/ghcr.io\/${CI_REPOSITORY_OWNER}\/humhub:${CI_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-phponly/g" docker-compose.prod.yml
       - name: Spin up services
         run: docker-compose -f docker-compose.prod.yml up -d
       - name: Wait 
@@ -181,7 +181,7 @@ jobs:
         target: ["allinone"]
     steps:
       - uses: actions/checkout@v3
-      - uses: FranzDiebold/github-env-vars-action@v1.2.1
+      - uses: FranzDiebold/github-env-vars-action@v2.7.0
       - name: Login to registry
         run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username "${GITHUB_REPOSITORY_OWNER}" --password-stdin
       - name: Set Humhub version
@@ -199,6 +199,6 @@ jobs:
       - name: Load, retag and Push images 
         run: |
           docker load --input "build-${{ matrix.version }}-git-${GIT_REV}-${{ matrix.target }}.tar.gz"
-          docker tag "ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-${{ matrix.target }}" \
+          docker tag "ghcr.io/${CI_REPOSITORY_OWNER}/humhub:${CI_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-${{ matrix.target }}" \
             "ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub-${{ matrix.target }}:${HUMHUB_VERSION}-git-${GIT_REV}"
-          docker push "ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub-${{ matrix.target }}:${HUMHUB_VERSION}-git-${GIT_REV}"
+          docker push "ghcr.io/${CI_REPOSITORY_OWNER}/humhub-${{ matrix.target }}:${HUMHUB_VERSION}-git-${GIT_REV}"
