@@ -110,13 +110,8 @@ jobs:
         run: sed -i "s/docker.io\/mriedmann\/humhub:latest/ghcr.io\/${GITHUB_REPOSITORY_OWNER}\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-allinone/g" docker-compose.yml
       - name: Spin up services
         run: docker-compose -f docker-compose.yml up -d
-      - uses: ifaxity/wait-on-action@v1
-        with:
-          resource: http-get://localhost:8080
-          timeout: 180000
-          log: true
-          verbose: true
-          interval: 10000
+      - name: Wait 
+        run: sleep 120
       - name: Check status
         run: docker ps -a
       - name: Show HumHub logs
