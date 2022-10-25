@@ -113,7 +113,7 @@ jobs:
       - uses: ifaxity/wait-on-action@v1
         with:
           resource: http-get://localhost:8080
-          timeout: 120000
+          timeout: 180000
           log: true
           verbose: true
           interval: 10000
