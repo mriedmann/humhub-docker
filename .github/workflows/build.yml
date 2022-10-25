@@ -112,7 +112,7 @@ jobs:
         run: docker-compose -f docker-compose.yml up -d
       - uses: ifaxity/wait-on-action@v1
         with:
-          resource: http://localhost:8080
+          resource: http-get://localhost:8080
           timeout: 120000
           log: true
           verbose: true
