@@ -62,7 +62,7 @@ jobs:
           export GIT_REV
           echo "GIT_REV=$GIT_REV" >> "$GITHUB_ENV"
       - name: Download image archive
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: build-${{ matrix.version }}-git-${{ env.GIT_REV }}
       - name: Build and push docker image
@@ -100,7 +100,7 @@ jobs:
           export GIT_REV
           echo "GIT_REV=$GIT_REV" >> "$GITHUB_ENV"
       - name: Download image archive
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: build-${{ matrix.version }}-git-${{ env.GIT_REV }}-allinone
       - name: Load images 
@@ -145,11 +145,11 @@ jobs:
           export GIT_REV
           echo "GIT_REV=$GIT_REV" >> "$GITHUB_ENV"
       - name: Download image archive (phponly)
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: build-${{ matrix.version }}-git-${{ env.GIT_REV }}-phponly
       - name: Download image archive (nginx)
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: build-${{ matrix.version }}-git-${{ env.GIT_REV }}-nginx
       - name: Load images 
@@ -197,7 +197,7 @@ jobs:
           export GIT_REV
           echo "GIT_REV=$GIT_REV" >> "$GITHUB_ENV"
       - name: Download image archive
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: build-${{ matrix.version }}-git-${{ env.GIT_REV }}-${{ matrix.target }}
       - name: Load, retag and Push images 
