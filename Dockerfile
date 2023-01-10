@@ -107,6 +107,7 @@ LABEL name="HumHub" version=${HUMHUB_VERSION} variant="base" \
 
 RUN apk add --no-cache --update $RUNTIME_DEPS && \
     apk add --no-cache --virtual temp_pkgs gettext && \
+    ln -s /usr/bin/php8 /usr/bin/php && \
     cp /usr/bin/envsubst /usr/local/bin/envsubst && \
     apk del temp_pkgs && \
     rm -rf /var/cache/apk/*
