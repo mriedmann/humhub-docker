@@ -2,27 +2,27 @@ ARG BUILD_DEPS="\
     ca-certificates \
     nodejs \
     npm \
-    php8 \
-    php8-ctype \
-    php8-curl \
-    php8-dom \
-    php8-exif \
-    php8-fileinfo \
-    php8-gd \
-    php8-iconv \
-    php8-intl \
-    php8-json \
-    php8-ldap \
-    php8-mbstring \
-    php8-openssl \
-    php8-pdo_mysql \
-    php8-phar \
-    php8-simplexml \
-    php8-tokenizer \
-    php8-xml \
-    php8-xmlreader \
-    php8-xmlwriter \
-    php8-zip \
+    php81 \
+    php81-ctype \
+    php81-curl \
+    php81-dom \
+    php81-exif \
+    php81-fileinfo \
+    php81-gd \
+    php81-iconv \
+    php81-intl \
+    php81-json \
+    php81-ldap \
+    php81-mbstring \
+    php81-openssl \
+    php81-pdo_mysql \
+    php81-phar \
+    php81-simplexml \
+    php81-tokenizer \
+    php81-xml \
+    php81-xmlreader \
+    php81-xmlwriter \
+    php81-zip \
     tzdata \
     "
 
@@ -31,31 +31,31 @@ ARG RUNTIME_DEPS="\
     curl \
     imagemagick \
     libintl \
-    php8 \
-    php8-apcu \
-    php8-ctype \
-    php8-curl \
-    php8-dom \
-    php8-exif \
-    php8-fileinfo \
-    php8-fpm \
-    php8-gd \
-    php8-iconv \
-    php8-intl \
-    php8-json \
-    php8-ldap \
-    php8-mbstring \
-    php8-openssl \
-    php8-pdo_mysql \
-    php8-pecl-imagick \
-    php8-phar \
-    php8-session \
-    php8-simplexml \
-    php8-sqlite3 \
-    php8-xml \
-    php8-xmlreader \
-    php8-xmlwriter \
-    php8-zip \
+    php81 \
+    php81-apcu \
+    php81-ctype \
+    php81-curl \
+    php81-dom \
+    php81-exif \
+    php81-fileinfo \
+    php81-fpm \
+    php81-gd \
+    php81-iconv \
+    php81-intl \
+    php81-json \
+    php81-ldap \
+    php81-mbstring \
+    php81-openssl \
+    php81-pdo_mysql \
+    php81-pecl-imagick \
+    php81-phar \
+    php81-session \
+    php81-simplexml \
+    php81-sqlite3 \
+    php81-xml \
+    php81-xmlreader \
+    php81-xmlwriter \
+    php81-zip \
     sqlite \
     supervisor \
     tzdata \
@@ -63,7 +63,7 @@ ARG RUNTIME_DEPS="\
 
 FROM composer:2.5.1 as builder-composer
 
-FROM docker.io/library/alpine:3.16.3 as builder
+FROM docker.io/library/alpine:3.17.0 as builder
 
 ARG HUMHUB_VERSION
 ARG BUILD_DEPS
@@ -91,7 +91,7 @@ RUN composer config --no-plugins allow-plugins.yiisoft/yii2-composer true && \
     grunt build-assets && \
     rm -rf ./node_modules
 
-FROM docker.io/library/alpine:3.16.3 as base
+FROM docker.io/library/alpine:3.17.0 as base
 
 ARG HUMHUB_VERSION
 ARG RUNTIME_DEPS
