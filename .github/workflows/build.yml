@@ -103,7 +103,7 @@ jobs:
     - name: Check status
       run: docker ps -a
     - name: Test
-      run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
+      run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -vvv
     - name: Test Email
       run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
   test_prod:
@@ -144,7 +144,7 @@ jobs:
     - name: Check status
       run: docker ps -a
     - name: Test
-      run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
+      run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -vvv
     - name: Test Email
       run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
   push_ghcr:
