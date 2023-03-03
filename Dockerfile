@@ -132,9 +132,14 @@ RUN mkdir -p /usr/src/humhub/protected/config/ && \
 
 # Non-root directories
 RUN mkdir -p /var/www/localhost/htdocs/protected/runtime/logs && \
+    mkdir -p /var/www/localhost/htdocs/uploads /var/www/localhost/htdocs/assets /var/www/localhost/htdocs/protected/modules /var/www/localhost/htdocs/themes /var/www/localhost/htdocs/protected/config && \
     mkdir -p /run/nginx /run/php-fpm && \
     touch /var/www/localhost/htdocs/protected/runtime/logs/app.log && \
-    chown 100:101 /var/www/localhost/htdocs/protected/runtime/logs /run/nginx /run/php-fpm -R
+    chown 100:101 -R /var/www/localhost/htdocs/protected/runtime/logs /run/nginx /run/php-fpm \
+      /var/www/localhost/htdocs/uploads /var/www/localhost/htdocs/assets  \
+      /var/www/localhost/htdocs/protected/modules /var/www/localhost/htdocs/themes  \
+      /var/www/localhost/htdocs/protected/config
+
 
 COPY base/ /
 COPY docker-entrypoint.sh /docker-entrypoint.sh
@@ -187,10 +192,10 @@ ENV NGINX_CLIENT_MAX_BODY_SIZE=10m \
 USER root
 COPY nginx/ /
 COPY --from=builder --chown=nginx:nginx /usr/src/humhub/ /var/www/localhost/htdocs/
-RUN chown nginx:nginx -R /etc/nginx
+RUN mkdir -p /var/cache/nginx /run/nginx && \
+    chown nginx:nginx -R /etc/nginx /var/cache/nginx /run/nginx
 
 USER nginx
-CMD ["multirun", "/usr/sbin/nginx -g 'daemon off;'"]
 
 #+------------------
 # HumHub All-in-one
