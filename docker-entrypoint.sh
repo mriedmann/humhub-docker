@@ -128,12 +128,6 @@ else
 	mkdir -p /var/www/localhost/htdocs/protected/runtime/logs/
 	touch /var/www/localhost/htdocs/protected/runtime/logs/app.log
 
-	echo >&3 "$0: Setting permissions..."
-	chown -R nginx:nginx /var/www/localhost/htdocs/uploads
-	chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules
-	chown -R nginx:nginx /var/www/localhost/htdocs/protected/config
-	chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
-
 	wait_for_db
 
 	echo >&3 "$0: Creating database..."
@@ -191,9 +185,6 @@ else
 			php yii 'settings/set' 'base' 'mailer.encryption' "${HUMHUB_MAILER_ENCRYPTION}"
 			php yii 'settings/set' 'base' 'mailer.allowSelfSignedCerts' "${HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS}"
 		fi
-
-		chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
-		chown nginx:nginx /var/www/localhost/htdocs/protected/config/dynamic.php
 	fi
 fi
 
