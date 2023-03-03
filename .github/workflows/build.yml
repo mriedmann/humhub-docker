@@ -99,13 +99,16 @@ jobs:
     - name: Spin up services
       run: docker-compose -f docker-compose.yml up -d
     - name: Wait 
-      run: sleep 60
+      run: sleep 70
     - name: Check status
       run: docker ps -a
     - name: Test
       run: curl http://localhost:8080/ -L --fail -vvv | grep 'Sign in</button>' -q
     - name: Test Email
       run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
+    - name: Collect logs
+      if: ${{ always() }}
+      run: docker-compose -f docker-compose.prod.yml logs
   test_prod:
     needs: build_variants
     runs-on: ubuntu-latest
@@ -140,13 +143,16 @@ jobs:
     - name: Spin up services
       run: docker-compose -f docker-compose.prod.yml up -d
     - name: Wait 
-      run: sleep 60
+      run: sleep 70
     - name: Check status
       run: docker ps -a
     - name: Test
       run: curl http://localhost:8080/ -L --fail -vvv | grep 'Sign in</button>' -q
     - name: Test Email
       run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
+    - name: Collect logs
+      if: ${{ always() }}
+      run: docker-compose -f docker-compose.prod.yml logs
   push_ghcr:
     needs: ["test_aio", "test_prod"]
     runs-on: ubuntu-latest
