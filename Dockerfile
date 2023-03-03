@@ -59,7 +59,7 @@ ARG RUNTIME_DEPS="\
     php7-xmlwriter \
     php7-zip \
     sqlite \
-    supervisor \
+    multirun \
     tzdata \
     "
 
@@ -112,16 +112,14 @@ RUN apk add --no-cache --update $RUNTIME_DEPS && \
     apk add --no-cache --virtual temp_pkgs gettext && \
     cp /usr/bin/envsubst /usr/local/bin/envsubst && \
     apk del temp_pkgs && \
-    rm -rf /var/cache/apk/*
+    rm -rf /var/cache/apk/* && \
+    chmod +x /usr/bin/multirun
 
 ENV PHP_POST_MAX_SIZE=16M
 ENV PHP_UPLOAD_MAX_FILESIZE=10M
 ENV PHP_MAX_EXECUTION_TIME=60
 ENV PHP_MEMORY_LIMIT=1G
 ENV PHP_TIMEZONE=UTC
-
-RUN touch /var/run/supervisor.sock && \
-    chmod 777 /var/run/supervisor.sock
 
 # 100=nginx 101=nginx (group)
 COPY --from=builder --chown=100:101 /usr/src/humhub /var/www/localhost/htdocs/
@@ -132,10 +130,18 @@ RUN mkdir -p /usr/src/humhub/protected/config/ && \
     rm -f var/www/localhost/htdocs/protected/config/common.php /usr/src/humhub/protected/config/common.php && \
     echo "v${HUMHUB_VERSION}" >  /usr/src/humhub/.version
 
+# Non-root directories
+RUN mkdir -p /var/www/localhost/htdocs/protected/runtime/logs && \
+    mkdir -p /run/nginx /run/php-fpm && \
+    touch /var/www/localhost/htdocs/protected/runtime/logs/app.log && \
+    chown 100:101 /var/www/localhost/htdocs/protected/runtime/logs /run/nginx /run/php-fpm -R
+
 COPY base/ /
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN chmod 600 /etc/crontabs/nginx && \
+    chown 100:101 /etc/crontabs/nginx && \
+    rm /etc/crontabs/root && \
     chmod +x /docker-entrypoint.sh
 
 VOLUME /var/www/localhost/htdocs/uploads
@@ -143,12 +149,16 @@ VOLUME /var/www/localhost/htdocs/protected/config
 VOLUME /var/www/localhost/htdocs/protected/modules
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
 
+
+#+-----------
+# HumHub PHP
+#+-----------
 FROM base as humhub_phponly
 
 LABEL variant="phponly"
 
+USER root
 RUN apk add --no-cache fcgi
 
 COPY phponly/ /
@@ -159,7 +169,13 @@ RUN chmod +x /usr/local/bin/php-fpm-healthcheck \
  && adduser --uid 100 -g 101 -S nginx
 
 EXPOSE 9000
+USER nginx
+CMD ["multirun", "/usr/sbin/php-fpm7 --fpm-config /etc/php-fpm.d/pool.conf -O -F", "tail -f /var/www/localhost/htdocs/protected/runtime/logs/app.log", "crond -f -L /proc/self/fd/2"]
 
+
+#+-------------
+# HumHub NGINX
+#+-------------
 FROM docker.io/library/nginx:1.23.3-alpine as humhub_nginx
 
 LABEL variant="nginx"
@@ -168,16 +184,29 @@ ENV NGINX_CLIENT_MAX_BODY_SIZE=10m \
     NGINX_KEEPALIVE_TIMEOUT=65 \
     NGINX_UPSTREAM=humhub:9000
 
+USER root
 COPY nginx/ /
 COPY --from=builder --chown=nginx:nginx /usr/src/humhub/ /var/www/localhost/htdocs/
+RUN chown nginx:nginx -R /etc/nginx
 
+USER nginx
+CMD ["multirun", "/usr/sbin/nginx -g 'daemon off;'"]
+
+#+------------------
+# HumHub All-in-one
+#+------------------
 FROM base as humhub_allinone
 
 LABEL variant="allinone"
 
+USER root
 RUN apk add --no-cache nginx && \
-    chown -R nginx:nginx /var/lib/nginx/
+    mkdir -p /etc/nginx && \
+    chown -R nginx:nginx /var/lib/nginx/ /etc/nginx
 
 COPY nginx/ /
+RUN chown nginx:nginx -R /etc/nginx
 
 EXPOSE 80
+USER nginx
+CMD ["/usr/bin/multirun", "/usr/sbin/php-fpm7 --fpm-config /etc/php-fpm.d/pool.conf -O -F", "tail -f /var/www/localhost/htdocs/protected/runtime/logs/app.log", "crond -f -L /proc/self/fd/2", "/usr/sbin/nginx -g 'daemon off;'"]

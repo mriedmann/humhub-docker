@@ -6,6 +6,8 @@
 
 > :warning: **Image Removal**: We have purged all registries from End-Of-Life images (1.4,1.5,1.6,1.7,1.8). These images were not maintained anymore and contained major security flaws. To protect the public we removed them. If you really want to use these images, you have to build them from source.
 
+> :warning: **Default privileges change:** This container is no longer starting as root and then dropping the privileges. Supervisord (running previously as root) was changed to lighter alternative "multirun" that runs as "nginx" user directly. This change opens possibility to easily run on OpenShift and Kubernetes.
+
 [HumHub](https://github.com/humhub/humhub) is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
 This container provides a quick, flexible and lightweight way to set up a proof-of-concept for detailed evaluation.
 Using this in production is possible, but please note that there is currently no official support available for this kind of setup.
