@@ -65,7 +65,7 @@ ARG RUNTIME_DEPS="\
 
 FROM composer:2.5.1 as builder-composer
 
-FROM docker.io/library/alpine:3.15.4 as builder
+FROM docker.io/library/alpine:3.17.3 as builder
 
 ARG HUMHUB_VERSION
 ARG BUILD_DEPS
@@ -93,7 +93,7 @@ RUN composer config --no-plugins allow-plugins.yiisoft/yii2-composer true && \
     grunt build-assets && \
     rm -rf ./node_modules
 
-FROM docker.io/library/alpine:3.15.4 as base
+FROM docker.io/library/alpine:3.17.3 as base
 
 ARG HUMHUB_VERSION
 ARG RUNTIME_DEPS
