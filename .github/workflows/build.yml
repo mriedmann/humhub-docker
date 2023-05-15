@@ -7,6 +7,12 @@ on:
   push:
     branches: [master]
   workflow_dispatch:
+    inputs:
+      ssh_debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
 
 jobs:
   build_bases:
@@ -116,8 +122,11 @@ jobs:
         run: docker ps -a
       - name: Show HumHub logs
         run: docker logs humhub-docker_humhub_1
+      - name: Setup upterm SSH debugging
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.ssh_debug_enabled }}
       - name: Test
-        run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
+        run: curl 'http://localhost:8080/' -L --fail -s | grep 'Sign in</button>' -q || ( curl 'http://localhost:8080/' ; exit 1;)
       - name: Test Email
         run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' \
           | grep 'Message successfully sent!' -q
@@ -164,8 +173,11 @@ jobs:
         run: docker ps -a
       - name: Show HumHub logs
         run: docker logs humhub-docker_humhub_1
+      - name: Setup upterm SSH debugging
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.ssh_debug_enabled }}
       - name: Test
-        run: curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
+        run: curl 'http://localhost:8080/' -L --fail -s | grep 'Sign in</button>' -q || ( curl 'http://localhost:8080/' ; exit 1;)
       - name: Test Email
         run: |
           docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' \
