@@ -7,7 +7,7 @@ CUR_VERSION=""
 NEW_VERSION=""
 GIT_BRANCH=""
 
-upstream_versions=$(curl -s https://api.github.com/repos/humhub/humhub/releases | jq -r '.[] | select(.prerelease==false) | .name' | sort -n)
+upstream_versions=$(curl -s https://api.github.com/repos/humhub/humhub/releases | jq -r '.[] | select(.prerelease==false) | .name' | sort --version-sort)
 local_versions=$(cat versions.txt) # to avoid problems when writing doing loop
 while IFS= read -r line; do
     local_version_prefix=$(echo "$line" | cut -d' ' -f2)
