@@ -3,12 +3,9 @@
 # All module names refer to the official name from the store, a complete listing can be
 # obtained via the `php yii module/list-online` command.
 
-# Per default enabled modules in all installations.
-ENABLED_MODULES="calendar cfiles content-bookmarks external_calendar gallery mail newmembers polls popover-vcard scrollup tasks wiki"
-
 echo "Installing HumHub modules"
 echo "Modules enabled by docker env: ${HUMHUB_ENABLE_MODULES}"
-for module in ${ENABLED_MODULES} ${HUMHUB_ENABLE_MODULES}
+for module in ${HUMHUB_ENABLE_MODULES}
 do
     echo "... Installing module ${module}"
     su -s /bin/sh nginx -c "php yii module/install ${module}"
