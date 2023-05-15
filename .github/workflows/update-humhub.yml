@@ -1,5 +1,5 @@
 ---
-name: Auto Update
+name: Auto Update HumHub
 
 on:
   repository_dispatch:
@@ -35,5 +35,5 @@ jobs:
         with:
           source_branch: "${{ env.GIT_BRANCH }}"                                 
           destination_branch: "master"                      
-          pr_title: "Update to ${{ env.NEW_VERSION }}"
+          pr_title: "Bump HumHub to ${{ env.NEW_VERSION }}"
           github_token: ${{ secrets.GITHUB_TOKEN }}
