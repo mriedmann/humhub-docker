@@ -29,7 +29,7 @@ while IFS= read -r line; do
     fi
 done <<< "$local_versions"
 
-if [ $UPDATE_NEEDED ]; then
+if [ $UPDATE_NEEDED = true ]; then
     GIT_BRANCH="update-$NEW_VERSION"
     export GIT_BRANCH
 
