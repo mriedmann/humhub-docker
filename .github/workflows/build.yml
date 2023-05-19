@@ -210,7 +210,9 @@ jobs:
           name: build-${{ matrix.version }}-git-${{ env.GIT_REV }}-${{ matrix.target }}
       - name: Load, retag and Push images 
         run: |
+          export REPO_OWNER="ghcr.io/${GITHUB_REPOSITORY_OWNER}"
+          export IMAGE_URL="${REPO_OWNER}/humhub:${CI_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-${{ matrix.target }}"
           docker load --input "build-${{ matrix.version }}-git-${GIT_REV}-${{ matrix.target }}.tar.gz"
-          docker tag "ghcr.io/${CI_REPOSITORY_OWNER}/humhub:${CI_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-${{ matrix.target }}" \
-            "ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub-${{ matrix.target }}:${HUMHUB_VERSION}-git-${GIT_REV}"
+          docker tag  "${IMAGE_URL}" "${REPO_OWNER}/humhub-${{ matrix.target }}:${HUMHUB_VERSION}-git-${GIT_REV}"
+          docker tag  "${IMAGE_URL}" "${REPO_OWNER}/humhub-${{ matrix.target }}:latest"
           docker push "ghcr.io/${CI_REPOSITORY_OWNER}/humhub-${{ matrix.target }}:${HUMHUB_VERSION}-git-${GIT_REV}"
