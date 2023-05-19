@@ -1,7 +1,11 @@
 # Alpine-based PHP-FPM and NGINX HumHub docker-container
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e2c25ed0c4ce479aa9a97be05d1d5b20)](https://app.codacy.com/app/mriedmann/humhub-docker?utm_source=github.com&utm_medium=referral&utm_content=mriedmann/humhub-docker&utm_campaign=Badge_Grade_Dashboard) ![Docker Image CI](https://github.com/mriedmann/humhub-docker/workflows/Docker%20Image%20CI/badge.svg) ![Docker Pulls](https://img.shields.io/docker/pulls/mriedmann/humhub) [![Join the chat at https://gitter.im/humhub-docker/community](https://badges.gitter.im/humhub-docker/community.svg)](https://gitter.im/humhub-docker/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+<details>
+  <summary>Original README of mriedmann/humhub-docker</summary>
 
+  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e2c25ed0c4ce479aa9a97be05d1d5b20)](https://app.codacy.com/app/mriedmann/humhub-docker?utm_source=github.com&utm_medium=referral&utm_content=mriedmann/humhub-docker&utm_campaign=Badge_Grade_Dashboard) ![Docker Image CI](https://github.com/mriedmann/humhub-docker/workflows/Docker%20Image%20CI/badge.svg) ![Docker Pulls](https://img.shields.io/docker/pulls/mriedmann/humhub) [![Join the chat at https://gitter.im/humhub-docker/community](https://badges.gitter.im/humhub-docker/community.svg)](https://gitter.im/humhub-docker/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+  
 > :warning: **Version Shift**: We lately changed the versions of latest (1.9->1.10) / stable (1.8->1.9) / legacy (1.8). This can lead to an unexpected update when you are using these moving tags. If you do not want to upgrade, use the corresponding version-tags.
 
 > :warning: **Image Removal**: We have purged all registries from End-Of-Life images (1.4,1.5,1.6). These images were not maintained anymore and contained major security flaws. To protect the public we removed them. If you really want to use these images, you have to build them from source.
@@ -221,7 +225,8 @@ HUMHUB_REVERSEPROXY_WHITELIST ["127.0.0.1"]
 ## Contribution
 
 Please use the issues-page for bugs or suggestions. Pull-requests are highly welcomed.
-
+</details>
+  
 ## Special Thanks
 
 Special thanks go to following contributors for there incredible work on this image:
@@ -230,5 +235,6 @@ Special thanks go to following contributors for there incredible work on this im
 - @ArchBlood
 - @pascalberger
 - @bkmeneguello
+- @mriedmann
 
 And also to @luke- and his team for providing, building and maintaining HumHub.
