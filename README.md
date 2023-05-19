@@ -1,7 +1,7 @@
 # Alpine-based PHP-FPM and NGINX HumHub docker-container
 
 <details>
-  <summary>Original README of mriedmann/humhub-docker</summary>
+  <summary>Original README of <a href="https://github.com/mriedmann/humhub-docker" target="_blank">mriedmann/humhub-docker</a></summary>
 
   [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e2c25ed0c4ce479aa9a97be05d1d5b20)](https://app.codacy.com/app/mriedmann/humhub-docker?utm_source=github.com&utm_medium=referral&utm_content=mriedmann/humhub-docker&utm_campaign=Badge_Grade_Dashboard) ![Docker Image CI](https://github.com/mriedmann/humhub-docker/workflows/Docker%20Image%20CI/badge.svg) ![Docker Pulls](https://img.shields.io/docker/pulls/mriedmann/humhub) [![Join the chat at https://gitter.im/humhub-docker/community](https://badges.gitter.im/humhub-docker/community.svg)](https://gitter.im/humhub-docker/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
