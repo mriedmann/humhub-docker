@@ -13,13 +13,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.14", "1.13", "1.12"]
+        version: ["latest", "stable", "legacy"]
     steps:
     - uses: actions/checkout@v2
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
     - name: Set Humhub version
       run: |
-        HUMHUB_VERSION="$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)"
+        HUMHUB_VERSION="$(awk -e '$0 ~ /^([0-9\.]+) [0-9\.]+ ${{ matrix.version }}/ {print $1}' versions.txt)"
         export HUMHUB_VERSION
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> "$GITHUB_ENV"
     - name: Build and push docker image
@@ -43,14 +43,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.14", "1.13", "1.12"]
+        version: ["latest", "stable", "legacy"]
         target: ["allinone", "nginx", "phponly"]
     steps:
     - uses: actions/checkout@v2
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
     - name: Set Humhub version
       run: |
-        HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
+        HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) [0-9\.]+ ${{ matrix.version }}/ {print $1}' versions.txt)
         export HUMHUB_VERSION
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> "$GITHUB_ENV"
     - name: Download image archive
@@ -78,13 +78,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.14", "1.13", "1.12"]
+        version: ["latest", "stable", "legacy"]
     steps:
     - uses: actions/checkout@v2
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
     - name: Set Humhub version
       run: |
-        HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
+        HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) [0-9\.]+ ${{ matrix.version }}/ {print $1}' versions.txt)
         export HUMHUB_VERSION
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> "$GITHUB_ENV"
     - name: Download image archive
@@ -112,13 +112,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.14", "1.13", "1.12"]
+        version: ["latest", "stable", "legacy"]
     steps:
     - uses: actions/checkout@v2
     - uses: FranzDiebold/github-env-vars-action@v1.2.1
     - name: Set Humhub version
       run: |
-        HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
+        HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) [0-9\.]+ ${{ matrix.version }}/ {print $1}' versions.txt)
         export HUMHUB_VERSION
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> "$GITHUB_ENV"
     - name: Download image archive (phponly)
@@ -154,7 +154,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["1.14", "1.13", "1.12"]
+        version: ["latest", "stable", "legacy"]
         target: ["allinone", "nginx", "phponly"]
     steps:
     - uses: actions/checkout@v2
@@ -163,7 +163,7 @@ jobs:
       run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username "${GITHUB_REPOSITORY_OWNER}" --password-stdin
     - name: Set Humhub version
       run: |
-        HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) ${{ matrix.version }}/ {print $1}' versions.txt)
+        HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) [0-9\.]+ ${{ matrix.version }}/ {print $1}' versions.txt)
         export HUMHUB_VERSION
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> "$GITHUB_ENV"
     - name: Download image archive
