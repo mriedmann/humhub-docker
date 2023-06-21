@@ -1,10 +1,6 @@
 # Alpine-based PHP-FPM and NGINX HumHub docker-container
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e2c25ed0c4ce479aa9a97be05d1d5b20)](https://app.codacy.com/app/mriedmann/humhub-docker?utm_source=github.com&utm_medium=referral&utm_content=mriedmann/humhub-docker&utm_campaign=Badge_Grade_Dashboard) ![Docker Image CI](https://github.com/mriedmann/humhub-docker/workflows/Docker%20Image%20CI/badge.svg) ![Docker Pulls](https://img.shields.io/docker/pulls/mriedmann/humhub) [![Join the chat at https://gitter.im/humhub-docker/community](https://badges.gitter.im/humhub-docker/community.svg)](https://gitter.im/humhub-docker/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-> :warning: **Version Shift**: We lately changed the versions of latest (1.11->1.12) / stable (1.10->1.11) / legacy (1.9). This can lead to an unexpected update when you are using these moving tags. If you do not want to upgrade, use the corresponding version-tags.
-
-> :warning: **Image Removal**: We have purged all registries from End-Of-Life images (1.4,1.5,1.6,1.7,1.8). These images were not maintained anymore and contained major security flaws. To protect the public we removed them. If you really want to use these images, you have to build them from source.
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e2c25ed0c4ce479aa9a97be05d1d5b20)](https://app.codacy.com/app/mriedmann/humhub-docker?utm_source=github.com&utm_medium=referral&utm_content=mriedmann/humhub-docker&utm_campaign=Badge_Grade_Dashboard) [![Build](https://github.com/mriedmann/humhub-docker/actions/workflows/build.yml/badge.svg)](https://github.com/mriedmann/humhub-docker/actions/workflows/build.yml) ![Docker Pulls](https://img.shields.io/docker/pulls/mriedmann/humhub) [![Join the chat at https://gitter.im/humhub-docker/community](https://badges.gitter.im/humhub-docker/community.svg)](https://gitter.im/humhub-docker/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [HumHub](https://github.com/humhub/humhub) is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
 This container provides a quick, flexible and lightweight way to set up a proof-of-concept for detailed evaluation.
@@ -12,23 +8,23 @@ Using this in production is possible, but please note that there is currently no
 
 ## Versions
 
-This project provides different images and tags for different purposes. For evaluation use `humhub:stable`, for production consider using the newest minor-version tag (e.g. `humhub:1.11`).
+This project provides different images and tags for different purposes. For evaluation use `humhub:stable`, for production consider using the newest minor-version tag (e.g. `humhub:1.13`).
 
 - `latest` : unstable master build (not recommended for production; use with caution, might be unstable!)
-- Minor (e.g `1.11`): Always points to the latest release of given minor version. (Recommended)
-- Build (e.g `1.11.4`): Always points to the latest release of given build. Very stable but might be outdated.
+- Minor (e.g `1.13`): Always points to the latest release of given minor version. (Recommended)
+- Build (e.g `1.13.4`): Always points to the latest release of given build. Very stable but might be outdated.
 - `stable`: Always points to oldest, still supported, therefore most mature version. Updates include minor-version changes which can include db-schema changes (higher risk).
 - `legacy`: Try to avoid this tag as much as possible. If your current installation is flagged as "deprecated" the related tag is also changed to "legacy". Please try to upgrade as fast as possible to avoid security and other issues.
 
 ### Variants
 
-There are 3 different variants of this image. Use the unspecific tag (e.g. `humhub:1.11`) if you what a running installation as fast as possible. Use the moving tags if you want to stay up-to-date, not caring about version-upgrades. For critical environments we recommend that you stick to the version-tags or digest, not using moving tags.
+There are 3 different variants of this image. Use the unspecific tag (e.g. `humhub:1.13`) if you what a running installation as fast as possible. Use the moving tags if you want to stay up-to-date, not caring about version-upgrades. For critical environments we recommend that you stick to the version-tags or digest, not using moving tags.
 
 If plan to build some kind of hosted solution, have a look at `docker-compose.prod.yml` to understand how the variant images can be used.
 
-- **all-in-one** (e.g. `humhub:1.11`): Multi-service image (nginx + php-fpm). Use this if you are not sure what you need.
-- **nginx** (e.g. `humhub:1.11-nginx`): Only static files and nginx proxy config without php.
-- **phponly** (e.g. `humhub:1.11-phponly`): HumHub sources bundled with php-fpm. Needs a fcgi application-server to be able to deliver http.
+- **all-in-one** (e.g. `humhub:1.13`): Multi-service image (nginx + php-fpm). Use this if you are not sure what you need.
+- **nginx** (e.g. `humhub:1.13-nginx`): Only static files and nginx proxy config without php.
+- **phponly** (e.g. `humhub:1.13-phponly`): HumHub sources bundled with php-fpm. Needs a fcgi application-server to be able to deliver http.
 
 ### Matrix
 
@@ -40,9 +36,9 @@ If plan to build some kind of hosted solution, have a look at `docker-compose.pr
 
 | Version | Status                  | AllInOne                                                                                                                          | Nginx                                                                                                                                    | PHP-Only                                                                                                                                   |
 | ------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `1.10`   | :thumbsdown: Deprecated     | [![humhub:1.10](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.10-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.10](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.10--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.10](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.10--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
-| `1.11`   | :thumbsup: Stable     | [![humhub:1.11](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.11-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.11](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.11--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.11](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.11--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
-| `1.12`   | :boom: Experimental     | [![humhub:1.12](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.12-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.12](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.12--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.12](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.12--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
+| `1.12`   | :thumbsdown: Deprecated     | [![humhub:1.12](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.12-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.12](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.12--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.12](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.12--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
+| `1.13`   | :thumbsup: Stable     | [![humhub:1.13](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.13-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.13](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.13--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.13](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.13--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
+| `1.14`   | :boom: Experimental     | [![humhub:1.14](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.14-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.14](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.14--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.14](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.14--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
 
 | Flavor   | Stable                                                                                                                                      | Latest                                                                                                                                              | Legacy                                                                                                                                                   |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -225,9 +221,10 @@ Please use the issues-page for bugs or suggestions. Pull-requests are highly wel
 
 Special thanks go to following contributors for there incredible work on this image:
 
-- @madmath03
-- @ArchBlood
-- @pascalberger
-- @bkmeneguello
+- [@jvies](https://github.com/jvies)
+- [@madmath03](https://github.com/madmath03)
+- [@ArchBlood](https://github.com/ArchBlood)
+- [@pascalberger](https://github.com/pascalberger)
+- [@bkmeneguello](https://github.com/bkmeneguello)
 
 And also to @luke- and his team for providing, building and maintaining HumHub.
