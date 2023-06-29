@@ -128,7 +128,7 @@ jobs:
       - name: Test
         run: curl 'http://localhost:8080/' -L --fail -s | grep 'Sign in</button>' -q || ( curl 'http://localhost:8080/' ; exit 1;)
       - name: Test Email
-        run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' \
+        run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' --interactive=0 \
           | grep 'Message successfully sent!' -q
 
   test_prod:
@@ -180,7 +180,7 @@ jobs:
         run: curl 'http://localhost:8080/' -L --fail -s | grep 'Sign in</button>' -q || ( curl 'http://localhost:8080/' ; exit 1;)
       - name: Test Email
         run: |
-          docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' \
+          docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' --interactive=0 \
             | grep 'Message successfully sent!' -q
   push_ghcr:
     needs: ["test_aio", "test_prod"]
