@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Login to github registry
         run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username mriedmann --password-stdin
       - name: Login to docker-hub registry

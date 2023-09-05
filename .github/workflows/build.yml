@@ -22,7 +22,7 @@ jobs:
       matrix:
         version: ["latest", "stable"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: FranzDiebold/github-env-vars-action@v2.7.0
       - name: Set Humhub version
         run: |
@@ -57,7 +57,7 @@ jobs:
         version: ["latest", "stable"]
         target: ["allinone", "nginx", "phponly"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: FranzDiebold/github-env-vars-action@v2.7.0
       - name: Set Humhub version
         run: |
@@ -95,7 +95,7 @@ jobs:
       matrix:
         version: ["latest", "stable"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: FranzDiebold/github-env-vars-action@v2.7.0
       - name: Set Humhub version
         run: |
@@ -139,7 +139,7 @@ jobs:
       matrix:
         version: ["latest", "stable"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: FranzDiebold/github-env-vars-action@v2.7.0
       - name: Set Humhub version
         run: |
@@ -192,7 +192,7 @@ jobs:
         version: ["latest", "stable"]
         target: ["allinone"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: FranzDiebold/github-env-vars-action@v2.7.0
       - name: Login to registry
         run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username "${GITHUB_REPOSITORY_OWNER}" --password-stdin
