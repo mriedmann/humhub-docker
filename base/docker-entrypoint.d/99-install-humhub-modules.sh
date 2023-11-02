@@ -8,10 +8,10 @@ echo "Modules enabled by docker env: ${HUMHUB_ENABLE_MODULES}"
 for module in ${HUMHUB_ENABLE_MODULES}
 do
     echo "... Installing module ${module}"
-    su -s /bin/sh nginx -c "php yii module/install ${module}"
+    su -s /bin/sh nginx -c "php yii module/install ${module} --interactive=0"
 
     echo "... Enabling module ${module}"
-    su -s /bin/sh nginx -c "php yii module/enable ${module}"
+    su -s /bin/sh nginx -c "php yii module/enable ${module} --interactive=0"
 done
 echo "Module installation finished."
 
@@ -24,6 +24,6 @@ echo "Modules disabled by docker env: ${HUMHUB_DISABLE_MODULES}"
 for module in ${DISABLED_MODULES} ${HUMHUB_DISABLE_MODULES}
 do
     echo "... Disabling module ${module}"
-    su -s /bin/sh nginx -c "php yii module/disable ${module}"
+    su -s /bin/sh nginx -c "php yii module/disable ${module} --interactive=0"
 done
 echo "Disabling modules finished."
