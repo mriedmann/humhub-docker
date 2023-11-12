@@ -1,3 +1,3 @@
-1.14.2 1.14 latest
-1.13.2 1.13 stable
-1.12.3 1.12 legacy
+1.15.0 1.15 latest
+1.14.5 1.14 stable
+1.13.2 1.13 legacy
