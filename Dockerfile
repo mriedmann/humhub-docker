@@ -164,6 +164,7 @@ ENV NGINX_CLIENT_MAX_BODY_SIZE=10m \
     NGINX_KEEPALIVE_TIMEOUT=65 \
     NGINX_UPSTREAM=humhub:9000
 
+RUN rm -rf /etc/nginx/conf.d/*
 COPY nginx/ /
 COPY --from=builder --chown=nginx:nginx /usr/src/humhub/ /var/www/localhost/htdocs/
 
@@ -174,6 +175,7 @@ LABEL variant="allinone"
 RUN apk add --no-cache nginx && \
     chown -R nginx:nginx /var/lib/nginx/
 
+RUN rm -rf /etc/nginx/conf.d/*
 COPY nginx/ /
 
 EXPOSE 80
