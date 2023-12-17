@@ -44,7 +44,7 @@ jobs:
           docker save "ghcr.io/${CI_REPOSITORY_OWNER}/humhub:${CI_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-base" \
             | gzip > "build-${{ matrix.version }}-git-${GIT_REV}.tar.gz"
       - name: Upload image archive
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-${{ matrix.version }}-git-${{ env.GIT_REV }}
           path: build-${{ matrix.version }}-git-${{ env.GIT_REV }}.tar.gz
@@ -83,7 +83,7 @@ jobs:
           docker save "ghcr.io/${CI_REPOSITORY_OWNER}/humhub:${CI_REF_NAME_SLUG}-${HUMHUB_VERSION}-git-${GIT_REV}-${{ matrix.target }}" \
             | gzip > "build-${{ matrix.version }}-git-${{ env.GIT_REV }}-${{ matrix.target }}.tar.gz"
       - name: Upload image archive
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-${{ matrix.version }}-git-${{ env.GIT_REV }}-${{ matrix.target }}
           path: build-${{ matrix.version }}-git-${{ env.GIT_REV }}-${{ matrix.target }}.tar.gz
