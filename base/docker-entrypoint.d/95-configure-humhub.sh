@@ -9,7 +9,7 @@ echo "Configuring HumHub options"
 CONFIG_FILE="${HUMHUB_CONFIG_FILE:-none}"
 
 # Stop if nothing needs to be done.
-if [ "${CONFIG_FILE}" == "none" ]; then
+if [ "${CONFIG_FILE}" = "none" ]; then
   echo "No config file (or name none) provided, aborting..."
   exit 0
 fi
