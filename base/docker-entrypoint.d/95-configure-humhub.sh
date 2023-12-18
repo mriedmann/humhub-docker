@@ -23,7 +23,7 @@ if [ ! -s "${CONFIG_FILE}" ]; then
 fi
 
 # Actually do the stuff.
-grep -v '^#' "${CONFIG_FILE}" | while read -r LINE; do 
+grep -vE '^(\s*$|#)' "${CONFIG_FILE}" | while read -r LINE; do 
   # su -s /bin/sh nginx -c "php yii settings/set "${moduleId}" "${name}" "${value}" --interactive=0"
   # su -s /bin/sh nginx -c "php yii settings/set ${LINE} --interactive=0"
   echo "Found config line: ${LINE}"
