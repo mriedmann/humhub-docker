@@ -69,6 +69,7 @@ ARG HUMHUB_VERSION
 ARG BUILD_DEPS
 
 RUN apk add --no-cache --update $BUILD_DEPS && \
+    ln -s /usr/bin/php81 /usr/bin/php && \
     rm -rf /var/cache/apk/*
 
 COPY --from=builder-composer /usr/bin/composer /usr/bin/composer
@@ -110,6 +111,7 @@ LABEL name="HumHub" version="${HUMHUB_VERSION}-git-${VCS_REF}" variant="base" \
 
 RUN apk add --no-cache --update $RUNTIME_DEPS && \
     apk add --no-cache --virtual temp_pkgs gettext && \
+    ln -s /usr/bin/php81 /usr/bin/php && \
     cp /usr/bin/envsubst /usr/local/bin/envsubst && \
     apk del temp_pkgs && \
     rm -rf /var/cache/apk/*
