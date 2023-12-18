@@ -9,22 +9,22 @@ echo "Configuring HumHub options"
 CONFIG_FILE="${HUMHUB_CONFIG_FILE:-none}"
 
 # Stop if nothing needs to be done.
-if [[ "${CONFIG_FILE}" == "none" ]]; then
-  echo -e "No config file (or name none) provided, aborting..."
+if [ "${CONFIG_FILE}" == "none" ]; then
+  echo "No config file (or name none) provided, aborting..."
   exit 0
 fi
 
 # Check the file actually exists and is readable and has content.
-if [[ ! -r "${CONFIG_FILE}" ]]; then
-  echo -e "Config file ${CONFIG_FILE} either does not exist or is not readable."
+if [ ! -r "${CONFIG_FILE}" ]; then
+  echo "Config file ${CONFIG_FILE} either does not exist or is not readable."
 fi
-if [[ ! -s "${CONFIG_FILE}" ]]; then
-  echo -e "Config file ${CONFIG_FILE} seems to be empty."
+if [ ! -s "${CONFIG_FILE}" ]; then
+  echo "Config file ${CONFIG_FILE} seems to be empty."
 fi
 
 # Actually do the stuff.
 grep -v '^#' "${CONFIG_FILE}" | while read -r LINE; do 
   # su -s /bin/sh nginx -c "php yii settings/set "${moduleId}" "${name}" "${value}" --interactive=0"
   # su -s /bin/sh nginx -c "php yii settings/set ${LINE} --interactive=0"
-  echo -e "Found config line: ${LINE}"
+  echo "Found config line: ${LINE}"
 done
