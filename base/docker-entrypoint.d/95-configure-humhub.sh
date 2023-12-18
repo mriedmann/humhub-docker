@@ -2,8 +2,14 @@
 # This script reads configuration options for a file provided via environment variable
 # HUMHUB_CONFIG_FILE and applies the settings sequentially to this container during startup.
 
-#TODO: Disable when mature
-set -x
+# Stop script execution on weird shell conditions.
+set -o errexit -o pipefail -o nounset
+
+# Allow debugging this shell script by setting a shell variable called
+# "TRACE" to value "1".
+if [ "${TRACE:-0}" = "1" ]; then
+  set -o xtrace
+fi
 
 echo "START === Configuring HumHub options"
 CONFIG_FILE="${HUMHUB_CONFIG_FILE:-none}"
