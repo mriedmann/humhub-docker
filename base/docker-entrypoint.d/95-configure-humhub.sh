@@ -5,7 +5,7 @@
 #TODO: Disable when mature
 set -x
 
-echo "Configuring HumHub options"
+echo "START === Configuring HumHub options"
 CONFIG_FILE="${HUMHUB_CONFIG_FILE:-none}"
 
 # Stop if nothing needs to be done.
@@ -28,3 +28,5 @@ grep -v '^#' "${CONFIG_FILE}" | while read -r LINE; do
   # su -s /bin/sh nginx -c "php yii settings/set ${LINE} --interactive=0"
   echo "Found config line: ${LINE}"
 done
+
+echo "END === DONE configuring HumHub"
