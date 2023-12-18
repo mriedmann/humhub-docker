@@ -23,10 +23,9 @@ if [ ! -s "${CONFIG_FILE}" ]; then
 fi
 
 # Actually do the stuff.
-grep -vE '^(\s*$|#)' "${CONFIG_FILE}" | while read -r LINE; do 
-  # su -s /bin/sh nginx -c "php yii settings/set "${moduleId}" "${name}" "${value}" --interactive=0"
-  # su -s /bin/sh nginx -c "php yii settings/set ${LINE} --interactive=0"
+grep -vE '^(\s*$|#)' "${CONFIG_FILE}" | while read -r LINE; do
   echo "Found config line: ${LINE}"
+  su -s /bin/sh nginx -c "php yii settings/set ${LINE} --interactive=0"
 done
 
 echo "END === DONE configuring HumHub"
