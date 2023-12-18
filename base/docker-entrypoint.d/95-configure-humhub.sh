@@ -3,7 +3,7 @@
 # HUMHUB_CONFIG_FILE and applies the settings sequentially to this container during startup.
 
 # Stop script execution on weird shell conditions.
-set -o errexit -o pipefail -o nounset
+set -o errexit -o nounset
 
 # Allow debugging this shell script by setting a shell variable called
 # "TRACE" to value "1".
