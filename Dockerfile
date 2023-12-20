@@ -1,68 +1,50 @@
 ARG HUMHUB_VERSION
 ARG VCS_REF
-ARG BUILD_DEPS="\
-    ca-certificates \
-    nodejs \
-    npm \
-    php81 \
-    php81-ctype \
-    php81-curl \
-    php81-dom \
-    php81-exif \
-    php81-fileinfo \
-    php81-gd \
-    php81-iconv \
-    php81-intl \
-    php81-json \
-    php81-ldap \
-    php81-mbstring \
-    php81-openssl \
-    php81-pdo_mysql \
-    php81-phar \
-    php81-simplexml \
-    php81-tokenizer \
-    php81-xml \
-    php81-xmlreader \
-    php81-xmlwriter \
-    php81-zip \
-    composer \
-    tzdata \
-    "
 
 ARG RUNTIME_DEPS="\
     ca-certificates \
     curl \
     imagemagick \
     libintl \
-    php81 \
-    php81-apcu \
-    php81-bcmath \
-    php81-ctype \
-    php81-curl \
-    php81-dom \
-    php81-exif \
-    php81-fileinfo \
-    php81-fpm \
-    php81-gd \
-    php81-gmp \
-    php81-iconv \
-    php81-intl \
-    php81-json \
-    php81-ldap \
-    php81-mbstring \
-    php81-openssl \
-    php81-pdo_mysql \
-    php81-pecl-imagick \
-    php81-phar \
-    php81-session \
-    php81-simplexml \
-    php81-sqlite3 \
-    php81-xml \
-    php81-xmlreader \
-    php81-xmlwriter \
-    php81-zip \
+    php82 \
+    php82-apcu \
+    php82-bcmath \
+    php82-ctype \
+    php82-curl \
+    php82-dom \
+    php82-exif \
+    php82-fileinfo \
+    php82-fpm \
+    php82-gd \
+    php82-gmp \
+    php82-iconv \
+    php82-intl \
+    php82-json \
+    php82-ldap \
+    php82-mbstring \
+    php82-openssl \
+    php82-pdo_mysql \
+    php82-pecl-imagick \
+    php82-phar \
+    php82-session \
+    php82-simplexml \
+    php82-sqlite3 \
+    php82-xml \
+    php82-xmlreader \
+    php82-xmlwriter \
+    php82-zip \
     sqlite \
     supervisor \
+    tzdata \
+    "
+
+ARG BUILD_DEPS="\
+    $RUNTIME_DEPS \
+    ca-certificates \
+    nodejs \
+    npm \
+    php82-tokenizer \
+    composer \
     tzdata \
     "
 
