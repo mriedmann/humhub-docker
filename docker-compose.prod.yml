@@ -32,8 +32,8 @@ services:
       HUMHUB_DB_NAME: 'humhub'
       HUMHUB_AUTO_INSTALL: 1
       # HUMHUB_DEBUG: 1 # you can currently not use debug in prod 
-      HUMHUB_PROTO: 'https'
-      HUMHUB_HOST: 'localhost'
+      #HUMHUB_PROTO: 'http'
+      #HUMHUB_HOST: 'localhost:8080'
       # Mailer install setup
       HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS: 'noreply@example.com'
       HUMHUB_MAILER_SYSTEM_EMAIL_NAME: 'HumHub'

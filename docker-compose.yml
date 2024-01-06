@@ -5,7 +5,12 @@
 version: '3.1'
 services:
   humhub:
-    image: docker.io/mriedmann/humhub:latest
+    #image: docker.io/mriedmann/humhub:latest
+    image: humhub
+    build:
+      context: .
+      args:
+        - HUMHUB_VERSION=1.15.2
     ports:
       - "8080:80"
     environment:
@@ -15,8 +20,8 @@ services:
       HUMHUB_DB_NAME: 'humhub'
       HUMHUB_AUTO_INSTALL: 1
       HUMHUB_DEBUG: 1
-      HUMHUB_PROTO: 'https'
-      HUMHUB_HOST: 'localhost'
+      #HUMHUB_PROTO: 'https'
+      #HUMHUB_HOST: 'localhost'
       # Mailer install setup
       HUMHUB_MAILER_SYSTEM_EMAIL_ADDRESS: 'noreply@example.com'
       HUMHUB_MAILER_SYSTEM_EMAIL_NAME: 'HumHub'
