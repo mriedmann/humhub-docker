@@ -117,9 +117,9 @@ ENV PHP_MAX_EXECUTION_TIME=60
 ENV PHP_MEMORY_LIMIT=1G
 ENV PHP_TIMEZONE=UTC
 
-# 100=nginx 101=nginx (group)
-COPY --from=builder --chown=100:101 /usr/src/humhub /var/www/localhost/htdocs/
-COPY --chown=100:101 humhub/ /var/www/localhost/htdocs/
+# 101=nginx 0=root (group)
+COPY --from=builder --chown=101:0 /usr/src/humhub /var/www/localhost/htdocs/
+COPY --chown=101:0 humhub/ /var/www/localhost/htdocs/
 
 RUN mkdir -p /usr/src/humhub/protected/config/ && \
     cp -R /var/www/localhost/htdocs/protected/config/* /usr/src/humhub/protected/config/ && \
@@ -131,7 +131,7 @@ RUN mkdir -p /var/www/localhost/htdocs/protected/runtime/logs && \
     mkdir -p /var/www/localhost/htdocs/uploads /var/www/localhost/htdocs/assets /var/www/localhost/htdocs/protected/modules /var/www/localhost/htdocs/themes /var/www/localhost/htdocs/protected/config && \
     mkdir -p /run/nginx /run/php-fpm && \
     touch /var/www/localhost/htdocs/protected/runtime/logs/app.log && \
-    chown 100:101 -R /var/www/localhost/htdocs/protected/runtime/logs /run/nginx /run/php-fpm \
+    chown 101:0 -R /var/www/localhost/htdocs/protected/runtime/logs /run/nginx /run/php-fpm \
       /var/www/localhost/htdocs/uploads /var/www/localhost/htdocs/assets  \
       /var/www/localhost/htdocs/protected/modules /var/www/localhost/htdocs/themes  \
       /var/www/localhost/htdocs/protected/config
@@ -141,7 +141,7 @@ COPY base/ /
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN chmod 600 /etc/crontabs/nginx && \
-    chown 100:101 /etc/crontabs/nginx && \
+    chown 101:0 /etc/crontabs/nginx && \
     rm /etc/crontabs/root && \
     chmod +x /docker-entrypoint.sh
 
@@ -166,8 +166,7 @@ COPY phponly/ /
 
 ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/master/php-fpm-healthcheck /usr/local/bin/php-fpm-healthcheck
 RUN chmod +x /usr/local/bin/php-fpm-healthcheck \
- && addgroup -g 101 -S nginx \
- && adduser --uid 100 -g 101 -S nginx
+ && adduser --uid 101 -g 0 -S nginx
 
 EXPOSE 9000
 USER nginx
