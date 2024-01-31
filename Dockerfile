@@ -31,6 +31,7 @@ ARG RUNTIME_DEPS="\
     curl \
     imagemagick \
     libintl \
+    perl \
     php81 \
     php81-apcu \
     php81-ctype \
