@@ -114,7 +114,8 @@ LABEL name="HumHub" version="${HUMHUB_VERSION}-git-${VCS_REF}" variant="base" \
       org.label-schema.vcs-url="https://github.com/dantefromhell/humhub-docker" \
       org.label-schema.vendor="HumHub GmbH" \
       org.label-schema.version="${HUMHUB_VERSION}-git-${VCS_REF}" \
-      org.label-schema.schema-version="1.0"
+      org.label-schema.schema-version="1.0" \
+      org.opencontainers.image.source="https://github.com/dantefromhell/humhub-docker"
 
 RUN apk add --no-cache --update $RUNTIME_DEPS && \
     apk add --no-cache --virtual temp_pkgs gettext && \
