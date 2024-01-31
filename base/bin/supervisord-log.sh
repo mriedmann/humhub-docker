@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # When used as a wrapper within a supervisord program configuration block,
 # all STDOUT and STDERR log lines will be prefixed with a timestamp + the

@@ -28,6 +28,7 @@ ARG BUILD_DEPS="\
 
 ARG RUNTIME_DEPS="\
     ca-certificates \
+    bash \
     curl \
     imagemagick \
     libintl \
