@@ -1,28 +1,30 @@
+ARG PHP_VERSION="81"
+
 ARG BUILD_DEPS="\
     ca-certificates \
     nodejs \
     npm \
-    php81 \
-    php81-ctype \
-    php81-curl \
-    php81-dom \
-    php81-exif \
-    php81-fileinfo \
-    php81-gd \
-    php81-iconv \
-    php81-intl \
-    php81-json \
-    php81-ldap \
-    php81-mbstring \
-    php81-openssl \
-    php81-pdo_mysql \
-    php81-phar \
-    php81-simplexml \
-    php81-tokenizer \
-    php81-xml \
-    php81-xmlreader \
-    php81-xmlwriter \
-    php81-zip \
+    php${PHP_VERSION} \
+    php${PHP_VERSION}-ctype \
+    php${PHP_VERSION}-curl \
+    php${PHP_VERSION}-dom \
+    php${PHP_VERSION}-exif \
+    php${PHP_VERSION}-fileinfo \
+    php${PHP_VERSION}-gd \
+    php${PHP_VERSION}-iconv \
+    php${PHP_VERSION}-intl \
+    php${PHP_VERSION}-json \
+    php${PHP_VERSION}-ldap \
+    php${PHP_VERSION}-mbstring \
+    php${PHP_VERSION}-openssl \
+    php${PHP_VERSION}-pdo_mysql \
+    php${PHP_VERSION}-phar \
+    php${PHP_VERSION}-simplexml \
+    php${PHP_VERSION}-tokenizer \
+    php${PHP_VERSION}-xml \
+    php${PHP_VERSION}-xmlreader \
+    php${PHP_VERSION}-xmlwriter \
+    php${PHP_VERSION}-zip \
     tzdata \
     "
 
@@ -33,31 +35,31 @@ ARG RUNTIME_DEPS="\
     imagemagick \
     libintl \
     perl \
-    php81 \
-    php81-apcu \
-    php81-ctype \
-    php81-curl \
-    php81-dom \
-    php81-exif \
-    php81-fileinfo \
-    php81-fpm \
-    php81-gd \
-    php81-iconv \
-    php81-intl \
-    php81-json \
-    php81-ldap \
-    php81-mbstring \
-    php81-openssl \
-    php81-pdo_mysql \
-    php81-pecl-imagick \
-    php81-phar \
-    php81-session \
-    php81-simplexml \
-    php81-sqlite3 \
-    php81-xml \
-    php81-xmlreader \
-    php81-xmlwriter \
-    php81-zip \
+    php${PHP_VERSION} \
+    php${PHP_VERSION}-apcu \
+    php${PHP_VERSION}-ctype \
+    php${PHP_VERSION}-curl \
+    php${PHP_VERSION}-dom \
+    php${PHP_VERSION}-exif \
+    php${PHP_VERSION}-fileinfo \
+    php${PHP_VERSION}-fpm \
+    php${PHP_VERSION}-gd \
+    php${PHP_VERSION}-iconv \
+    php${PHP_VERSION}-intl \
+    php${PHP_VERSION}-json \
+    php${PHP_VERSION}-ldap \
+    php${PHP_VERSION}-mbstring \
+    php${PHP_VERSION}-openssl \
+    php${PHP_VERSION}-pdo_mysql \
+    php${PHP_VERSION}-pecl-imagick \
+    php${PHP_VERSION}-phar \
+    php${PHP_VERSION}-session \
+    php${PHP_VERSION}-simplexml \
+    php${PHP_VERSION}-sqlite3 \
+    php${PHP_VERSION}-xml \
+    php${PHP_VERSION}-xmlreader \
+    php${PHP_VERSION}-xmlwriter \
+    php${PHP_VERSION}-zip \
     sqlite \
     supervisor \
     tzdata \
@@ -69,9 +71,11 @@ FROM docker.io/library/alpine:3.19.1 as builder
 
 ARG HUMHUB_VERSION
 ARG BUILD_DEPS
+ARG PHP_VERSION
 
 RUN apk add --no-cache --update $BUILD_DEPS && \
-    ln -s /usr/bin/php81 /usr/bin/php && \
+    ln -s /usr/bin/php$PHP_VERSION /usr/bin/php && \
+    ln -s /usr/sbin/php-fpm$PHP_VERSION /usr/sbin/php-fpm && \
     rm -rf /var/cache/apk/*
 
 COPY --from=builder-composer /usr/bin/composer /usr/bin/composer
@@ -100,6 +104,7 @@ ARG HUMHUB_VERSION
 ARG RUNTIME_DEPS
 ARG VCS_REF
 ARG BUILD_DATE
+ARG PHP_VERSION
 LABEL name="HumHub" version="${HUMHUB_VERSION}-git-${VCS_REF}" variant="base" \
       org.label-schema.build-date=${BUILD_DATE} \
       org.label-schema.name="HumHub" \
@@ -113,7 +118,8 @@ LABEL name="HumHub" version="${HUMHUB_VERSION}-git-${VCS_REF}" variant="base" \
 
 RUN apk add --no-cache --update $RUNTIME_DEPS && \
     apk add --no-cache --virtual temp_pkgs gettext && \
-    ln -s /usr/bin/php81 /usr/bin/php && \
+    ln -s /usr/bin/php$PHP_VERSION /usr/bin/php && \
+    ln -s /usr/sbin/php-fpm$PHP_VERSION /usr/sbin/php-fpm && \
     cp /usr/bin/envsubst /usr/local/bin/envsubst && \
     apk del temp_pkgs && \
     rm -rf /var/cache/apk/*
