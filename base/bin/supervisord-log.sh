@@ -15,7 +15,7 @@
 #command=/bin/supervisord-log.sh executable1
 
 # Prefix outputs with Time Stamp and Process Name
-exec 1> >( perl -ne 'use Time::HiRes qw(time); use POSIX qw( strftime ); $time=time; $microsecs = ($time - int($time)) * 1e3; $| = 1; printf( "%s,%03.0f '"${SUPERVISOR_PROCESS_NAME}"' %s", strftime("%Y-%m-%d %H:%M:%S", gmtime($time)), $microsecs, $_);' >&1)
-exec 2> >( perl -ne 'use Time::HiRes qw(time); use POSIX qw( strftime ); $time=time; $microsecs = ($time - int($time)) * 1e3; $| = 1; printf( "%s,%03.0f '"${SUPERVISOR_PROCESS_NAME}"' %s", strftime("%Y-%m-%d %H:%M:%S", gmtime($time)), $microsecs, $_);' >&2)
+exec 1> >( perl -ne 'use Time::HiRes qw(time); use POSIX qw( strftime ); $time=time; $microsecs = ($time - int($time)) * 1e3; $| = 1; printf( "%s,%03.0f '"${SUPERVISOR_PROCESS_NAME}"' STDOUT %s", strftime("%Y-%m-%d %H:%M:%S", gmtime($time)), $microsecs, $_);' >&1)
+exec 2> >( perl -ne 'use Time::HiRes qw(time); use POSIX qw( strftime ); $time=time; $microsecs = ($time - int($time)) * 1e3; $| = 1; printf( "%s,%03.0f '"${SUPERVISOR_PROCESS_NAME}"' STDERR %s", strftime("%Y-%m-%d %H:%M:%S", gmtime($time)), $microsecs, $_);' >&2)
 
 exec "$@"
