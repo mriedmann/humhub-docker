@@ -23,7 +23,7 @@ jobs:
         version: ["latest", "stable", "experimental"]
     steps:
       - uses: actions/checkout@v4
-      - uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - uses: FranzDiebold/github-env-vars-action@v2.8.0
       - name: Set Humhub version
         run: |
           HUMHUB_VERSION="$(awk -e '$0 ~ /^([0-9\.]+) [0-9\.]+ ${{ matrix.version }}/ {print $1}' versions.txt)"
@@ -58,7 +58,7 @@ jobs:
         target: ["allinone", "nginx", "phponly"]
     steps:
       - uses: actions/checkout@v4
-      - uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - uses: FranzDiebold/github-env-vars-action@v2.8.0
       - name: Set Humhub version
         run: |
           HUMHUB_VERSION="$(awk -e '$0 ~ /^([0-9\.]+) [0-9\.]+ ${{ matrix.version }}/ {print $1}' versions.txt)"
@@ -96,7 +96,7 @@ jobs:
         version: ["latest", "stable", "experimental"]
     steps:
       - uses: actions/checkout@v4
-      - uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - uses: FranzDiebold/github-env-vars-action@v2.8.0
       - name: Set Humhub version
         run: |
           HUMHUB_VERSION="$(awk -e '$0 ~ /^([0-9\.]+) [0-9\.]+ ${{ matrix.version }}/ {print $1}' versions.txt)"
@@ -140,7 +140,7 @@ jobs:
         version: ["latest", "stable", "experimental"]
     steps:
       - uses: actions/checkout@v4
-      - uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - uses: FranzDiebold/github-env-vars-action@v2.8.0
       - name: Set Humhub version
         run: |
           HUMHUB_VERSION="$(awk -e '$0 ~ /^([0-9\.]+) [0-9\.]+ ${{ matrix.version }}/ {print $1}' versions.txt)"
@@ -193,7 +193,7 @@ jobs:
         target: ["allinone"]
     steps:
       - uses: actions/checkout@v4
-      - uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - uses: FranzDiebold/github-env-vars-action@v2.8.0
       - name: Login to registry
         run: echo "${{ secrets.PAT }}" | docker login ghcr.io --username "${GITHUB_REPOSITORY_OWNER}" --password-stdin
       - name: Set Humhub version
