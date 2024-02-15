@@ -12,5 +12,24 @@ return [
         'request' => [
             'trustedHosts' => ['127.0.0.1/32']
         ],
-    ]
+    ],
+
+    /**
+     * Javascript CSP nonces were introduced in HumHub 1.15 but have been creating a range
+     * of issues since they require updated module code.
+     *
+     * For an easier migration they are now disabled and will be re-enabled when things have
+     * stabalized.
+     *
+     * TODO: Remove this section/commit when GitHub complains about CSP have slowed down.
+     */
+    'modules' => [
+        'web' => [
+            'security' => [
+                'csp' => [
+                    'nonce' => false,
+                ],
+            ],
+        ],
+    ],
 ];
