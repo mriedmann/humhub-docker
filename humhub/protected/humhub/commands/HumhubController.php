@@ -89,6 +89,13 @@ class HumhubController extends Controller
         // Find all PHP files in the specified directory
         $fileList = FileHelper::findFiles(\Yii::getAlias($directory), ['only' => ['*.php']]);
 
+        // Fail if no configuration files were found in common.d to prevent
+        // overwriting 'common.php' with an empty array.
+        if ($fileList == []) {
+            $this->stdout("\nNo PHP files found in " . \Yii::getAlias($directory) . "\nAborting...\n");
+            exit(1);
+        }
+
         // Sort the files to make loading behaviour deterministic.
         sort($fileList);
 
