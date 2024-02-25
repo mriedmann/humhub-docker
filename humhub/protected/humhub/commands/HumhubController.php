@@ -93,7 +93,7 @@ class HumhubController extends Controller
         // overwriting 'common.php' with an empty array.
         if ($fileList == []) {
             $this->stdout("\nNo PHP files found in " . \Yii::getAlias($directory) . "\nAborting...\n");
-            exit(1);
+            exit(0);
         }
 
         // Sort the files to make loading behaviour deterministic.
