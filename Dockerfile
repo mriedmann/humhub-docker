@@ -37,6 +37,7 @@ ARG RUNTIME_DEPS="\
     perl \
     php${PHP_VERSION} \
     php${PHP_VERSION}-apcu \
+    php${PHP_VERSION}-bcmath \
     php${PHP_VERSION}-ctype \
     php${PHP_VERSION}-curl \
     php${PHP_VERSION}-dom \
@@ -44,6 +45,7 @@ ARG RUNTIME_DEPS="\
     php${PHP_VERSION}-fileinfo \
     php${PHP_VERSION}-fpm \
     php${PHP_VERSION}-gd \
+    php${PHP_VERSION}-gmp \
     php${PHP_VERSION}-iconv \
     php${PHP_VERSION}-intl \
     php${PHP_VERSION}-json \
