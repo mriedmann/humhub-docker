@@ -47,6 +47,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
+          VALIDATE_CHECKOV: false
           VALIDATE_DOCKERFILE: false
           VALIDATE_JSCPD: false
           LINTER_RULES_PATH: .
