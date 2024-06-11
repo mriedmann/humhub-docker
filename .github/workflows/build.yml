@@ -70,7 +70,8 @@ jobs:
       - name: Download image archive
         uses: actions/download-artifact@v4
         with:
-          name: build-${{ matrix.version }}-git-${{ env.GIT_REV }}
+          name: build-${{ matrix.version }}-git-${{ env.GIT_REV }}        run: curl 'http://localhost:8080/' --location --fail --silent | grep 'Sign in</button>' -q || ( curl 'http://localhost:8080/'  --trace - ; exit 1;)
+
       - name: Build and push docker image
         run: |
           docker load --input "build-${{ matrix.version }}-git-${GIT_REV}.tar.gz"
@@ -180,7 +181,7 @@ jobs:
         uses: mxschmitt/action-tmate@v3
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.ssh_debug_enabled }}
       - name: Test
-        run:  'http://localhost:8080/' --location --fail --silent | grep 'Sign in</button>' -q || (  'http://localhost:8080/'  --trace - ; exit 1;)
+        run: curl 'http://localhost:8080/' --location --fail --silent | grep 'Sign in</button>' -q || ( curl 'http://localhost:8080/'  --trace - ; exit 1;)
       - name: Test Email
         run: |
           docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' --interactive=0 \
