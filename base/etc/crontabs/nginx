@@ -1,2 +1,2 @@
-* * * * * /usr/bin/php /var/www/localhost/htdocs/protected/yii queue/run >/dev/null 2>&1
-* * * * * /usr/bin/php /var/www/localhost/htdocs/protected/yii cron/run >/dev/null 2>&1
+* * * * * /usr/bin/php /var/www/humhub/protected/yii queue/run >/dev/null 2>&1
+* * * * * /usr/bin/php /var/www/humhub/protected/yii cron/run >/dev/null 2>&1

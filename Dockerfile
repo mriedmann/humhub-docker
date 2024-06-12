@@ -101,7 +101,7 @@ LABEL name="HumHub" version=${HUMHUB_VERSION} variant="base" \
       org.label-schema.description="HumHub is a feature rich and highly flexible OpenSource Social Network Kit written in PHP" \
       org.label-schema.url="https://www.humhub.com/" \
       org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/mriedmann/humhub-docker" \
+      org.label-schema.vcs-url="https://github.com/aguennoune/humhub-docker" \
       org.label-schema.vendor="HumHub GmbH" \
       org.label-schema.version=${HUMHUB_VERSION} \
       org.label-schema.schema-version="1.0"
@@ -122,12 +122,12 @@ RUN touch /var/run/supervisor.sock && \
     chmod 777 /var/run/supervisor.sock
 
 # 100=nginx 101=nginx (group)
-COPY --from=builder --chown=100:101 /usr/src/humhub /var/www/localhost/htdocs/
-COPY --chown=100:101 humhub/ /var/www/localhost/htdocs/
+COPY --from=builder --chown=100:101 /usr/src/humhub /var/www/humhub/
+COPY --chown=100:101 humhub/ /var/www/humhub/
 
 RUN mkdir -p /usr/src/humhub/protected/config/ && \
-    cp -R /var/www/localhost/htdocs/protected/config/* /usr/src/humhub/protected/config/ && \
-    rm -f var/www/localhost/htdocs/protected/config/common.php /usr/src/humhub/protected/config/common.php && \
+    cp -R /var/www/humhub/protected/config/* /usr/src/humhub/protected/config/ && \
+    rm -f var/www/humhub/protected/config/common.php /usr/src/humhub/protected/config/common.php && \
     echo "v${HUMHUB_VERSION}" >  /usr/src/humhub/.version
 
 COPY base/ /
@@ -136,9 +136,9 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod 600 /etc/crontabs/nginx && \
     chmod +x /docker-entrypoint.sh
 
-VOLUME /var/www/localhost/htdocs/uploads
-VOLUME /var/www/localhost/htdocs/protected/config
-VOLUME /var/www/localhost/htdocs/protected/modules
+VOLUME /var/www/humhub/uploads
+VOLUME /var/www/humhub/protected/config
+VOLUME /var/www/humhub/protected/modules
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
@@ -168,7 +168,7 @@ ENV NGINX_CLIENT_MAX_BODY_SIZE=10m \
 
 RUN rm -rf /etc/nginx/conf.d/*
 COPY nginx/ /
-COPY --from=builder --chown=nginx:nginx /usr/src/humhub/ /var/www/localhost/htdocs/
+COPY --from=builder --chown=nginx:nginx /usr/src/humhub/ /var/www/humhub/
 
 FROM base as humhub_allinone
 

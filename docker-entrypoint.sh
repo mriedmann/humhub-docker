@@ -7,7 +7,7 @@ SET_PJAX=${HUMHUB_SET_PJAX:-1}
 AUTOINSTALL=${HUMHUB_AUTO_INSTALL:-"false"}
 ENTRYPOINT_QUIET_LOGS=${ENTRYPOINT_QUIET_LOGS:-}
 
-HUMHUB_DB_NAME=${HUMHUB_DB_NAME:-"humhub"}
+HUMHUB_DB_NAME=${HUMHUB_DB_NAME:-"humhub_prod_db"}
 HUMHUB_DB_HOST=${HUMHUB_DB_HOST:-"db"}
 HUMHUB_DB_PORT=${HUMHUB_DB_PORT:-3306}
 HUMHUB_NAME=${HUMHUB_NAME:-"HumHub"}
@@ -87,57 +87,57 @@ fi
 
 echo >&3 "$0: Starting pre-launch ..."
 
-if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
+if [ -f "/var/www/humhub/protected/config/dynamic.php" ]; then
 	echo >&3 "$0: Existing installation found!"
 
 	wait_for_db
 
-	INSTALL_VERSION=$(cat /var/www/localhost/htdocs/protected/config/.version)
+	INSTALL_VERSION=$(cat /var/www/humhub/protected/config/.version)
 	SOURCE_VERSION=$(cat /usr/src/humhub/.version)
-	cd /var/www/localhost/htdocs/protected/ || exit 1
+	cd /var/www/humhub/protected/ || exit 1
 	if [ "$INSTALL_VERSION" != "$SOURCE_VERSION" ]; then
 		echo >&3 "$0: Updating from version $INSTALL_VERSION to $SOURCE_VERSION"
 		php yii migrate/up --includeModuleMigrations=1 --interactive=0
 		php yii search/rebuild
-		cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
+		cp -v /usr/src/humhub/.version /var/www/humhub/protected/config/.version
 	fi
 else
 	echo >&3 "$0: No existing installation found!"
 	echo >&3 "$0: Installing source files..."
-	cp -rv /usr/src/humhub/protected/config/* /var/www/localhost/htdocs/protected/config/
-	cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
+	cp -rv /usr/src/humhub/protected/config/* /var/www/humhub/protected/config/
+	cp -v /usr/src/humhub/.version /var/www/humhub/protected/config/.version
 
-	if [ ! -f "/var/www/localhost/htdocs/protected/config/common.php" ]; then
+	if [ ! -f "/var/www/humhub/protected/config/common.php" ]; then
 		echo >&3 "$0: Generate config using common factory..."
 
 		echo '<?php return ' \
-			>/var/www/localhost/htdocs/protected/config/common.php
+			>/var/www/humhub/protected/config/common.php
 
-		sh -c "php /var/www/localhost/htdocs/protected/config/common-factory.php" \
-			>>/var/www/localhost/htdocs/protected/config/common.php
+		sh -c "php /var/www/humhub/protected/config/common-factory.php" \
+			>>/var/www/humhub/protected/config/common.php
 
 		echo ';' \
-			>>/var/www/localhost/htdocs/protected/config/common.php
+			>>/var/www/humhub/protected/config/common.php
 	fi
 
-	if ! php -l /var/www/localhost/htdocs/protected/config/common.php; then
+	if ! php -l /var/www/humhub/protected/config/common.php; then
 		echo >&3 "$0: Humhub common config is not valid! Fix errors before restarting."
 		exit 1
 	fi
 
-	mkdir -p /var/www/localhost/htdocs/protected/runtime/logs/
-	touch /var/www/localhost/htdocs/protected/runtime/logs/app.log
+	mkdir -p /var/www/humhub/protected/runtime/logs/
+	touch /var/www/humhub/protected/runtime/logs/app.log
 
 	echo >&3 "$0: Setting permissions..."
-	chown -R nginx:nginx /var/www/localhost/htdocs/uploads
-	chown -R nginx:nginx /var/www/localhost/htdocs/protected/modules
-	chown -R nginx:nginx /var/www/localhost/htdocs/protected/config
-	chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
+	chown -R nginx:nginx /var/www/humhub/uploads
+	chown -R nginx:nginx /var/www/humhub/protected/modules
+	chown -R nginx:nginx /var/www/humhub/protected/config
+	chown -R nginx:nginx /var/www/humhub/protected/runtime
 
 	wait_for_db
 
 	echo >&3 "$0: Creating database..."
-	cd /var/www/localhost/htdocs/protected/ || exit 1
+	cd /var/www/humhub/protected/ || exit 1
 	if [ -z "$HUMHUB_DB_USER" ]; then
 		AUTOINSTALL="false"
 	fi
@@ -192,27 +192,27 @@ else
 			php yii 'settings/set' 'base' 'mailer.allowSelfSignedCerts' "${HUMHUB_MAILER_ALLOW_SELF_SIGNED_CERTS}"
 		fi
 
-		chown -R nginx:nginx /var/www/localhost/htdocs/protected/runtime
-		chown nginx:nginx /var/www/localhost/htdocs/protected/config/dynamic.php
+		chown -R nginx:nginx /var/www/humhub/protected/runtime
+		chown nginx:nginx /var/www/humhub/protected/config/dynamic.php
 	fi
 fi
 
 echo >&3 "$0: Config preprocessing ..."
 
-if test -e /var/www/localhost/htdocs/protected/config/dynamic.php &&
-	grep "'installed' => true" /var/www/localhost/htdocs/protected/config/dynamic.php -q; then
+if test -e /var/www/humhub/protected/config/dynamic.php &&
+	grep "'installed' => true" /var/www/humhub/protected/config/dynamic.php -q; then
 	echo >&3 "$0: installation active"
 
 	if [ "$SET_PJAX" != "false" ]; then
 		sed -i \
 			-e "s/'enablePjax' => false/'enablePjax' => true/g" \
-			/var/www/localhost/htdocs/protected/config/common.php
+			/var/www/humhub/protected/config/common.php
 	fi
 
 	if [ -n "$HUMHUB_TRUSTED_HOSTS" ]; then
 		sed -i \
 			-e "s|'trustedHosts' => \['.*'\]|'trustedHosts' => ['$HUMHUB_TRUSTED_HOSTS']|g" \
-			/var/www/localhost/htdocs/protected/config/web.php
+			/var/www/humhub/protected/config/web.php
 	fi
 else
 	echo >&3 "$0: no installation config found or not installed"
@@ -220,12 +220,12 @@ else
 fi
 
 if [ "$HUMHUB_DEBUG" = "false" ]; then
-	sed -i '/YII_DEBUG/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
-	sed -i '/YII_ENV/s/^\/*/\/\//' /var/www/localhost/htdocs/index.php
+	sed -i '/YII_DEBUG/s/^\/*/\/\//' /var/www/humhub/index.php
+	sed -i '/YII_ENV/s/^\/*/\/\//' /var/www/humhub/index.php
 	echo >&3 "$0: debug disabled"
 else
-	sed -i '/YII_DEBUG/s/^\/*//' /var/www/localhost/htdocs/index.php
-	sed -i '/YII_ENV/s/^\/*//' /var/www/localhost/htdocs/index.php
+	sed -i '/YII_DEBUG/s/^\/*//' /var/www/humhub/index.php
+	sed -i '/YII_ENV/s/^\/*//' /var/www/humhub/index.php
 	echo >&3 "$0: debug enabled"
 fi
 

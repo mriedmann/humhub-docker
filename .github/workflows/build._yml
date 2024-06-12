@@ -105,7 +105,7 @@ jobs:
     - name: Test
       run: curl http://localhost:8080/ -L --fail && curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
     - name: Test Email
-      run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
+      run: docker-compose exec -T humhub php /var/www/humhub/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
   test_prod:
     needs: build_variants
     runs-on: ubuntu-latest
@@ -148,7 +148,7 @@ jobs:
     - name: Test
       run: curl http://localhost:8080/ -L --fail && curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
     - name: Test Email
-      run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
+      run: docker-compose exec -T humhub php /var/www/humhub/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
   push_ghcr:
     needs: ["test_aio", "test_prod"]
     runs-on: ubuntu-latest
