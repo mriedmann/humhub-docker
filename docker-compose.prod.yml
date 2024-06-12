@@ -5,7 +5,7 @@
 
 # WARNING: Currently, container based setups are not officially supported by Humhub GmbH.
 #          Use at your own risk!
-version: '3.1'
+# version: '3.1'
 services:
   nginx:
     image: docker.io/mriedmann/humhub:stable-nginx

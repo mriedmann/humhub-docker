@@ -2,7 +2,7 @@
 #       Please do not understand it as recommendation for an production 
 #       docker-compose setup. For that see the README. If you have additions 
 #       to make, please add them there.
-version: '3.1'
+# version: '3.1'
 services:
   humhub:
     image: docker.io/mriedmann/humhub:latest
