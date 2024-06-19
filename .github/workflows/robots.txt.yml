@@ -1,0 +1,33 @@
+name: "Update robots.txt"
+on:
+    schedule:
+        - cron: "0 0 * * 6" # At 00:00 on Saturday
+    workflow_dispatch:
+
+jobs:
+    update:
+        name: "Update robots.txt"
+
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: write
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Pull latest robots
+              run: |
+                  curl -X POST https://api.darkvisitors.com/robots-txts \
+                      -H "Authorization: Bearer ${{ secrets.DarkVisitorsBearer }}" \
+                      -H "Content-Type: application/json" \
+                      --data-raw '{"agent_types": ["AI Assistant", "AI Data Scraper", "AI Search Crawler", "Undocumented AI Agent"]}' \
+                      --output ./base/var/www/localhost/htdocs/robots.txt
+
+            - name: Commit changes
+              uses: EndBug/add-and-commit@v9
+              with:
+                  message: "chore: generate robots.txt"
+                  default_author: github_actions
+                  push: true
