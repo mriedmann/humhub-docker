@@ -71,6 +71,9 @@ services:
       - "config:/var/www/localhost/htdocs/protected/config"
       - "uploads:/var/www/localhost/htdocs/uploads"
       - "modules:/var/www/localhost/htdocs/protected/modules"
+      - "logs:/var/www/localhost/htdocs/protected/runtime/logs"
+      - "searchdb:/var/www/localhost/htdocs/protected/runtime/searchdb"
+      - "themes:/var/www/localhost/htdocs/themes"
     environment:
       HUMHUB_DB_USER: humhub
       HUMHUB_DB_PASSWORD: humhub
@@ -87,6 +90,9 @@ volumes:
   config: {}
   uploads: {}
   modules: {}
+  logs: {}
+  searchdb: {}
+  themes: {}
 ```
 
 > In some situations (e.g. with [podman-compose](https://github.com/containers/podman-compose)) you have to run compose `up` twice to give it some time to create the named volumes.
