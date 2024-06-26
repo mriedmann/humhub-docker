@@ -8,23 +8,23 @@ Using this in production is possible, but please note that there is currently no
 
 ## Versions
 
-This project provides different images and tags for different purposes. For evaluation use `humhub:stable`, for production consider using the newest minor-version tag (e.g. `humhub:1.13`).
+This project provides different images and tags for different purposes. For evaluation use `humhub:stable`, for production consider using the newest minor-version tag (e.g. `humhub:1.15`).
 
 - `latest` : unstable master build (not recommended for production; use with caution, might be unstable!)
-- Minor (e.g `1.13`): Always points to the latest release of given minor version. (Recommended)
-- Build (e.g `1.13.4`): Always points to the latest release of given build. Very stable but might be outdated.
+- Minor (e.g `1.15`): Always points to the latest release of given minor version. (Recommended)
+- Build (e.g `1.15.4`): Always points to the latest release of given build. Very stable but might be outdated.
 - `stable`: Always points to oldest, still supported, therefore most mature version. Updates include minor-version changes which can include db-schema changes (higher risk).
 - `legacy`: Try to avoid this tag as much as possible. If your current installation is flagged as "deprecated" the related tag is also changed to "legacy". Please try to upgrade as fast as possible to avoid security and other issues.
 
 ### Variants
 
-There are 3 different variants of this image. Use the unspecific tag (e.g. `humhub:1.13`) if you what a running installation as fast as possible. Use the moving tags if you want to stay up-to-date, not caring about version-upgrades. For critical environments we recommend that you stick to the version-tags or digest, not using moving tags.
+There are 3 different variants of this image. Use the unspecific tag (e.g. `humhub:1.15`) if you what a running installation as fast as possible. Use the moving tags if you want to stay up-to-date, not caring about version-upgrades. For critical environments we recommend that you stick to the version-tags or digest, not using moving tags.
 
 If plan to build some kind of hosted solution, have a look at `docker-compose.prod.yml` to understand how the variant images can be used.
 
-- **all-in-one** (e.g. `humhub:1.13`): Multi-service image (nginx + php-fpm). Use this if you are not sure what you need.
-- **nginx** (e.g. `humhub:1.13-nginx`): Only static files and nginx proxy config without php.
-- **phponly** (e.g. `humhub:1.13-phponly`): HumHub sources bundled with php-fpm. Needs a fcgi application-server to be able to deliver http.
+- **all-in-one** (e.g. `humhub:1.15`): Multi-service image (nginx + php-fpm). Use this if you are not sure what you need.
+- **nginx** (e.g. `humhub:1.15-nginx`): Only static files and nginx proxy config without php.
+- **phponly** (e.g. `humhub:1.15-phponly`): HumHub sources bundled with php-fpm. Needs a fcgi application-server to be able to deliver http.
 
 ### Matrix
 
@@ -36,9 +36,9 @@ If plan to build some kind of hosted solution, have a look at `docker-compose.pr
 
 | Version | Status                  | AllInOne                                                                                                                          | Nginx                                                                                                                                    | PHP-Only                                                                                                                                   |
 | ------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `1.12`   | :thumbsdown: Deprecated     | [![humhub:1.12](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.12-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.12](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.12--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.12](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.12--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
-| `1.13`   | :thumbsup: Stable     | [![humhub:1.13](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.13-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.13](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.13--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.13](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.13--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
-| `1.14`   | :boom: Experimental     | [![humhub:1.14](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.14-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.14](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.14--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.14](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.14--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
+| `1.13`   | :thumbsdown: Deprecated     | [![humhub:1.13](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.13-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.13](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.13--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.13](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.13--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
+| `1.15`   | :thumbsup: Stable     | [![humhub:1.15](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.15-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.15](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.15--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.15](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.15--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
+| `1.16`   | :boom: Experimental     | [![humhub:1.16](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.16-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.16](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.16--nginx-blue)](https://hub.docker.com/r/mriedmann/humhub)      | [![humhub:1.16](https://img.shields.io/badge/image-mriedmann%2Fhumhub%3A1.16--phponly-blue)](https://hub.docker.com/r/mriedmann/humhub)      |
 
 | Flavor   | Stable                                                                                                                                      | Latest                                                                                                                                              | Legacy                                                                                                                                                   |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
