@@ -94,6 +94,12 @@ Disallow: /
 User-agent: Meta-ExternalFetcher
 Disallow: /
 
+# AI Search Crawler
+# https://darkvisitors.com/agents/oai-searchbot
+
+User-agent: OAI-SearchBot
+Disallow: /
+
 # AI Data Scraper
 # https://darkvisitors.com/agents/omgili
 
