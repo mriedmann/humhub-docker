@@ -98,7 +98,6 @@ if [ -f "/var/www/localhost/htdocs/protected/config/dynamic.php" ]; then
 	if [ "$INSTALL_VERSION" != "$SOURCE_VERSION" ]; then
 		echo >&3 "$0: Updating from version $INSTALL_VERSION to $SOURCE_VERSION"
 		php yii migrate/up --includeModuleMigrations=1 --interactive=0
-		php yii search/rebuild
 		cp -v /usr/src/humhub/.version /var/www/localhost/htdocs/protected/config/.version
 	fi
 else
