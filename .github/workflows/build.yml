@@ -95,17 +95,17 @@ jobs:
     - name: replace image
       run: sed -i "s/docker.io\/mriedmann\/humhub:latest/ghcr.io\/${GITHUB_REPOSITORY_OWNER}\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-allinone/g" docker-compose.yml
     - name: Spin up services
-      run: docker-compose -f docker-compose.yml up -d
+      run: docker compose -f docker-compose.yml up -d
     - name: Wait 
       run: sleep 60
     - name: Check status
       run: docker ps -a
     - name: Logs
-      run: docker-compose logs
+      run: docker compose logs
     - name: Test
       run: curl http://localhost:8080/ -L --fail && curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
     - name: Test Email
-      run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
+      run: docker compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
   test_prod:
     needs: build_variants
     runs-on: ubuntu-latest
@@ -138,17 +138,17 @@ jobs:
         sed -i "s/docker.io\/mriedmann\/humhub:stable-nginx/ghcr.io\/${GITHUB_REPOSITORY_OWNER}\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-nginx/g" docker-compose.prod.yml
         sed -i "s/docker.io\/mriedmann\/humhub:stable-phponly/ghcr.io\/${GITHUB_REPOSITORY_OWNER}\/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-phponly/g" docker-compose.prod.yml
     - name: Spin up services
-      run: docker-compose -f docker-compose.prod.yml up -d
+      run: docker compose -f docker-compose.prod.yml up -d
     - name: Wait 
       run: sleep 60
     - name: Check status
       run: docker ps -a
     - name: Logs
-      run: docker-compose logs
+      run: docker compose logs
     - name: Test
       run: curl http://localhost:8080/ -L --fail && curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
     - name: Test Email
-      run: docker-compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
+      run: docker compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
   push_ghcr:
     needs: ["test_aio", "test_prod"]
     runs-on: ubuntu-latest
