@@ -52,7 +52,7 @@ jobs:
         export HUMHUB_VERSION
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> "$GITHUB_ENV"
     - name: Download image archive
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: build-${{ matrix.version }}
     - name: Build and push docker image
@@ -86,7 +86,7 @@ jobs:
         export HUMHUB_VERSION
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> "$GITHUB_ENV"
     - name: Download image archive
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: build-${{ matrix.version }}-allinone
     - name: Load images 
@@ -122,11 +122,11 @@ jobs:
         export HUMHUB_VERSION
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> "$GITHUB_ENV"
     - name: Download image archive (phponly)
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: build-${{ matrix.version }}-phponly
     - name: Download image archive (nginx)
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: build-${{ matrix.version }}-nginx
     - name: Load images 
@@ -169,7 +169,7 @@ jobs:
         export HUMHUB_VERSION
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> "$GITHUB_ENV"
     - name: Download image archive
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: build-${{ matrix.version }}-${{ matrix.target }}
     - name: Load, retag and Push images 
