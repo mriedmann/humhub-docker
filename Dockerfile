@@ -66,7 +66,7 @@ ARG RUNTIME_DEPS="\
     tzdata \
     "
 
-FROM docker.io/library/alpine:3.19.4 as builder
+FROM docker.io/library/alpine:3.20.3 as builder
 
 ARG HUMHUB_VERSION
 ARG BUILD_DEPS
@@ -91,7 +91,7 @@ RUN composer config --no-plugins allow-plugins.yiisoft/yii2-composer true && \
     grunt build-assets && \
     rm -rf ./node_modules
 
-FROM docker.io/library/alpine:3.19.4 as base
+FROM docker.io/library/alpine:3.20.3 as base
 
 ARG HUMHUB_VERSION
 ARG RUNTIME_DEPS
