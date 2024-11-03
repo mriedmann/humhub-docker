@@ -4,27 +4,27 @@ ARG BUILD_DEPS="\
     ca-certificates \
     nodejs \
     npm \
-    php81 \
-    php81-ctype \
-    php81-curl \
-    php81-dom \
-    php81-exif \
-    php81-fileinfo \
-    php81-gd \
-    php81-iconv \
-    php81-intl \
-    php81-json \
-    php81-ldap \
-    php81-mbstring \
-    php81-openssl \
-    php81-pdo_mysql \
-    php81-phar \
-    php81-simplexml \
-    php81-tokenizer \
-    php81-xml \
-    php81-xmlreader \
-    php81-xmlwriter \
-    php81-zip \
+    php82 \
+    php82-ctype \
+    php82-curl \
+    php82-dom \
+    php82-exif \
+    php82-fileinfo \
+    php82-gd \
+    php82-iconv \
+    php82-intl \
+    php82-json \
+    php82-ldap \
+    php82-mbstring \
+    php82-openssl \
+    php82-pdo_mysql \
+    php82-phar \
+    php82-simplexml \
+    php82-tokenizer \
+    php82-xml \
+    php82-xmlreader \
+    php82-xmlwriter \
+    php82-zip \
     composer \
     tzdata \
     "
@@ -34,39 +34,39 @@ ARG RUNTIME_DEPS="\
     curl \
     imagemagick \
     libintl \
-    php81 \
-    php81-apcu \
-    php81-bcmath \
-    php81-ctype \
-    php81-curl \
-    php81-dom \
-    php81-exif \
-    php81-fileinfo \
-    php81-fpm \
-    php81-gd \
-    php81-gmp \
-    php81-iconv \
-    php81-intl \
-    php81-json \
-    php81-ldap \
-    php81-mbstring \
-    php81-openssl \
-    php81-pdo_mysql \
-    php81-pecl-imagick \
-    php81-phar \
-    php81-session \
-    php81-simplexml \
-    php81-sqlite3 \
-    php81-xml \
-    php81-xmlreader \
-    php81-xmlwriter \
-    php81-zip \
+    php82 \
+    php82-apcu \
+    php82-bcmath \
+    php82-ctype \
+    php82-curl \
+    php82-dom \
+    php82-exif \
+    php82-fileinfo \
+    php82-fpm \
+    php82-gd \
+    php82-gmp \
+    php82-iconv \
+    php82-intl \
+    php82-json \
+    php82-ldap \
+    php82-mbstring \
+    php82-openssl \
+    php82-pdo_mysql \
+    php82-pecl-imagick \
+    php82-phar \
+    php82-session \
+    php82-simplexml \
+    php82-sqlite3 \
+    php82-xml \
+    php82-xmlreader \
+    php82-xmlwriter \
+    php82-zip \
     sqlite \
     supervisor \
     tzdata \
     "
 
-FROM docker.io/library/alpine:3.18.4 as builder
+FROM docker.io/library/alpine:3.19.4 as builder
 
 ARG HUMHUB_VERSION
 ARG BUILD_DEPS
@@ -91,7 +91,7 @@ RUN composer config --no-plugins allow-plugins.yiisoft/yii2-composer true && \
     grunt build-assets && \
     rm -rf ./node_modules
 
-FROM docker.io/library/alpine:3.18.4 as base
+FROM docker.io/library/alpine:3.19.4 as base
 
 ARG HUMHUB_VERSION
 ARG RUNTIME_DEPS
