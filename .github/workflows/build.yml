@@ -31,7 +31,7 @@ jobs:
           .
         docker save "ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-base" | gzip > build-${{ matrix.version }}.tar.gz
     - name: Upload image archive
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4.4.3
       with:
         name: build-${{ matrix.version }}
         path: build-${{ matrix.version }}.tar.gz
@@ -66,7 +66,7 @@ jobs:
           .
         docker save "ghcr.io/${GITHUB_REPOSITORY_OWNER}/humhub:${GITHUB_REF_NAME_SLUG}-${HUMHUB_VERSION}-${{ matrix.target }}" | gzip > "build-${{ matrix.version }}-${{ matrix.target }}.tar.gz"
     - name: Upload image archive
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4.4.3
       with:
         name: build-${{ matrix.version }}-${{ matrix.target }}
         path: build-${{ matrix.version }}-${{ matrix.target }}.tar.gz
