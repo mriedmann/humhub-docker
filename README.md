@@ -193,6 +193,12 @@ HUMHUB_LDAP_REFRESH_USERS                         []
 HUMHUB_ADVANCED_LDAP_THUMBNAIL_SYNC_PROPERTY      [thumbnailphoto]
 ```
 
+``` plaintext
+HUMHUB_LDAP_CACERT                                []
+```
+
+If you want to provide a CA-certificate for server authentication (ldaps) you have to add to cert in CER format. See https://github.com/mriedmann/humhub-docker/pull/140 for details.
+
 ### PHP Config
 
 It is also possible to change some php-config-settings. This comes in handy if you have to scale this container vertically.
