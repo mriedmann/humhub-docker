@@ -20,6 +20,7 @@ ARG BUILD_DEPS="\
     php84-pdo_mysql \
     php84-phar \
     php84-simplexml \
+    php84-sodium \
     php84-tokenizer \
     php84-xml \
     php84-xmlreader \
