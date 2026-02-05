@@ -25,7 +25,7 @@ jobs:
         git status
         git log
     - name: Push changes
-      uses: ad-m/github-push-action@master
+      uses: ad-m/github-push-action@main
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: "${{ env.GIT_BRANCH }}"
@@ -33,6 +33,6 @@ jobs:
       uses: repo-sync/pull-request@v2
       with:
         source_branch: "${{ env.GIT_BRANCH }}"                                 
-        destination_branch: "master"                      
+        destination_branch: "main"                      
         pr_title: "Update to ${{ env.NEW_VERSION }}"
         github_token: ${{ secrets.GITHUB_TOKEN }}
