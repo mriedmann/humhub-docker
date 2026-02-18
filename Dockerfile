@@ -57,6 +57,7 @@ ARG RUNTIME_DEPS="\
     php84-phar \
     php84-session \
     php84-simplexml \
+    php84-sodium \
     php84-sqlite3 \
     php84-xml \
     php84-xmlreader \
