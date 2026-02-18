@@ -26,8 +26,15 @@ function publish_image() {
     done
 }
 
-while read -r line; do 
-    IFS=' ' read -ra versions <<< "$line"
-    publish_image "${versions[0]}" "${versions[@]:1}"
-done < versions.txt
- 
+HUMHUB_VERSION=$(cat versions.txt)
+MAJOR_VERSION=$(echo "$HUMHUB_VERSION" | cut -d'.' -f1)
+MINOR_VERSION=$(echo "$HUMHUB_VERSION" | cut -d'.' -f2)
+HUMHUB_MACRO_VERSION=${MAJOR_VERSION}.${MINOR_VERSION}
+
+publish_image "${HUMHUB_VERSION}" "${HUMHUB_MACRO_VERSION}"
+
+for tag in $(git tag --contains)
+do
+    [[ "$tag" == "latest" ]] && publish_image "${HUMHUB_VERSION}" "latest"
+    [[ "$tag" == "stable" ]] && publish_image "${HUMHUB_VERSION}" "stable"
+done
