@@ -32,8 +32,8 @@ jobs:
     - name: Upload image archive
       uses: actions/upload-artifact@v6
       with:
-        name: build-${HUMHUB_VERSION}
-        path: build-${HUMHUB_VERSION}.tar.gz
+        name: build-${{ env.HUMHUB_VERSION }}
+        path: build-${{ env.HUMHUB_VERSION }}.tar.gz
   build_variants:
     needs: build_bases
     runs-on: ubuntu-latest
@@ -65,8 +65,8 @@ jobs:
     - name: Upload image archive
       uses: actions/upload-artifact@v6
       with:
-        name: build-${HUMHUB_VERSION}-${{ matrix.target }}
-        path: build-${HUMHUB_VERSION}-${{ matrix.target }}.tar.gz
+        name: build-${{ env.HUMHUB_VERSION }}-${{ matrix.target }}
+        path: build-${{ env.HUMHUB_VERSION }}-${{ matrix.target }}.tar.gz
   test_aio:
     needs: build_variants
     runs-on: ubuntu-latest
@@ -80,7 +80,7 @@ jobs:
     - name: Download image archive
       uses: actions/download-artifact@v6
       with:
-        name: build-${HUMHUB_VERSION}-allinone
+        name: build-${{ env.HUMHUB_VERSION }}-allinone
     - name: Load images 
       run: |
         docker load --input build-${HUMHUB_VERSION}-allinone.tar.gz
@@ -114,11 +114,11 @@ jobs:
     - name: Download image archive (phponly)
       uses: actions/download-artifact@v6
       with:
-        name: build-${HUMHUB_VERSION}-phponly
+        name: build-${{ env.HUMHUB_VERSION }}-phponly
     - name: Download image archive (nginx)
       uses: actions/download-artifact@v6
       with:
-        name: build-${HUMHUB_VERSION}-nginx
+        name: build-${{ env.HUMHUB_VERSION }}-nginx
     - name: Load images 
       run: |
         docker load --input build-${HUMHUB_VERSION}-phponly.tar.gz
@@ -166,7 +166,7 @@ jobs:
     - name: Download image archive
       uses: actions/download-artifact@v6
       with:
-        name: build-${HUMHUB_VERSION}-${{ matrix.target }}
+        name: build-${{ env.HUMHUB_VERSION }}-${{ matrix.target }}
     - name: Load, retag and Push images 
       run: |
         docker load --input build-${HUMHUB_VERSION}-${{ matrix.target }}.tar.gz
