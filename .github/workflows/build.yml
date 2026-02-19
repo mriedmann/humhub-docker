@@ -13,7 +13,7 @@ jobs:
   build_bases:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Set Humhub version
       run: |
         HUMHUB_VERSION="$(cat versions.txt)"
@@ -30,7 +30,7 @@ jobs:
           .
         docker save "ghcr.io/${{ github.repository_owner }}/humhub:temp-${{ github.run_id }}-${HUMHUB_VERSION}-base" | gzip > build-${HUMHUB_VERSION}.tar.gz
     - name: Upload image archive
-      uses: actions/upload-artifact@v4.6.2
+      uses: actions/upload-artifact@v6
       with:
         name: build-${HUMHUB_VERSION}
         path: build-${HUMHUB_VERSION}.tar.gz
@@ -42,14 +42,14 @@ jobs:
       matrix:
         target: ["allinone", "nginx", "phponly"]
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Set Humhub version
       run: |
         HUMHUB_VERSION=$(cat versions.txt)
         export HUMHUB_VERSION
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> "$GITHUB_ENV"
     - name: Download image archive
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: build-${HUMHUB_VERSION}
     - name: Build and push docker image
@@ -63,7 +63,7 @@ jobs:
           .
         docker save "ghcr.io/${{ github.repository_owner }}/humhub:temp-${{ github.run_id }}-${HUMHUB_VERSION}-${{ matrix.target }}" | gzip > "build-${HUMHUB_VERSION}-${{ matrix.target }}.tar.gz"
     - name: Upload image archive
-      uses: actions/upload-artifact@v4.6.2
+      uses: actions/upload-artifact@v6
       with:
         name: build-${HUMHUB_VERSION}-${{ matrix.target }}
         path: build-${HUMHUB_VERSION}-${{ matrix.target }}.tar.gz
@@ -71,14 +71,14 @@ jobs:
     needs: build_variants
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Set Humhub version
       run: |
         HUMHUB_VERSION=$(cat versions.txt)
         export HUMHUB_VERSION
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> "$GITHUB_ENV"
     - name: Download image archive
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: build-${HUMHUB_VERSION}-allinone
     - name: Load images 
@@ -105,18 +105,18 @@ jobs:
     needs: build_variants
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Set Humhub version
       run: |
         HUMHUB_VERSION=$(awk -e '$0 ~ /^([0-9\.]+) [0-9\.]+ ${HUMHUB_VERSION}/ {print $1}' versions.txt)
         export HUMHUB_VERSION
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> "$GITHUB_ENV"
     - name: Download image archive (phponly)
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: build-${HUMHUB_VERSION}-phponly
     - name: Download image archive (nginx)
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: build-${HUMHUB_VERSION}-nginx
     - name: Load images 
@@ -151,7 +151,7 @@ jobs:
       matrix:
         target: ["allinone", "nginx", "phponly"]
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Login to registry
       uses: docker/login-action@v3
       with:
@@ -164,7 +164,7 @@ jobs:
         export HUMHUB_VERSION
         echo "HUMHUB_VERSION=$HUMHUB_VERSION" >> "$GITHUB_ENV"
     - name: Download image archive
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: build-${HUMHUB_VERSION}-${{ matrix.target }}
     - name: Load, retag and Push images 
