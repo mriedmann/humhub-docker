@@ -68,7 +68,7 @@ ARG RUNTIME_DEPS="\
     tzdata \
     "
 
-FROM docker.io/library/alpine:3.23.3 as builder
+FROM docker.io/library/alpine:3.23.3 AS builder
 
 ARG HUMHUB_VERSION
 ARG BUILD_DEPS
@@ -93,7 +93,7 @@ RUN composer config --no-plugins allow-plugins.yiisoft/yii2-composer true && \
     grunt build-assets && \
     rm -rf ./node_modules
 
-FROM docker.io/library/alpine:3.23.3 as base
+FROM docker.io/library/alpine:3.23.3 AS base
 
 ARG HUMHUB_VERSION
 ARG RUNTIME_DEPS
@@ -145,7 +145,7 @@ VOLUME /var/www/localhost/htdocs/protected/modules
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
 
-FROM base as humhub_phponly
+FROM base AS humhub_phponly
 
 LABEL variant="phponly"
 
@@ -172,7 +172,7 @@ RUN rm -rf /etc/nginx/conf.d/*
 COPY nginx/ /
 COPY --from=builder --chown=nginx:nginx /usr/src/humhub/ /var/www/localhost/htdocs/
 
-FROM base as humhub_allinone
+FROM base AS humhub_allinone
 
 LABEL variant="allinone"
 
