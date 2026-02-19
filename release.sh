@@ -31,10 +31,13 @@ MAJOR_VERSION=$(echo "$HUMHUB_VERSION" | cut -d'.' -f1)
 MINOR_VERSION=$(echo "$HUMHUB_VERSION" | cut -d'.' -f2)
 HUMHUB_MACRO_VERSION=${MAJOR_VERSION}.${MINOR_VERSION}
 
+# publish the image under the minor-version pattern
 publish_image "${HUMHUB_VERSION}" "${HUMHUB_MACRO_VERSION}"
 
+# publish the image if one of the tag legacy/stable/latest is present
 for tag in $(git tag --contains)
 do
     [[ "$tag" == "latest" ]] && publish_image "${HUMHUB_VERSION}" "latest"
     [[ "$tag" == "stable" ]] && publish_image "${HUMHUB_VERSION}" "stable"
+    [[ "$tag" == "legacy" ]] && publish_image "${HUMHUB_VERSION}" "legacy"
 done
